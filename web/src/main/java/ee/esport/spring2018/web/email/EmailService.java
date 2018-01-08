@@ -35,12 +35,8 @@ public class EmailService {
                     "2018-359027-" + "000".substring(Integer.toString(ticket.getId()).length()) + ticket.getId());
         context.put("payByDate",
                     OffsetDateTime.ofInstant(ticket.getDateCreated().plusDays(3).toInstant(), ZoneId.systemDefault()));
-        Mail mail = Mail.using(mailgunConfig)
-                         .to(ticket.getOwnerEmail())
-                         .subject("Pilet reserveeritud / Ticket Reserved")
-                         .html(renderEmail("ticketReserved", context))
-                         .build();
-        return sendAsync(mail);
+        String to = ticket.getOwnerEmail();
+        return sendAsync(to, "ticketReserved", context, "Pilet reserveeritud / Ticket Reserved");
     }
 
     public CompletableFuture<Response> sendTicketWaiting(Ticket ticket, String loginLink) {
@@ -51,10 +47,16 @@ public class EmailService {
                     "2018-359027-" + "000".substring(Integer.toString(ticket.getId()).length()) + ticket.getId());
         context.put("payByDate",
                     OffsetDateTime.ofInstant(ticket.getDateCreated().plusDays(3).toInstant(), ZoneId.systemDefault()));
+        return sendAsync(ticket.getOwnerEmail(), "ticketWaiting", context, "Pilet ootel / Ticket In Waiting List ");
+    }
+
+    private CompletableFuture<Response> sendAsync(String to, String templateName, VelocityContext context,
+                                                  String subject) {
         Mail mail = Mail.using(mailgunConfig)
-                        .to(ticket.getOwnerEmail())
-                        .subject("Pilet ootel / Ticket In Waiting List ")
-                        .html(renderEmail("ticketWaiting", context))
+                        .to(to)
+                        .subject(subject)
+                        .html(renderTemplate("html/" + templateName, context))
+                        .text(renderTemplate("plain/" + templateName, context))
                         .build();
         return sendAsync(mail);
     }
@@ -75,7 +77,7 @@ public class EmailService {
         return future;
     }
 
-    private String renderEmail(String templateName, VelocityContext context) {
+    private String renderTemplate(String templateName, VelocityContext context) {
         StringWriter writer = new StringWriter();
         try {
             velocityEngine.getTemplate("emailTemplates/" + templateName + ".vm").merge(context, writer);

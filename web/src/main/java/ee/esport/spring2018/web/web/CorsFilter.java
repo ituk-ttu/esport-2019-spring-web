@@ -1,4 +1,4 @@
-package ee.esport.spring2018.web;
+package ee.esport.spring2018.web.web;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 @Component
 public class CorsFilter extends OncePerRequestFilter {
 
-    private final Pattern originPattern = Pattern.compile("(.*)e-sport\\.ee(:\\d+)?");
+    public static final Pattern ORIGIN_PATTERN = Pattern.compile("(.*)e-sport\\.ee(:\\d+)?");
 
     @Override
     protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response,
@@ -24,7 +24,7 @@ public class CorsFilter extends OncePerRequestFilter {
 
         String origin = request.getHeader(HttpHeaders.ORIGIN);
         if(StringUtils.hasText(origin) && isCrossOriginRequest(request)) {
-            Matcher matcher = originPattern.matcher(origin);
+            Matcher matcher = ORIGIN_PATTERN.matcher(origin);
             if(matcher.find()) {
                 response.addHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, origin);
                 response.addHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, HttpHeaders.AUTHORIZATION + ", "

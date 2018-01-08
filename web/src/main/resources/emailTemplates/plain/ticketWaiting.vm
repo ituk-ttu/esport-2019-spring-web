@@ -1,0 +1,17 @@
+Ootel / Waiting
+
+---
+
+$ticket.name
+Olete lisatud ootelisti. Kui koht vabaneb, saadetakse Sulle automaatselt pileti arve.
+You have been added to the waiting list. If a spot frees up, an invoice will automatically be sent to You.
+
+Kuupäev / Date: $ticket.dateCreated.format($datePattern)
+Pilet / Ticket: $ticket.type.name
+Minu piletid / My tickets: $loginLink
+
+---
+
+MTÜ FOR Tsükkel, Akadeemia tee 15a-314, Tallinn, Eesti
+Registrinumber / Registry number: 80391807</span>
+Kontakt / Contact: esport@ituk.ee, +372 5348 5349

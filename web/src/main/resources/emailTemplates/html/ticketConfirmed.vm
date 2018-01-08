@@ -309,10 +309,9 @@
                             <table border="0" cellpadding="0" cellspacing="0">
                                 <tr>
                                     <td>
-                                        <h1>Pilet tühistatud / Ticket discarded</h1>
+                                        <h1>Pilet kinnitatud / Ticket confirmed</h1>
                                         <h2>$ticket.name</h2>
-                                        <p>Sinu pilet on tühistatud. Kui Sa siiski soovid osaleda, broneeri uus pilet.</p>
-                                        <p>Your ticket has been discarded. If You still wnat to attend, reserve a new ticket.</p>
+                                        <p>Näeme TTÜ e-Spordil! / See You at TTÜ e-Sport!</p>
                                         <table border="0" cellpadding="0" cellspacing="0" class="btn">
                                             <tbody>
                                             <tr>
@@ -320,7 +319,7 @@
                                                     <table border="0" cellpadding="0" cellspacing="0">
                                                         <tbody>
                                                         <tr>
-                                                            <td> <a href="https://e-sport.ee">Minu piletid / My tickets</a> </td>
+                                                            <td> <a href="$loginLink">Minu piletid / My tickets</a> </td>
                                                         </tr>
                                                         </tbody>
                                                     </table>

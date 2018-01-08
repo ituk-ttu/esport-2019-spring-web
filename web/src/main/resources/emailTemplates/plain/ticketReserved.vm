@@ -1,0 +1,34 @@
+Arve / Invoice
+
+---
+
+$ticket.name
+Arve number / Invoice number: $invoiceNumber
+Kuupäev / Date: $ticket.dateCreated.format($datePattern)
+Pilet / Ticket: $ticket.type.name
+#if($ticket.type.teamSize > 1)
+Ühe mängija hind / Price per player: ${ticket.type.perPersonCost}€
+Mängijaid meeskonnas / Players in team: $ticket.type.teamSize
+#end
+Kokku / Total: ${ticket.type.cost}€
+
+MTÜ FOR Tsükkel ei ole käibemaksukohuslane Eesti Käibemaksuseaduse mõistes ja summa ei sisalda käibemaksu.
+MTÜ FOR Tsükkel is not eligible for VAT under the Estonian Value-Added Tax Act and the fee does not include VAT.
+
+Maksmine / Payment
+Pank / Bank: LHV
+Saaja / Receiver: MTÜ FOR Tsükkel
+IBAN: EE617700771002582855
+SWIFT / BIC: LHVBEE22
+Selgitus / Description: $invoiceNumber
+
+Pileti kinnitamiseks peab olema raha kantud saaja kontole hiljemalt 3 tööpäeva jooksul alates arve saamisest. Maksmata jätmisel pilet tühistatakse.</p>
+To confirm the ticket the payment must be received by the receiver in 3 days after receiving the invoice at the latest. Unpaid tickets will be discarded.</p>
+
+Minu piletid / My tickets: $loginLink
+
+---
+
+MTÜ FOR Tsükkel, Akadeemia tee 15a-314, Tallinn, Eesti
+Registrinumber / Registry number: 80391807
+Kontakt / Contact: esport@ituk.ee, +372 5348 5349
