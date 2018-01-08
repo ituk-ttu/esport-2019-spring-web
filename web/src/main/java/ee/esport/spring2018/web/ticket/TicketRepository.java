@@ -131,4 +131,24 @@ public class TicketRepository {
         }
         return null;
     }
+
+    public Ticket getTicket(int ticketId) {
+        return dsl.select()
+                  .from(TICKETS)
+                  .leftJoin(TICKET_TYPES)
+                  .onKey()
+                  .where(TICKETS.ID.eq(ticketId))
+                  .fetchAny(record -> {
+                      Ticket ticket = record.into(TICKETS).into(Ticket.class);
+                      ticket.setType(record.into(TICKET_TYPES).into(TicketType.class));
+                      return ticket;
+                  });
+    }
+
+    public void setStatus(int id, TicketStatus canceled) {
+        dsl.update(TICKETS)
+           .set(TICKETS.STATUS, canceled.name())
+           .where(TICKETS.ID.eq(id))
+           .execute();
+    }
 }

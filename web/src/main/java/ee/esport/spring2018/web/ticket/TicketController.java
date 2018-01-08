@@ -1,5 +1,6 @@
 package ee.esport.spring2018.web.ticket;
 
+import ee.esport.spring2018.web.auth.EsportClaims;
 import ee.esport.spring2018.web.auth.EsportClaimsHolder;
 import ee.esport.spring2018.web.auth.SteamUser;
 import ee.esport.spring2018.web.web.WebClientUrl;
@@ -69,6 +70,29 @@ public class TicketController {
         return new ResponseEntity<>(boughtTicket, HttpStatus.OK);
     }
 
+    @PostMapping("/tickets/{ticketId}/cancel")
+    public ResponseEntity<Void> cancelTicket(@PathVariable int ticketId, EsportClaimsHolder claimsHolder) {
+        Ticket ticket = ticketService.getTicket(ticketId);
+        EsportClaims claims = claimsHolder.get();
+        if(ticket.getStatus() == TicketStatus.CANCELED) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        if(!claims.isAdmin() || !(ticketService.isOwner(claims, ticket) && ticketService.ownerCanCancel(ticket))) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        ticketService.cancelTicket(ticket);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
+    @PostMapping("/tickets/{ticketId}/confirm")
+    public ResponseEntity<Void> confirmTicket(@PathVariable int ticketId, EsportClaimsHolder claimsHolder) {
+        Ticket ticket = ticketService.getTicket(ticketId);
+        EsportClaims claims = claimsHolder.get();
+        if(!claims.isAdmin()) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        ticketService.confirmTicketPaid(ticket);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 }
