@@ -42,7 +42,7 @@
                 span.text-primary  {{ ticket.atLocationCost / ticket.teamSize }}€
                 small.text-default(v-if="ticket.teamSize > 1")  {{ $t('tickets.perPerson') }}
             router-link.buy-btn(:to="{ name: 'Buy', params: { ticketId: ticket.promotions != null ? ticket.promotions[0].id : ticket.id } }")
-              span(v-if="ticket.amountAvailable != null && ticket.amountAvailable == ticket.amountReserved")
+              span(v-if="ticket.amountAvailable != null && ticket.amountAvailable <= ticket.amountReserved")
                 | {{ $t('tickets.notifyMe') }}
               span(v-else) {{ $t('tickets.buy') }}
     .container.content-block
