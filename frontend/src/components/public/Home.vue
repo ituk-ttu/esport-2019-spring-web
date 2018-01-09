@@ -36,7 +36,7 @@
                 span(v-if="ticket.teamSize > 1")  {{ $t('tickets.teams') }}
                 span(v-else)  {{ $t('tickets.pieces') }}
                 |  {{ $t('tickets.remaining') }}
-              p.ticket-out(v-if="ticket.amountAvailable != null && ticket.amountAvailable == ticket.amountReserved")
+              p.ticket-out(v-if="ticket.amountAvailable != null && ticket.amountAvailable <= ticket.amountReserved")
                 small {{ $t('tickets.outOfTickets') }}
               p.ticket-at-location-cost(v-if="ticket.atLocationCost != null") {{ $t('tickets.atLocation') }}
                 span.text-primary  {{ ticket.atLocationCost / ticket.teamSize }}€
