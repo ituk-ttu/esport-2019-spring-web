@@ -1,15 +1,15 @@
 package ee.esport.spring2018.web.ticket;
 
+import ee.esport.spring2018.web.auth.EsportClaims;
 import ee.esport.spring2018.web.auth.EsportClaimsHolder;
 import ee.esport.spring2018.web.auth.SteamUser;
-import org.springframework.http.HttpHeaders;
+import ee.esport.spring2018.web.web.WebClientUrl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,13 +63,36 @@ public class TicketController {
 
     @PostMapping("/ticket")
     public ResponseEntity<Ticket> buyTicket(@RequestBody Ticket ticket, EsportClaimsHolder claimsHolder,
-                                          HttpServletRequest request) {
-        String referrer = request.getHeader(HttpHeaders.REFERER);
+                                            @WebClientUrl String webClientUrl) {
         SteamUser steamUser = claimsHolder.get().getSteamUser();
         ticket.setOwnerSteamId(steamUser != null ? steamUser.getId() : null);
-        Ticket boughtTicket = ticketService.buyTicket(ticket, referrer != null ? referrer :
-                                                                                 request.getRequestURL().toString());
+        Ticket boughtTicket = ticketService.buyTicket(ticket, webClientUrl);
         return new ResponseEntity<>(boughtTicket, HttpStatus.OK);
+    }
+
+    @PostMapping("/tickets/{ticketId}/cancel")
+    public ResponseEntity<Void> cancelTicket(@PathVariable int ticketId, EsportClaimsHolder claimsHolder) {
+        Ticket ticket = ticketService.getTicket(ticketId);
+        EsportClaims claims = claimsHolder.get();
+        if(ticket.getStatus() == TicketStatus.CANCELED) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        if(!claims.isAdmin() || !(ticketService.isOwner(claims, ticket) && ticketService.ownerCanCancel(ticket))) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        ticketService.cancelTicket(ticket);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/tickets/{ticketId}/confirm")
+    public ResponseEntity<Void> confirmTicket(@PathVariable int ticketId, EsportClaimsHolder claimsHolder) {
+        Ticket ticket = ticketService.getTicket(ticketId);
+        EsportClaims claims = claimsHolder.get();
+        if(!claims.isAdmin()) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        ticketService.confirmTicketPaid(ticket);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("/api")
@@ -37,23 +36,30 @@ public class AuthController {
         return new ResponseEntity<>(getAuthorizationHeaders(claims), HttpStatus.OK);
     }
 
-    private HttpHeaders getAuthorizationHeaders(EsportClaims claims) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + jwtService.createFromClaims(claims));
-        return headers;
-    }
-
     @GetMapping("/steam/loginLink")
     public ResponseEntity<String> getSteamLoginLink(@RequestParam String returnTo) {
         return new ResponseEntity<>(steamService.getLoginUrl(returnTo), HttpStatus.OK);
     }
 
     @GetMapping("/steam/verify")
-    public ResponseEntity<Void> verifySteamLogin(HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<Void> verifySteamLogin(HttpServletRequest request) {
         SteamUser user = steamService.verifySteamLogin(request.getParameter("receivingUrl"),
                                                        request.getParameterMap());
         EsportClaims claims = new EsportClaims().setSteamUser(user);
         return new ResponseEntity<>(getAuthorizationHeaders(claims), HttpStatus.OK);
     }
 
+    private HttpHeaders getAuthorizationHeaders(EsportClaims claims) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + jwtService.createFromClaims(claims));
+        return headers;
+    }
+
+    @GetMapping("/refreshToken")
+    public ResponseEntity<Void> refreshToken(EsportClaims claims) {
+        if(claims == null) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        return new ResponseEntity<>(getAuthorizationHeaders(claims), HttpStatus.OK);
+    }
 }
