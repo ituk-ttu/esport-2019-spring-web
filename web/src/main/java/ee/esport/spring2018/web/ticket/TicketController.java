@@ -70,8 +70,9 @@ public class TicketController {
         return new ResponseEntity<>(boughtTicket, HttpStatus.OK);
     }
 
-    @PostMapping("/tickets/{ticketId}/cancel")
-    public ResponseEntity<Void> cancelTicket(@PathVariable int ticketId, EsportClaimsHolder claimsHolder) {
+    @PostMapping("/ticket/{ticketId}/cancel")
+    public ResponseEntity<Void> cancelTicket(@PathVariable int ticketId, EsportClaimsHolder claimsHolder,
+                                             @WebClientUrl String webClientUrl) {
         Ticket ticket = ticketService.getTicket(ticketId);
         EsportClaims claims = claimsHolder.get();
         if(ticket.getStatus() == TicketStatus.CANCELED) {
@@ -80,18 +81,19 @@ public class TicketController {
         if(!claims.isAdmin() || !(ticketService.isOwner(claims, ticket) && ticketService.ownerCanCancel(ticket))) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-        ticketService.cancelTicket(ticket);
+        ticketService.cancelTicket(ticket, webClientUrl);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/tickets/{ticketId}/confirm")
-    public ResponseEntity<Void> confirmTicket(@PathVariable int ticketId, EsportClaimsHolder claimsHolder) {
+    @PostMapping("/ticket/{ticketId}/confirm")
+    public ResponseEntity<Void> confirmTicket(@PathVariable int ticketId, EsportClaimsHolder claimsHolder,
+                                              @WebClientUrl String webClientUrl) {
         Ticket ticket = ticketService.getTicket(ticketId);
         EsportClaims claims = claimsHolder.get();
         if(!claims.isAdmin()) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-        ticketService.confirmTicketPaid(ticket);
+        ticketService.confirmTicketPaid(ticket, webClientUrl);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

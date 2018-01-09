@@ -56,7 +56,8 @@ public class AuthController {
     }
 
     @GetMapping("/refreshToken")
-    public ResponseEntity<Void> refreshToken(EsportClaims claims) {
+    public ResponseEntity<Void> refreshToken(EsportClaimsHolder claimsHolder) {
+        EsportClaims claims = claimsHolder.get();
         if(claims == null) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }

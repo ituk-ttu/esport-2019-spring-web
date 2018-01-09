@@ -47,7 +47,9 @@
       "AWAITING_PAYMENT": "Awaiting payment",
       "PAID": "Paid",
       "CANCELED": "Canceled"
-    }
+    },
+    "confirm": "Confirm ticket paid",
+    "cancel": "Cancel ticket"
   },
   "home": {
     "sponsors": "Sponsors"

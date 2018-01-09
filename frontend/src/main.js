@@ -13,7 +13,10 @@ import VueLocalStorage from 'vue-localstorage';
 import VueAnalytics from 'vue-analytics';
 import Notifications from 'vue-notification';
 
+import AuthService from './services/AuthService';
+
 import './assets/less/style.less';
+
 const $ = require('jquery');
 
 window.jQuery = $;
@@ -42,28 +45,17 @@ Vue.use(VueAnalytics, {
 
 Vue.use(Notifications);
 
-Vue.use(VueConfig, {
+const config = {
   apiBase: process.env.apiBase,
   steamLoginReturnTo: process.env.steamLoginReturnTo
-});
+};
+Vue.use(VueConfig, config);
 
 Vue.use(VueResource);
 
-const AUTHORIZATION_HEADER = 'Authorization';
-const AUTH_TOKEN = 'authToken';
-Vue.http.interceptors.push((request, next) => {
-  let authToken = localStorage.getItem(AUTH_TOKEN);
-  if (authToken) {
-    request.headers.set(AUTHORIZATION_HEADER, authToken);
-  }
-  request.headers.set('Accept', 'application/json');
-  next(result => {
-    let authToken = result.headers.get(AUTHORIZATION_HEADER);
-    if (authToken) {
-      localStorage.setItem(AUTH_TOKEN, authToken);
-    }
-  });
-});
+Vue.http.options.root = config.apiBase;
+
+Vue.use(AuthService);
 
 /* eslint-disable no-new */
 new Vue({

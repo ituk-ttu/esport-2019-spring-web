@@ -53,14 +53,6 @@ public class TicketService {
         return ticket;
     }
 
-    private String createLoginLink(Ticket ticket, String referrer) {
-        String loginLinkKey = ticketRepository.createLoginLink(ticket.getId());
-        return UriComponentsBuilder.fromUriString(referrer)
-                                   .replacePath("/")
-                                   .fragment("/ticketLogin/" + loginLinkKey)
-                                   .toUriString();
-    }
-
     public Ticket getTicket(int ticketId) {
         return ticketRepository.getTicket(ticketId);
     }
@@ -90,20 +82,28 @@ public class TicketService {
                      .contains(ticket.getStatus());
     }
 
-    public void cancelTicket(Ticket ticket) {
+    public void cancelTicket(Ticket ticket, String referer) {
         if (ticket.getStatus() == TicketStatus.CANCELED) {
             throw new IllegalStateException("Cannot cancel ticket with status " + ticket.getStatus());
         }
         ticketRepository.setStatus(ticket.getId(), TicketStatus.CANCELED);
-        emailService.sendTicketCanceled(ticket);
+        emailService.sendTicketCanceled(ticket, createLoginLink(ticket, referer));
     }
 
-    public void confirmTicketPaid(Ticket ticket) {
+    public void confirmTicketPaid(Ticket ticket, String referer) {
         if (ticket.getStatus() != TicketStatus.AWAITING_PAYMENT) {
             throw new IllegalStateException("Cannot confirm ticket with status " + ticket.getStatus());
         }
         ticketRepository.setStatus(ticket.getId(), TicketStatus.PAID);
-        emailService.sendTicketConfirmed(ticket);
+        emailService.sendTicketConfirmed(ticket, createLoginLink(ticket, referer));
+    }
+
+    private String createLoginLink(Ticket ticket, String referrer) {
+        String loginLinkKey = ticketRepository.createLoginLink(ticket.getId());
+        return UriComponentsBuilder.fromUriString(referrer)
+                                   .replacePath("/")
+                                   .fragment("/ticketLogin/" + loginLinkKey)
+                                   .toUriString();
     }
 
 }
