@@ -75,7 +75,7 @@
     methods: {
       getRemaining: function (total, reserved) {
         if ((reserved / total) + (1 / total) >= 0.9) {
-          return total - reserved;
+          return total > reserved ? total - reserved : 0;
         } else {
           return null;
         }
