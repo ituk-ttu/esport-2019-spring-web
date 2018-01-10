@@ -50,15 +50,17 @@ public class EmailService {
         return sendAsync(ticket.getOwnerEmail(), "ticketWaiting", context, "Pilet ootel / Ticket In Waiting List ");
     }
 
-    public CompletableFuture<Response> sendTicketCanceled(Ticket ticket) {
+    public CompletableFuture<Response> sendTicketCanceled(Ticket ticket, String loginLink) {
         VelocityContext context = createContext();
         context.put("ticket", ticket);
+        context.put("loginLink", loginLink);
         return sendAsync(ticket.getOwnerEmail(), "ticketCanceled", context, "Pilet tühistatud / Ticket Canceled");
     }
 
-    public CompletableFuture<Response> sendTicketConfirmed(Ticket ticket) {
+    public CompletableFuture<Response> sendTicketConfirmed(Ticket ticket, String loginLink) {
         VelocityContext context = createContext();
         context.put("ticket", ticket);
+        context.put("loginLink", loginLink);
         return sendAsync(ticket.getOwnerEmail(), "ticketConfirmed", context, "Pilet kinnitatud / Ticket Confirmed");
     }
 

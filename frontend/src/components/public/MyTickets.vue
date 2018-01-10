@@ -10,8 +10,10 @@
         span.text-primary  {{ $t('tickets.names["' + ticket.type.name + '"]') }}
       p: small.text-default {{ $t('tickets.status') }}:&nbsp
         span.label(:class="getStatusClass(ticket.status)")  {{ $t('tickets.statuses["' + ticket.status + '"]') }}
-      p: small.text-default {{ $t('tickets.boughtOn') }}:
+      p: small.text-default {{ $t('tickets.boughtOnDate') }}:
         span.text-primary  {{ticket.dateCreated | moment("Do MMMM HH:mm") }}
+      p
+        button.btn.btn-success(v-on:click="confirmTicket(ticket)") {{ $t('tickets.confirm') }}
       p {{ $t('buy.total') }}:
         span.text-primary  {{ticket.type.cost}} €
 
@@ -42,6 +44,9 @@
           default:
             return 'label-primary';
         }
+      },
+      confirmTicket: function(ticket) {
+        this.$http.post(this.$config.apiBase + '/api/ticket/' + ticket.id + "/confirm");
       }
     },
     mounted: function () {

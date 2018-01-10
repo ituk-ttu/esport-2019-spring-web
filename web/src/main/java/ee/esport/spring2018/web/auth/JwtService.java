@@ -23,9 +23,11 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -39,6 +41,7 @@ public class JwtService {
 
     private static final String ISSUER = "TTÜ e-Sport";
     private static final Pattern JWT_PATTERN = Pattern.compile("^Bearer (.+)$");
+    private static final Duration LIFESPAN = Duration.of(7, ChronoUnit.DAYS);
 
     @Setter private SignatureAlgorithm algorithm;
     @Setter private String key;
@@ -52,7 +55,7 @@ public class JwtService {
             claims.setAdmin(true);
         }
         return new DefaultJwtBuilder().setClaims(claims)
-                                      .setExpiration(asLegacyDate(now.plusDays(7)))
+                                      .setExpiration(asLegacyDate(now.plus(LIFESPAN)))
                                       .setIssuedAt(asLegacyDate(now))
                                       .setIssuer(ISSUER)
                                       .signWith(algorithm, key)

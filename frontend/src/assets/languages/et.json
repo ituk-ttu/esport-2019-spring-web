@@ -48,7 +48,9 @@
       "AWAITING_PAYMENT": "Ootab makset",
       "PAID": "Makstud",
       "CANCELED": "Tühistatud"
-    }
+    },
+    "confirm": "Kinnita pilet maksud",
+    "cancel": "Tühista pilet"
   },
   "home": {
     "sponsors": "Sponsorid"
