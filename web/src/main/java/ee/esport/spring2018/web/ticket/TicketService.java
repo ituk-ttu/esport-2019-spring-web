@@ -1,6 +1,7 @@
 package ee.esport.spring2018.web.ticket;
 
 import ee.esport.spring2018.web.auth.EsportClaims;
+import ee.esport.spring2018.web.auth.SteamUser;
 import ee.esport.spring2018.web.email.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -69,7 +70,8 @@ public class TicketService {
     }
 
     public boolean isOwner(EsportClaims claims, Ticket ticket) {
-        String claimsSteamId = claims.getSteamUser().getId();
+        SteamUser steamUser = claims.getSteamUser();
+        String claimsSteamId = steamUser != null ? steamUser.getId() : null;
         if(claimsSteamId != null && claimsSteamId.equals(ticket.getOwnerSteamId())) {
             return true;
         }

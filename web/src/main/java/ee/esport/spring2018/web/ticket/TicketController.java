@@ -78,11 +78,15 @@ public class TicketController {
         if(ticket.getStatus() == TicketStatus.CANCELED) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        if(!claims.isAdmin() || !(ticketService.isOwner(claims, ticket) && ticketService.ownerCanCancel(ticket))) {
+        if(!canCancelTicket(ticket, claims)) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         ticketService.cancelTicket(ticket, webClientUrl);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    private boolean canCancelTicket(Ticket ticket, EsportClaims claims) {
+        return claims.isAdmin() || ticketService.isOwner(claims, ticket) && ticketService.ownerCanCancel(ticket);
     }
 
     @PostMapping("/ticket/{ticketId}/confirm")
