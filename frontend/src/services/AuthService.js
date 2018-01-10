@@ -18,7 +18,7 @@ const AuthService = (Vue) => {
       if (!self.isLoggedIn() || self.isTokenExpired() || !self.shouldRefreshToken()) {
         return;
       }
-      Vue.http.get("api/refreshToken");
+      Vue.http.get('api/refreshToken');
     }, TOKEN_REFRESH_INTERVAL);
   };
 
@@ -40,7 +40,7 @@ const AuthService = (Vue) => {
 
   self.getClaims = token => {
     token = token || getToken();
-    if (token === null || !token.startsWith("Bearer ")) {
+    if (token === null || !token.startsWith('Bearer ')) {
       return null;
     }
     return jwtDecode(token.substring(7));

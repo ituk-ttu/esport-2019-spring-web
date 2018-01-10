@@ -12,8 +12,10 @@
         span.label(:class="getStatusClass(ticket.status)")  {{ $t('tickets.statuses["' + ticket.status + '"]') }}
       p: small.text-default {{ $t('tickets.boughtOnDate') }}:
         span.text-primary  {{ticket.dateCreated | moment("Do MMMM HH:mm") }}
-      p
+      p(v-if="canConfirmTicket(ticket)")
         button.btn.btn-success(v-on:click="confirmTicket(ticket)") {{ $t('tickets.confirm') }}
+      p(v-if="canCancelTicket(ticket)")
+        button.btn.btn-danger(v-on:click="cancelTicket(ticket)") {{ $t('tickets.cancel') }}
       p {{ $t('buy.total') }}:
         span.text-primary  {{ticket.type.cost}} €
 
@@ -45,8 +47,20 @@
             return 'label-primary';
         }
       },
-      confirmTicket: function(ticket) {
-        this.$http.post(this.$config.apiBase + '/api/ticket/' + ticket.id + "/confirm");
+      canConfirmTicket: function (ticket) {
+        return this.$auth.isAdmin() && ticket.status === 'IN_WAITING_LIST';
+      },
+      canCancelTicket: function (ticket) {
+        return (this.$auth.isAdmin() && ticket.status !== 'CANCELED') ||
+               ['IN_WAITING_LIST', 'PAID'].includes(ticket.status);
+      },
+      confirmTicket: function (ticket) {
+        this.$http.post(this.$config.apiBase + '/api/ticket/' + ticket.id + '/confirm')
+          .then(res => { ticket.status = 'PAID'; });
+      },
+      cancelTicket: function (ticket) {
+        this.$http.post(this.$config.apiBase + '/api/ticket/' + ticket.id + '/cancel')
+          .then(res => { ticket.status = 'CANCELED'; });
       }
     },
     mounted: function () {
