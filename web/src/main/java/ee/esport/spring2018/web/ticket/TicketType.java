@@ -28,4 +28,8 @@ public class TicketType {
         return cost.divide(BigDecimal.valueOf(teamSize), BigDecimal.ROUND_HALF_UP);
     }
 
+    public boolean hasRemaining() {
+        return getAmountAvailable() == null || getAmountAvailable() > getAmountReserved();
+    }
+
 }

@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @Service
 @RequiredArgsConstructor
@@ -38,19 +39,21 @@ public class TicketService {
     public Ticket buyTicket(Ticket ticket, String referrer) {
         ticket.setDateCreated(OffsetDateTime.now());
         TicketType type = ticketRepository.getTicketType(ticket.getType().getId());
-        boolean isTicketAvailable = type.getAmountAvailable() == 0 ||
-                                    type.getAmountAvailable() > type.getAmountReserved();
-        ticket.setStatus(isTicketAvailable ? TicketStatus.AWAITING_PAYMENT :
-                                             TicketStatus.IN_WAITING_LIST);
+        ticket.setStatus(type.hasRemaining() ? TicketStatus.AWAITING_PAYMENT : TicketStatus.IN_WAITING_LIST);
         ticket.setId(ticketRepository.addTicket(ticket));
         ticket.setType(type);
         String loginLink = createLoginLink(ticket, referrer);
+        sendTicketCreationEmail(ticket, loginLink);
+        return ticket;
+    }
+
+    private void sendTicketCreationEmail(Ticket ticket, String loginLink) throws InterruptedException,
+                                                                                 ExecutionException {
         if(ticket.getStatus() == TicketStatus.AWAITING_PAYMENT) {
             emailService.sendTicketReservation(ticket, loginLink).get();
         } else {
             emailService.sendTicketWaiting(ticket, loginLink).get();
         }
-        return ticket;
     }
 
     public Ticket getTicket(int ticketId) {
