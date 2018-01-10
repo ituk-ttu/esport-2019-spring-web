@@ -9,6 +9,7 @@ import TicketLogin from '@/components/TicketLogin';
 import MyTickets from '@/components/public/MyTickets';
 import Schedule from '@/components/public/Schedule';
 import HouseRules from '@/components/public/HouseRules';
+import Login from '@/components/public/Login';
 
 Vue.use(Router);
 
@@ -52,6 +53,11 @@ export default new Router({
           path: 'myTickets',
           name: 'MyTickets',
           component: MyTickets
+        },
+        {
+          path: 'login',
+          name: 'Login',
+          component: Login
         }
       ]
     },

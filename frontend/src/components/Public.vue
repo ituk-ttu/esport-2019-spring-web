@@ -20,6 +20,7 @@
                 li: router-link(:to="{ name: 'Faq' }") {{ $t('navbar.faq') }}
                 li: router-link(:to="{ name: 'Schedule' }") {{ $t('navbar.timetable') }}
                 li: router-link(:to="{ name: 'HouseRules' }") {{ $t('navbar.houseRules') }}
+            li: router-link(:to="{ name: 'Login' }") {{ $t('navbar.login') }}
             li: a.link-discord(href="https://discord.gg/W5Psxu3" target="_blank"): strong Discord
             li: a(href="#", v-on:click.stop.prevent="setLanguage('en')" v-if="getLanguage != 'en'"): strong EN
             li: a(href="#", v-on:click.stop.prevent="setLanguage('et')" v-if="getLanguage != 'et'"): strong ET
