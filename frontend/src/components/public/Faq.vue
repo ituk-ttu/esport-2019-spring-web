@@ -8,7 +8,7 @@
       .faq
         p: strong(v-t="'faq.questions.8.q'")
         p {{ $t('faq.questions.8.a') }}&nbsp
-          a(:href="'/static/' + $t('faq.questions.8.file')" target="_blank") {{ $t('faq.questions.8.parentalPermit') }}
+          a(:href="$t('faq.questions.8.file')" target="_blank") {{ $t('faq.questions.8.parentalPermit') }}
           | .
 </template>
 
