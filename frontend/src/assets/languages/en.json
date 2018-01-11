@@ -6,7 +6,10 @@
     "faq": "FAQ",
     "timetable": "Schedule",
     "houseRules": "House Rules",
-    "login": "Login"
+    "login": "Login",
+    "myTickets": "My Tickets",
+    "logOut": "Log out",
+    "defaultUsername": "User"
   },
   "hero": {
     "date": "February 9.-11.",

@@ -6,7 +6,10 @@
     "faq": "KKK",
     "timetable": "Ajakava",
     "houseRules": "Kodukord",
-    "login": "Logi sisse"
+    "login": "Logi sisse",
+    "myTickets": "Minu piletid",
+    "logOut": "Logi välja",
+    "defaultUsername": "Kasutaja"
   },
   "hero": {
     "date": "9.-11. veebruar",

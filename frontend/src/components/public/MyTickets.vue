@@ -48,7 +48,7 @@
         }
       },
       canConfirmTicket: function (ticket) {
-        return this.$auth.isAdmin() && ticket.status === 'IN_WAITING_LIST';
+        return this.$auth.isAdmin() && ticket.status === 'AWAITING_PAYMENT';
       },
       canCancelTicket: function (ticket) {
         return (this.$auth.isAdmin() && ticket.status !== 'CANCELED') ||
@@ -61,6 +61,11 @@
       cancelTicket: function (ticket) {
         this.$http.post(this.$config.apiBase + '/api/ticket/' + ticket.id + '/cancel')
           .then(res => { ticket.status = 'CANCELED'; });
+      }
+    },
+    created: function () {
+      if (!this.$auth.isLoggedIn()) {
+        this.$router.push({ name: 'Login' });
       }
     },
     mounted: function () {

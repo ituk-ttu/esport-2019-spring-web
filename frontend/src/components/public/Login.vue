@@ -1,6 +1,6 @@
 <template lang="pug">
   .container.center-content
-      steam-login
+      steam-login(:onSuccess="onSuccess")
 </template>
 
 <script>
@@ -10,8 +10,16 @@
     data () {
       return {};
     },
-    methods: {},
-    mounted: function () {},
+    methods: {
+      onSuccess: function () {
+        this.$router.push({ name: 'MyTickets' });
+      }
+    },
+    created: function () {
+      if (this.$auth.isLoggedIn()) {
+        this.$router.push({ name: 'MyTickets' });
+      }
+    },
     components: {
       'steam-login': SteamLogin
     }

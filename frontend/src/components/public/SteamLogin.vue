@@ -7,6 +7,7 @@
 <script>
   export default {
     name: 'SteamLogin',
+    props: ['onSuccess'],
     methods: {
       startLogin: function () {
         const self = this;
@@ -24,7 +25,7 @@
           self.$http.get(self.$config.apiBase + '/api/steam/verify', {
             params: params
           }).then(result => {
-            console.log('self.onLoggedIn()');
+            this.onSuccess();
             return self.$http.get(self.$config.apiBase + '/api/ticketTypes');
           });
         });
