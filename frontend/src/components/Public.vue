@@ -22,8 +22,9 @@
                 li: router-link(:to="{ name: 'HouseRules' }") {{ $t('navbar.houseRules') }}
             li(v-if="isLoggedIn()").dropdown
               a.dropdown-toggle(href="#" data-toggle="dropdown" role="button" aria-expanded="false")
-                | {{ getUsername() }}&nbsp
-                span.caret
+                span.nav-steam-username {{ getUsername() }}
+                | &nbsp
+                span.caret.nav-user-caret
               ul.dropdown-menu(role="menu")
                 li: router-link(:to="{ name: 'MyTickets' }") {{ $t('navbar.myTickets') }}
                 li: a(href="#" v-on:click="logOut()") {{ $t('navbar.logOut') }}
