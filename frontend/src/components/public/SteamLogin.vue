@@ -16,30 +16,17 @@
           if (newWindow !== event.source) {
             return;
           }
-          const url = event.data.url;
-          const params = {};
-          for (let entry of new URL(url).searchParams) {
-            params[entry[0]] = entry[1];
-          }
-          params['receivingUrl'] = url;
-          self.$http.get(self.$config.apiBase + '/api/steam/verify', {
-            params: params
-          }).then(result => {
+          self.$auth.verifySteamLogin(event.data.url.then(result => {
             this.onSuccess();
-            return self.$http.get(self.$config.apiBase + '/api/ticketTypes');
-          });
+          }));
         });
       }
     },
     mounted: function () {
       const self = this;
-      self.$http.get(self.$config.apiBase + '/api/steam/loginLink', {
-        params: {
-          returnTo: self.$config.steamLoginReturnTo
-        }
-      }).then(function (response) {
+      self.$auth.getSteamLoginLink(self.$config.steamLoginReturnTo).then(function (response) {
         self.disabled = false;
-        self.loginUrl = response.body;
+        self.loginUrl = response;
       });
     },
     data: () => ({

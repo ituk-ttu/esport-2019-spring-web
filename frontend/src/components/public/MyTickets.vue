@@ -48,19 +48,16 @@
         }
       },
       canConfirmTicket: function (ticket) {
-        return this.$auth.isAdmin() && ticket.status === 'AWAITING_PAYMENT';
+        return this.$ticket.canConfirm(ticket);
       },
       canCancelTicket: function (ticket) {
-        return (this.$auth.isAdmin() && ticket.status !== 'CANCELED') ||
-               ['IN_WAITING_LIST', 'PAID'].includes(ticket.status);
+        return this.$ticket.canCancel(ticket);
       },
       confirmTicket: function (ticket) {
-        this.$http.post(this.$config.apiBase + '/api/ticket/' + ticket.id + '/confirm')
-          .then(res => { ticket.status = 'PAID'; });
+        this.$ticket.confirm(ticket).then(res => { ticket.status = 'PAID'; });
       },
       cancelTicket: function (ticket) {
-        this.$http.post(this.$config.apiBase + '/api/ticket/' + ticket.id + '/cancel')
-          .then(res => { ticket.status = 'CANCELED'; });
+        this.$ticket.cancel(ticket).then(res => { ticket.status = 'CANCELED'; });
       }
     },
     created: function () {
@@ -70,9 +67,7 @@
     },
     mounted: function () {
       const self = this;
-      this.$http.get(this.$config.apiBase + '/api/tickets').then(result => {
-        self.tickets = result.body;
-      });
+      self.$ticket.getTickets().then(tickets => { self.tickets = tickets; });
     }
   };
 </script>

@@ -51,6 +51,21 @@ function AuthService (Vue) {
   svc.shouldRefreshToken = token => svc.isLoggedIn() &&
                                      isPassed((svc.getClaims(token).exp + svc.getClaims(token).iat) / 2);
 
+  svc.getSteamLoginLink = returnTo => {
+    return Vue.http.get('api/steam/loginLink', { params: { returnTo } }).then(res => res.body);
+  };
+
+  svc.verifySteamLogin = returnUrl => {
+    const params = {};
+    for (let entry of new URL(returnUrl).searchParams) {
+      params[entry[0]] = entry[1];
+    }
+    params['receivingUrl'] = returnUrl;
+    return Vue.http.get('api/steam/verify', { params: params }).then(res => res.body);
+  };
+
+  svc.performEmailLinkLogin = loginKey => Vue.http.get('api/ticket/token/' + loginKey).then(res => res.body);
+
   const isPassed = unixSeconds => unixSeconds - Date.now() / 1000 < 0;
 
   const getToken = () => localStorage.getItem(AUTH_TOKEN);

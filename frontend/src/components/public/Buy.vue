@@ -49,28 +49,27 @@
     },
     methods: {
       send: function () {
-        if (!this.sending) {
-          const self = this;
-          this.sending = true;
-          this.ticketDetails.type = {id: this.ticket.id};
-          this.$http.post(this.$config.apiBase + '/api/ticket', this.ticketDetails).then(function (res) {
-            if (res.ok) {
-              self.bought = true;
-            } else {
-              self.$notify({
-                title: this.$t('buy.fail.title'),
-                text: this.$t('buy.fail.text')
-              });
-            }
-            self.sending = false;
-          });
+        const self = this;
+        if (this.sending) {
+          return;
         }
+        self.sending = true;
+        self.$ticket.buy(self.ticketDetails, self.ticket.id).then(ticket => {
+          self.bought = true;
+        }).catch(() => {
+          self.$notify({
+            title: self.$t('buy.fail.title'),
+            text: self.$t('buy.fail.text')
+          });
+        }).finally(() => {
+          self.sending = false;
+        });
       }
     },
     mounted: function () {
       const self = this;
-      this.$http.get(this.$config.apiBase + '/api/ticketType/' + this.$route.params.ticketId).then(function (res) {
-        self.ticket = res.body;
+      self.$ticket.getType(this.$route.params.ticketId).then(type => {
+        self.ticket = type;
       });
     },
     components: {

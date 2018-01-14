@@ -51,7 +51,6 @@
       },
       getUsername: function () {
         const steamUser = this.$auth.getClaims()['steam_user'];
-        console.log(steamUser != null);
         return steamUser != null ? steamUser.name : this.$t('navbar.defaultUsername');
       },
       showSteamLoggedIn: function () {
@@ -85,8 +84,9 @@
     },
     mounted: function () {
       const self = this;
-      this.$http.get(this.$config.apiBase + '/api/ticketTypes').then(function (res) {
-        self.tickets = res.body;
+      console.log(self.$ticket);
+      self.$ticket.getTypes().then(types => {
+        self.tickets = types;
       });
     }
   };

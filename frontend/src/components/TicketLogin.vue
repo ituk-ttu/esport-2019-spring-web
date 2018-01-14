@@ -11,7 +11,7 @@
     },
     mounted: function () {
       const self = this;
-      self.$http.get(self.$config.apiBase + '/api/ticket/token/' + this.$route.params.loginKey).then(() => {
+      self.$auth.performEmailLinkLogin(this.$route.params.loginKey).then(() => {
         self.$router.push({ name: 'MyTickets' });
       });
     }

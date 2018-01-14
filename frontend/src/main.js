@@ -14,6 +14,7 @@ import VueAnalytics from 'vue-analytics';
 import Notifications from 'vue-notification';
 
 import AuthService from './services/AuthService';
+import TicketService from './services/TicketService';
 
 import './assets/less/style.less';
 
@@ -56,6 +57,7 @@ Vue.use(VueResource);
 Vue.http.options.root = config.apiBase;
 
 Vue.use(AuthService);
+Vue.use(TicketService);
 
 /* eslint-disable no-new */
 new Vue({
