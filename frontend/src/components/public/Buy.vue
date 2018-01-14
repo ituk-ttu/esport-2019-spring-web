@@ -68,7 +68,7 @@
     },
     mounted: function () {
       const self = this;
-      self.$ticket.getType(this.$route.params.ticketId).then(type => {
+      self.$ticket.getType(parseInt(this.$route.params.ticketId)).then(type => {
         self.ticket = type;
       });
     },

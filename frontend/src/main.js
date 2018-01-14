@@ -59,6 +59,14 @@ Vue.http.options.root = config.apiBase;
 Vue.use(AuthService);
 Vue.use(TicketService);
 
+Vue.config.errorHandler = (err, vm, info) => {
+  console.error({ err, vm, info });
+};
+
+Vue.config.warnHandler = (err, vm, info) => {
+  console.warn({ err, vm, info });
+};
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

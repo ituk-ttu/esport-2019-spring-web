@@ -84,7 +84,6 @@
     },
     mounted: function () {
       const self = this;
-      console.log(self.$ticket);
       self.$ticket.getTypes().then(types => {
         self.tickets = types;
       });

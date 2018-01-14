@@ -39,7 +39,10 @@ public class TicketService {
     @SneakyThrows //temporarily wait for emailService to finish sending email, just in case
     public Ticket buyTicket(Ticket ticket, String referrer) {
         ticket.setDateCreated(OffsetDateTime.now());
-        TicketType type = ticketRepository.getTicketType(ticket.getType().getId());
+        TicketType type = getType(ticket.getType().getId());
+        if(!isActive(type)) {
+            throw new IllegalArgumentException("Ticket type not currently available");
+        }
         ticket.setStatus(type.hasRemaining() ? TicketStatus.AWAITING_PAYMENT : TicketStatus.IN_WAITING_LIST);
         ticket.setId(ticketRepository.addTicket(ticket));
         ticket.setType(type);
@@ -109,6 +112,14 @@ public class TicketService {
                                    .replacePath("/")
                                    .fragment("/ticketLogin/" + loginLinkKey)
                                    .toUriString();
+    }
+
+    private boolean isActive(TicketType type) {
+        OffsetDateTime now = OffsetDateTime.now();
+        OffsetDateTime availableFrom = type.getAvailableFrom();
+        OffsetDateTime availableUntil = type.getAvailableUntil();
+        return (availableFrom == null || now.isAfter(availableFrom)) &&
+               (availableUntil == null || now.isBefore(availableUntil));
     }
 
 }

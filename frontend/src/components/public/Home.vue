@@ -12,23 +12,23 @@
         i.fa.fa-2x.fa-cog.fa-spin
       .row.is-flex
         .col-lg-3.col-md-4.col-sm-6.col-xs-12(v-for="ticket in $parent.tickets" v-if="$parent.tickets != null")
-          .ticket
+          .ticket(v-if="isActive(ticket)")
             .ticket-content
               h2.ticket-name {{ $t('tickets.names["' + ticket.name + '"]') }}
-              h3.ticket-price(v-if="ticket.promotions != null")
-                | {{ ticket.promotions[0].cost / ticket.promotions[0].teamSize }}€
-                small.text-default(v-if="ticket.promotions[0].teamSize > 1")  {{ $t('tickets.perPerson') }}
-              p.ticket-description(v-if="ticket.promotions != null")
+              h3.ticket-price(v-if="hasActivePromotion(ticket)")
+                | {{ getBestPromotion(ticket).cost / getBestPromotion(ticket).teamSize }}€
+                small.text-default(v-if="getBestPromotion(ticket).teamSize > 1")  {{ $t('tickets.perPerson') }}
+              p.ticket-description(v-if="hasActivePromotion(ticket)")
                 | {{ $t('tickets.until') }}
-                |  {{ ticket.promotions[0].availableUntil | moment("Do MMMM") }}
-              h3.ticket-price(v-bind:class="ticket.promotions != null? 'has-promotion' : ''")
-                span.text-default(v-if="ticket.promotions != null") {{ $t('tickets.regularTicket') }}&nbsp
+                |  {{ getBestPromotion(ticket).availableUntil | moment("Do MMMM") }}
+              h3.ticket-price(v-bind:class="hasActivePromotion(ticket) ? 'has-promotion' : ''")
+                span.text-default(v-if="hasActivePromotion(ticket)") {{ $t('tickets.regularTicket') }}&nbsp
                 | {{ ticket.cost / ticket.teamSize }}€
-                small.text-default(v-if="ticket.teamSize > 1 && ticket.promotions != null")
+                small.text-default(v-if="ticket.teamSize > 1 && hasActivePromotion(ticket)")
                   |  {{ $t('tickets.perPersonShort') }}
-                small.text-default(v-if="ticket.teamSize > 1 && ticket.promotions == null")
+                small.text-default(v-if="ticket.teamSize > 1 && !hasActivePromotion(ticket)")
                   |  {{ $t('tickets.perPerson') }}
-              p.ticket-description(v-bind:class="ticket.promotions != null? 'has-promotion' : ''")
+              p.ticket-description(v-bind:class="hasActivePromotion(ticket)? 'has-promotion' : ''")
                 | {{ $t('tickets.availableUntil') }}
                 |  {{ ticket.availableUntil | moment("Do MMMM") }}
               p.ticket-remaining.text-lead(v-if="ticket.amountAvailable != null && getRemaining(ticket.amountAvailable, ticket.amountReserved) != null")
@@ -41,7 +41,7 @@
               p.ticket-at-location-cost(v-if="ticket.atLocationCost != null") {{ $t('tickets.atLocation') }}
                 span.text-primary  {{ ticket.atLocationCost / ticket.teamSize }}€
                 small.text-default(v-if="ticket.teamSize > 1")  {{ $t('tickets.perPerson') }}
-            router-link.buy-btn(:to="{ name: 'Buy', params: { ticketId: ticket.promotions != null ? ticket.promotions[0].id : ticket.id } }")
+            router-link.buy-btn(:to="{ name: 'Buy', params: { ticketId: hasActivePromotion(ticket) ? getBestPromotion(ticket).id : ticket.id } }")
               span(v-if="ticket.amountAvailable != null && ticket.amountAvailable <= ticket.amountReserved")
                 | {{ $t('tickets.notifyMe') }}
               span(v-else) {{ $t('tickets.buy') }}
@@ -79,6 +79,15 @@
         } else {
           return null;
         }
+      },
+      isActive: function (type) {
+        return this.$ticket.isTypeActive(type);
+      },
+      hasActivePromotion: function (type) {
+        return this.$ticket.hasActivePromotion(type);
+      },
+      getBestPromotion: function (ticket) {
+        return ticket.promotions[0]; // TODO: find best promotion by type
       }
     }
   };

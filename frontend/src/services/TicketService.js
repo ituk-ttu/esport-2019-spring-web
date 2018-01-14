@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueResource from 'vue-resource';
+import moment from 'moment';
 
 Vue.use(VueResource);
 
@@ -15,10 +16,22 @@ function TicketService (Vue) {
   };
 
   svc.getType = typeId => {
-    if (ticketTypes == null) {
-      loadTicketTypes();
+    return svc.getTypes().then(types => findType(typeId, types));
+  };
+
+  svc.isTypeActive = type => {
+    const now = moment();
+    const availableFrom = type.availableFrom;
+    const availableUntil = type.availableUntil;
+    return (availableFrom == null || now.isAfter(availableFrom)) &&
+           (availableUntil == null || now.isBefore(availableUntil));
+  };
+
+  svc.hasActivePromotion = type => {
+    if (type.promotions == null) {
+      return false;
     }
-    return ticketTypes.then(types => findType(typeId, types));
+    return type.promotions.some(promotion => svc.isTypeActive(promotion));
   };
 
   svc.buy = (ticketDetails, typeId) => Vue.http.post('api/ticket',
