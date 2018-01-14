@@ -16,9 +16,9 @@
           if (newWindow !== event.source) {
             return;
           }
-          self.$auth.verifySteamLogin(event.data.url.then(result => {
+          self.$auth.verifySteamLogin(event.data.url).then(result => {
             this.onSuccess();
-          }));
+          });
         });
       }
     },
