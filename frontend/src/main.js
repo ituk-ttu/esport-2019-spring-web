@@ -13,17 +13,19 @@ import VueLocalStorage from 'vue-localstorage';
 import VueAnalytics from 'vue-analytics';
 import Notifications from 'vue-notification';
 
+import { TableComponent, TableColumn } from 'vue-table-component';
+
 import AuthService from './services/AuthService';
 import TicketService from './services/TicketService';
 
 import './assets/less/style.less';
-
 const $ = require('jquery');
 
 window.jQuery = $;
-require('bootstrap-less/js/bootstrap');
 
+require('bootstrap-less/js/bootstrap');
 Vue.use(VueLocalStorage);
+
 Vue.use(Vuex);
 Vue.config.productionTip = false;
 Vue.use(VueGoogleMaps, {
@@ -31,20 +33,22 @@ Vue.use(VueGoogleMaps, {
     key: 'AIzaSyAuldH1cG6aVHzWpmxdGAIiHvaBXzZAqPc'
   }
 });
-
 const moment = require('moment');
+
 require('moment/locale/et');
 require('moment/locale/en-gb');
 Vue.use(require('vue-moment'), {
   moment
 });
-
 Vue.use(VueAnalytics, {
   id: 'UA-111484189-1',
   router
 });
 
 Vue.use(Notifications);
+
+Vue.component('table-component', TableComponent);
+Vue.component('table-column', TableColumn);
 
 const config = {
   apiBase: process.env.apiBase,
@@ -60,11 +64,11 @@ Vue.use(AuthService);
 Vue.use(TicketService);
 
 Vue.config.errorHandler = (err, vm, info) => {
-  console.error({ err, vm, info });
+  console.error({err, vm, info});
 };
 
 Vue.config.warnHandler = (err, vm, info) => {
-  console.warn({ err, vm, info });
+  console.warn({err, vm, info});
 };
 
 /* eslint-disable no-new */

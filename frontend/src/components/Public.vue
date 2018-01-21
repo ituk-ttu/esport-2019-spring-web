@@ -51,7 +51,11 @@
       },
       getUsername: function () {
         const steamUser = this.$auth.getClaims()['steam_user'];
-        return steamUser != null ? steamUser.name : this.$t('navbar.defaultUsername');
+        return steamUser !== null ? steamUser.name : this.$t('navbar.defaultUsername');
+      },
+      isAdmin: function () {
+        const admin = this.$auth.getClaims()['admin'];
+        return admin !== null ? admin : false;
       },
       showSteamLoggedIn: function () {
         this.$notify({

@@ -62,7 +62,7 @@ function AuthService (Vue) {
     }
     params['receivingUrl'] = returnUrl;
     return Vue.http.get('api/steam/verify', { params: params }).then(res => {
-      //TODO: Emit event
+      // TODO: Emit event
       return res.body;
     });
   };
