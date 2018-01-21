@@ -105,6 +105,7 @@
     }
   },
   "buy": {
+    "shouldConnectWithSteam": "Connect this ticket with Steam user \"{username}\"",
     "buyTicket": "Buy a ticket",
     "teamName": "Team name",
     "name": "Name",

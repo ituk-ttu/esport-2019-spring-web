@@ -11,7 +11,10 @@
           label.control-label(v-t="'buy.email'")
           input.form-control.input-lg(v-model="ticketDetails.ownerEmail" type="email" required)
         .form-group
-          steam-login(disabled)
+          steam-login(:onSuccess="onSteamLogin" v-if="!isSteamLoggedIn()")
+          label(v-else)
+            input(type="checkbox" checked v-model="shouldConnectWithSteam")
+            | {{ $t('buy.shouldConnectWithSteam', { username: getSteamUsername() }) }}
         blockquote.form-group
           p {{ $t('buy.numberOfPlayers') }}:
             span.text-primary  {{ ticket.teamSize }}
@@ -38,6 +41,7 @@
     name: 'Buy',
     data () {
       return {
+        shouldConnectWithSteam: true,
         bought: false,
         sending: false,
         ticket: null,
@@ -54,7 +58,11 @@
           return;
         }
         self.sending = true;
-        self.$ticket.buy(self.ticketDetails, self.ticket.id).then(ticket => {
+        let ticketDetails = self.ticketDetails;
+        if (self.isSteamLoggedIn() && self.shouldConnectWithSteam) {
+          ticketDetails.ownerSteamId = self.getSteamId();
+        }
+        self.$ticket.buy(ticketDetails, self.ticket.id).then(ticket => {
           self.bought = true;
         }).catch(() => {
           self.$notify({
@@ -64,6 +72,21 @@
         }).finally(() => {
           self.sending = false;
         });
+      },
+      isSteamLoggedIn: function () {
+        const self = this;
+        return self.$auth.isLoggedIn() && self.$auth.getClaims().steam_user != null;
+      },
+      getSteamUsername: function () {
+        const self = this;
+        return self.$auth.getClaims().steam_user.name;
+      },
+      getSteamId: function () {
+        const self = this;
+        return self.$auth.getClaims().steam_user.id;
+      },
+      onSteamLogin: function () {
+        this.$forceUpdate();
       }
     },
     mounted: function () {

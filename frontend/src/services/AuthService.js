@@ -25,6 +25,9 @@ function AuthService (Vue) {
   svc.removeToken = () => localStorage.removeItem(AUTH_TOKEN);
 
   svc.getToken = () => {
+    console.log(Vue);
+    console.log(Object.keys(Vue));
+    console.log(Vue.util);
     let token = getToken();
     if (token !== null && svc.isTokenExpired()) {
       svc.removeToken();
@@ -61,7 +64,9 @@ function AuthService (Vue) {
       params[entry[0]] = entry[1];
     }
     params['receivingUrl'] = returnUrl;
-    return Vue.http.get('api/steam/verify', { params: params }).then(res => res.body);
+    return Vue.http.get('api/steam/verify', { params: params }).then(res => {
+      return res.body;
+    });
   };
 
   svc.performEmailLinkLogin = loginKey => Vue.http.get('api/ticket/token/' + loginKey).then(res => res.body);
