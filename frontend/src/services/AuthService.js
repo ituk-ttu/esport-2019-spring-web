@@ -25,9 +25,6 @@ function AuthService (Vue) {
   svc.removeToken = () => localStorage.removeItem(AUTH_TOKEN);
 
   svc.getToken = () => {
-    console.log(Vue);
-    console.log(Object.keys(Vue));
-    console.log(Vue.util);
     let token = getToken();
     if (token !== null && svc.isTokenExpired()) {
       svc.removeToken();
@@ -65,6 +62,7 @@ function AuthService (Vue) {
     }
     params['receivingUrl'] = returnUrl;
     return Vue.http.get('api/steam/verify', { params: params }).then(res => {
+      //TODO: Emit event
       return res.body;
     });
   };
