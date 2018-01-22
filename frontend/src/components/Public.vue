@@ -58,10 +58,10 @@
       },
       getUsername: function () {
         const steamUser = this.$auth.getClaims()['steam_user'];
-        return steamUser !== null ? steamUser.name : this.$t('navbar.defaultUsername');
+        return steamUser !== undefined && steamUser !== null ? steamUser.name : this.$t('navbar.defaultUsername');
       },
       isAdmin: function () {
-        if(this.isLoggedIn() === false) {
+        if (this.isLoggedIn() === false) {
           return false;
         }
         const admin = this.$auth.getClaims()['admin'];
