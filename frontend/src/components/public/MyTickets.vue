@@ -9,8 +9,8 @@
           span.text-primary  {{getInvoiceNumber(ticket.id)}}
         p: small.text-default {{ $t('buy.ticket') }}:
           span.text-primary  {{ $t('tickets.names["' + ticket.type.name + '"]') }}
-        p: small.text-default {{ $t('tickets.status') }}:&nbsp
-          | {{ $t('tickets.statuses["' + ticket.status + '"]') }}
+        p: small.text-default {{ticket.name}}: &nbsp
+          ticket-status(:status="ticket.status")
         p: small.text-default {{ $t('tickets.boughtOnDate') }}:
           span.text-primary  {{ticket.dateCreated | moment("Do MMMM HH:mm") }}
         p(v-if="canCancelTicket(ticket)")
@@ -20,7 +20,9 @@
 </template>
 
 <script>
+  import TicketStatus from './TicketStatus';
   export default {
+    components: {TicketStatus},
     name: 'MyTickets',
     data () {
       return {

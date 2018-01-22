@@ -1,6 +1,5 @@
 <template lang="pug">
-  span.label(:class="getStatusClass(status)")
-    small {{ $t('tickets.statuses["' + status + '"]') }}
+  span.label.status-label(:class="getStatusClass(status)") {{ $t('tickets.statuses["' + status + '"]') }}
 </template>
 
 <script>
