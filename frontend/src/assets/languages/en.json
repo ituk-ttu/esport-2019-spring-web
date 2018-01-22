@@ -9,6 +9,7 @@
     "login": "Login",
     "myTickets": "My Tickets",
     "logOut": "Log out",
+    "admin": "Admin",
     "defaultUsername": "User"
   },
   "hero": {
@@ -195,5 +196,10 @@
       "Staff is not responsible for any actions of any participant": null,
       "Not complying with age-limits on games": null
     }]
+  },
+  "admin": {
+    "general": {
+      "notAuthorized": "There is no fish here"
+    }
   }
 }

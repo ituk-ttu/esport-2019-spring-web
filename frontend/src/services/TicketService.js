@@ -38,16 +38,19 @@ function TicketService (Vue) {
                                                      Object.assign({}, ticketDetails, { type: { id: typeId } }))
                                                .then(res => res.body);
 
-  svc.canConfirm = ticket => Vue.$auth.isAdmin() && ticket.status === 'AWAITING_PAYMENT';
+  svc.adminCanConfirm = ticket => ticket.status === 'AWAITING_PAYMENT';
 
-  svc.canCancel = ticket => (Vue.$auth.isAdmin() && ticket.status !== 'CANCELED') ||
-                            ['IN_WAITING_LIST', 'PAID'].includes(ticket.status);
+  svc.adminCanCancel = ticket => ticket.status !== 'CANCELED';
+
+  svc.canCancel = ticket => ['IN_WAITING_LIST', 'PAID'].includes(ticket.status);
 
   svc.confirm = ticket => Vue.http.post('api/ticket/' + ticket.id + '/confirm').then(res => res.body);
 
   svc.cancel = ticket => Vue.http.post('api/ticket/' + ticket.id + '/cancel').then(res => res.body);
 
-  svc.getTickets = () => Vue.http.get('api/tickets').then(res => res.body);
+  svc.getMyTickets = () => Vue.http.get('api/tickets/mine').then(res => res.body);
+
+  svc.getAllTickets = () => Vue.http.get('api/tickets').then(res => res.body);
 
   function loadTicketTypes () {
     ticketTypes = Vue.http.get('api/ticketTypes').then(res => res.body);

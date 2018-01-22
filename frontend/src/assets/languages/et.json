@@ -9,6 +9,7 @@
     "login": "Logi sisse",
     "myTickets": "Minu piletid",
     "logOut": "Logi välja",
+    "admin": "Admin",
     "defaultUsername": "Kasutaja"
   },
   "hero": {
@@ -195,5 +196,10 @@
       "korraldajad ei vastuta külastajate eest": null,
       "mängijad on TTÜ e-Spordil kohustatud kinni pidama mängule seatud vanusepiirangutest": null
     }]
+  },
+  "admin": {
+    "general": {
+      "notAuthorized": "Siin ei ole kala"
+    }
   }
 }

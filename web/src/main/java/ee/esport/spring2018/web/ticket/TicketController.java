@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/api")
@@ -39,26 +41,34 @@ public class TicketController {
         return new ResponseEntity<>(ticketService.getType(typeId), HttpStatus.OK);
     }
 
+    @GetMapping("/tickets/mine")
+    public ResponseEntity<List<Ticket>> getMyTickets(EsportClaimsHolder claimsHolder) {
+        return new ResponseEntity<>(ticketService.getAllTickets()
+                                                 .stream()
+                                                 .filter(getTicketAccessRules(claimsHolder.get()))
+                                                 .collect(Collectors.toList()),
+                                    HttpStatus.OK);
+    }
+
+    private Predicate<Ticket> getTicketAccessRules(EsportClaims claims) {
+        List<Predicate<Ticket>> predicates = new ArrayList<>();
+        SteamUser steamUser = claims.getSteamUser();
+        if (steamUser != null) {
+            predicates.add(ticket -> steamUser.getId().equals(ticket.getOwnerSteamId()));
+        }
+        Long ticketId = claims.getTicketId();
+        if (ticketId != null) {
+            predicates.add(ticket -> ticketId.intValue() == ticket.getId());
+        }
+        return predicates.stream().reduce(Predicate::or).orElse(ticket -> false);
+    }
+
     @GetMapping("/tickets")
     public ResponseEntity<List<Ticket>> getAllTickets(EsportClaimsHolder claimsHolder) {
-        List<Ticket> allTickets = ticketService.getAllTickets();
-        if(claimsHolder.get().isAdmin()) {
-            return new ResponseEntity<>(allTickets, HttpStatus.OK);
+        if(!claimsHolder.get().isAdmin()) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-        List<Ticket> accessibleTickets = new ArrayList<>();
-        SteamUser steamUser = claimsHolder.get().getSteamUser();
-        if(steamUser != null) {
-            allTickets.stream()
-                      .filter(ticket -> steamUser.getId().equals(ticket.getOwnerSteamId()))
-                      .forEach(accessibleTickets::add);
-        }
-        Long ticketId = claimsHolder.get().getTicketId();
-        if(ticketId != null) {
-            allTickets.stream()
-                      .filter(ticket -> ticketId.intValue() == ticket.getId())
-                      .forEach(accessibleTickets::add);
-        }
-        return new ResponseEntity<>(accessibleTickets, HttpStatus.OK);
+        return new ResponseEntity<>(ticketService.getAllTickets(), HttpStatus.OK);
     }
 
     @PostMapping("/ticket")

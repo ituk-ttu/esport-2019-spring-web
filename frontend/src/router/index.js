@@ -10,6 +10,8 @@ import MyTickets from '@/components/public/MyTickets';
 import Schedule from '@/components/public/Schedule';
 import HouseRules from '@/components/public/HouseRules';
 import Login from '@/components/public/Login';
+import Admin from '@/components/public/Admin';
+import Tickets from '@/components/public/admin/Tickets';
 
 Vue.use(Router);
 
@@ -58,6 +60,18 @@ export default new Router({
           path: 'login',
           name: 'Login',
           component: Login
+        },
+        {
+          path: 'admin',
+          name: 'Admin',
+          component: Admin,
+          children: [
+            {
+              path: 'tickets',
+              name: 'AdminTickets',
+              component: Tickets
+            }
+          ]
         }
       ]
     },

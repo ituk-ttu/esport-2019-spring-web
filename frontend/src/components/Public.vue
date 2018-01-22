@@ -28,6 +28,13 @@
               ul.dropdown-menu(role="menu")
                 li: router-link(:to="{ name: 'MyTickets' }") {{ $t('navbar.myTickets') }}
                 li: a(href="#" v-on:click="logOut()") {{ $t('navbar.logOut') }}
+            li(v-if="isAdmin()").dropdown
+              a.dropdown-toggle(href="#" data-toggle="dropdown" role="button" aria-expanded="false")
+                span.nav-steam-username {{ $t('navbar.admin') }}
+                | &nbsp
+                span.caret.nav-user-caret
+              ul.dropdown-menu(role="menu")
+                li: router-link(:to="{ name: 'AdminTickets' }") {{ $t('navbar.myTickets') }}
             li(v-else): router-link(:to="{ name: 'Login' }") {{ $t('navbar.login') }}
             li: a.link-discord(href="https://discord.gg/W5Psxu3" target="_blank"): strong Discord
             li: a(href="#", v-on:click.stop.prevent="setLanguage('en')" v-if="getLanguage != 'en'"): strong EN
@@ -54,6 +61,9 @@
         return steamUser !== null ? steamUser.name : this.$t('navbar.defaultUsername');
       },
       isAdmin: function () {
+        if(this.isLoggedIn() === false) {
+          return false;
+        }
         const admin = this.$auth.getClaims()['admin'];
         return admin !== null ? admin : false;
       },
