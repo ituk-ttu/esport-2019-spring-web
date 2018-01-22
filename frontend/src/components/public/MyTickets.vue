@@ -20,10 +20,29 @@
         p {{ $t('buy.total') }}:
           span.text-primary  {{ticket.type.cost}} €
     .container(v-else)
+      .form-group.stats-table-wrapper
+        span(v-if="statsExpanded")
+          button.btn.btn-primary(v-on:click="statsExpanded = false") Close stats
+          table-component(:data="stats" sort-by="id" sort-order="desc" table-class="table" show-filter="false"
+                          filter-input-class="form-control" show-caption="false" filter-no-results="¯\\_(ツ)_/¯")
+            table-column(show="name" label="Ticket Type")
+              template(slot-scope="row")
+                strong {{ row.name }}
+            table-column(show="byStatus.CANCELED" label="Canceled" data-type="numeric" cell-class="text-danger")
+            table-column(show="byStatus.IN_WAITING_LIST" label="In Waiting List" data-type="numeric" cell-class="text-warning")
+            table-column(show="byStatus.AWAITING_PAYMENT" label="Awaiting Payment" data-type="numeric" cell-class="text-info")
+            table-column(show="byStatus.PAID" label="Paid" data-type="numeric" cell-class="text-success")
+            table-column(show="total" label="total" data-type="numeric")
+              template(slot-scope="row")
+                strong {{ row.total }}
+        span(v-if="!statsExpanded && tickets.length > 0")
+          button.btn.btn-primary(v-on:click="statsExpanded = true") Open stats
       table-component(:data="tickets" sort-by="dateCreated" sort-order="desc" table-class="table"
                       filter-input-class="form-control" show-caption="false" filter-no-results="¯\\_(ツ)_/¯")
         table-column(show="id" label="ID" data-type="numeric")
         table-column(show="name" label="Name")
+          template(slot-scope="row")
+            strong {{ row.name }}
         table-column(show="type.name" label="Type")
         table-column(show="ownerEmail" label="Owner Email")
         table-column(show="type.cost" label="Cost" data-type="numeric")
@@ -32,15 +51,15 @@
             span.label(:class="getStatusClass(row.status)")
               small {{ $t('tickets.statuses["' + row.status + '"]') }}
         table-column(show="createdAt" label="Bought on")
-          template(slot-scope="row") {{row.dateCreated | moment("Do MMMM HH:mm") }}
+          template(slot-scope="row"): small {{row.dateCreated | moment("Do MMMM HH:mm") }}
         table-column(label="", :sortable="false", :filterable="false")
           template(slot-scope="row")
             span(v-if="canConfirmTicket(row)")
-              button.btn.btn-success.btn-sm(v-on:click="confirmTicket(row)") {{ $t('tickets.confirm') }}
+              button.btn.btn-success.btn-xs(v-on:click="confirmTicket(row)"): small {{ $t('tickets.confirm') }}
         table-column(label="", :sortable="false", :filterable="false")
           template(slot-scope="row")
             span(v-if="canCancelTicket(row)")
-              button.btn.btn-danger.btn-sm(v-on:click="cancelTicket(row)") {{ $t('tickets.cancel') }}
+              button.btn.btn-danger.btn-xs(v-on:click="cancelTicket(row)"): small {{ $t('tickets.cancel') }}
 
 </template>
 
@@ -49,6 +68,7 @@
     name: 'MyTickets',
     data () {
       return {
+        statsExpanded: false,
         tickets: [],
         columns: [
           {
@@ -96,11 +116,44 @@
     mounted: function () {
       const self = this;
       self.$ticket.getTickets().then(tickets => { self.tickets = tickets; });
+    },
+    computed: {
+      // a computed getter
+      stats: function () {
+        let stats = [];
+        let count = {};
+        for (let i = 0; i < this.tickets.length; i++) {
+          if (!count.hasOwnProperty(this.tickets[i].type.id)) {
+            count[this.tickets[i].type.id] = {
+              total: 0,
+              byStatus: {
+                IN_WAITING_LIST: 0,
+                AWAITING_PAYMENT: 0,
+                PAID: 0,
+                CANCELED: 0
+              }
+            };
+          }
+          count[this.tickets[i].type.id].total += 1;
+          count[this.tickets[i].type.id].byStatus[this.tickets[i].status] += 1;
+        }
+        for (let property in count) {
+          if (count.hasOwnProperty(property)) {
+            stats.push({
+              typeId: parseInt(property),
+              name: this.$parent.getTicketTypeNameById(property),
+              total: count[property].total,
+              byStatus: count[property].byStatus
+            });
+          }
+        }
+        return stats;
+      }
     }
   };
 </script>
 <style>
-  .table-component__filter__clear, .table-component__table__caption {
+  .table-component__filter__clear, .table-component__table__caption, .stats-table-wrapper .table-component__filter {
     display: none !important;
   }
 </style>

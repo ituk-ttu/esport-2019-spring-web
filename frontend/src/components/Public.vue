@@ -70,6 +70,20 @@
       logOut: function () {
         this.$auth.removeToken();
         this.$router.push({ name: 'Login' });
+      },
+      getTicketTypeNameById: function (id) {
+        for (let i = 0; i < this.tickets.length; i++) {
+          if (this.tickets[i].id === parseInt(id)) {
+            return this.tickets[i].name;
+          } else if (this.tickets[i].hasOwnProperty('promotions')) {
+            for (let j = 0; j < this.tickets[i].promotions.length; j++) {
+              if (this.tickets[i].promotions[j].id === parseInt(id)) {
+                return this.tickets[i].promotions[j].name;
+              }
+            }
+          }
+        }
+        return 'N/A';
       }
     },
     computed: {
