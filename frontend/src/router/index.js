@@ -9,6 +9,7 @@ import TicketLogin from '@/components/TicketLogin';
 import MyTickets from '@/components/public/MyTickets';
 import Schedule from '@/components/public/Schedule';
 import HouseRules from '@/components/public/HouseRules';
+import CsgoRules from '@/components/public/CsgoRules';
 import Login from '@/components/public/Login';
 import Admin from '@/components/public/Admin';
 import Tickets from '@/components/public/admin/Tickets';
@@ -45,6 +46,11 @@ export default new Router({
           path: 'houseRules',
           name: 'HouseRules',
           component: HouseRules
+        },
+        {
+          path: 'csgoRules',
+          name: 'CsgoRules',
+          component: CsgoRules
         },
         {
           path: 'buy/:ticketId',

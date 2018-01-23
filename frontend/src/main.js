@@ -17,6 +17,7 @@ import { TableComponent, TableColumn } from 'vue-table-component';
 
 import AuthService from './services/AuthService';
 import TicketService from './services/TicketService';
+import DocumentService from './services/DocumentService';
 
 import './assets/less/style.less';
 const $ = require('jquery');
@@ -62,6 +63,7 @@ Vue.http.options.root = config.apiBase;
 
 Vue.use(AuthService);
 Vue.use(TicketService);
+Vue.use(DocumentService);
 
 Vue.config.errorHandler = (err, vm, info) => {
   console.error({err, vm, info});

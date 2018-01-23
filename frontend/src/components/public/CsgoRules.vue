@@ -1,19 +1,19 @@
 <template lang="pug">
   .container
-    h1.text-center(v-t="'navbar.houseRules'")
-    .house-rules(v-html="document")
+    h1.text-center(v-t="'navbar.csgoRules'")
+    .csgo-rules(v-html="document")
 </template>
 
 <script>
   export default {
-    name: 'HouseRules',
+    name: 'CsgoRules',
     data () {
       return {
         document: null
       };
     },
     mounted: function () {
-      this.$document.getDocument('houseRules', this.$root.$i18n.locale).then(doc => { this.document = doc; });
+      this.$document.getDocument('csgoRules', this.$root.$i18n.locale).then(doc => { this.document = doc; });
     }
   };
 </script>

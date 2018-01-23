@@ -20,6 +20,7 @@
                 li: router-link(:to="{ name: 'Faq' }") {{ $t('navbar.faq') }}
                 li: router-link(:to="{ name: 'Schedule' }") {{ $t('navbar.timetable') }}
                 li: router-link(:to="{ name: 'HouseRules' }") {{ $t('navbar.houseRules') }}
+                li: router-link(:to="{ name: 'CsgoRules' }") {{ $t('navbar.csgoRules') }}
             li(v-if="isLoggedIn()").dropdown
               a.dropdown-toggle(href="#" data-toggle="dropdown" role="button" aria-expanded="false")
                 span.nav-steam-username {{ getUsername() }}
@@ -58,7 +59,7 @@
       },
       getUsername: function () {
         const steamUser = this.$auth.getClaims()['steam_user'];
-        return steamUser !== undefined && steamUser !== null ? steamUser.name : this.$t('navbar.defaultUsername');
+        return steamUser != null ? steamUser.name : this.$t('navbar.defaultUsername');
       },
       isAdmin: function () {
         if (this.isLoggedIn() === false) {
