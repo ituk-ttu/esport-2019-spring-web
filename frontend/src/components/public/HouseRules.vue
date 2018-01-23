@@ -12,8 +12,16 @@
         document: null
       };
     },
+    methods: {
+      loadRules: function () {
+        this.$document.getDocument('houseRules', this.$root.$i18n.locale).then(doc => { this.document = doc; });
+      }
+    },
     mounted: function () {
-      this.$document.getDocument('houseRules', this.$root.$i18n.locale).then(doc => { this.document = doc; });
+      this.loadRules();
+    },
+    beforeUpdate: function () {
+      this.loadRules();
     }
   };
 </script>
