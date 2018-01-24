@@ -1,20 +1,27 @@
 <template lang="pug">
   .container
     h1.text-center(v-t="'navbar.timetable'")
-    .times
-      .day(v-for="day in $t('schedule.days')")
-        h3 {{ day.title }}
-        .time(v-for="(event, time) in day.times")
-          p
-            span.text-primary {{ time }}:&nbsp
-            span.text-default {{ event }}
+    .timetable(v-html="document")
 </template>
 
 <script>
   export default {
     name: 'Schedule',
     data () {
-      return {};
+      return {
+        document: null
+      };
+    },
+    methods: {
+      loadSchedule: function () {
+        this.$document.getDocument('schedule', this.$root.$i18n.locale).then(doc => { this.document = doc; });
+      }
+    },
+    mounted: function () {
+      this.loadSchedule();
+    },
+    beforeUpdate: function () {
+      this.loadSchedule();
     }
   };
 </script>

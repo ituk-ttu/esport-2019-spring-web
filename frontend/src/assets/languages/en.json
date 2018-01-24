@@ -68,43 +68,7 @@
     "itukEmail": "contact@ituk.ee"
   },
   "faq": {
-    "faqLong": "Frequently Asked Questions",
-    "questions": {
-      "1": {
-        "q": "How can I pay for my ticket?",
-        "a": "After reserving the ticket, an email will be sent to you with all the necessary information. The ticket has to be payed for in 3 workdays. Team captain will pay for the whole team."
-      },
-      "2": {
-        "q": "When is my spot confirmed?",
-        "a": "Your spot will be reserved right after making your reservation. To keep your spot, the transfer to the bank account in the email has to be made in 3 workdays."
-      },
-      "3": {
-        "q": "What can I do with a spectator ticket?",
-        "a": "The spectator ticket will grant you access to the hall and entertainment that doesn't require your own PC."
-      },
-      "4": {
-        "q": "What do I have to bring?",
-        "a": "Your PC with all the necessary gear (monitor, mouse, keyboard, etc.) and an extension cord."
-      },
-      "5": {
-        "q": "What will be provided at the location?",
-        "a": "Deskspace, a chair, a network cable and one power socket. BRING YOUR OWN EXTENSION CORD!"
-      },
-      "6": {
-        "q": "Can I sleep at the location during the event?",
-        "a": "Yes, you can sleep in designated TTÜ rooms. Bring a matt and a sleeping bag."
-      },
-      "7": {
-        "q": "I don't have a team, can I join alone?",
-        "a": "You can get a regular gamer ticket. It only prevents you from participating in the CS:GO tournament."
-      },
-      "8": {
-        "q": "Can underaged people attend??",
-        "a": "Yes, but everyone younger than 16 have to fill",
-        "parentalPermit": "the parental permit",
-        "file": "https://esport.ituk.ee/parental_permit.pdf"
-      }
-    }
+    "faqLong": "Frequently Asked Questions"
   },
   "buy": {
     "shouldConnectWithSteam": "Connect this ticket with Steam user \"{username}\"",

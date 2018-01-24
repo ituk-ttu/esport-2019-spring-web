@@ -68,43 +68,7 @@
     "itukEmail": "kontakt@ituk.ee"
   },
   "faq": {
-    "faqLong": "Korduma kippuvad küsimused",
-    "questions": {
-      "1": {
-        "q": "Kuidas ma saan pileti eest tasuda?",
-        "a": "Pärast pileti broneerimist saadetakse Sulle e-mail koos vajaliku infoga. Pileti eest tuleb tasuda 3 tööpäeva jooksul. Terve meeskonna eest tasub meeskonna kapten."
-      },
-      "2": {
-        "q": "Millal on minu meeskonnale kohad garanteeritud?",
-        "a": "Kohad reserveeritakse kohe pärast broneeringu tegemist. Et need säilitada, peab raha jõudma 3 tööpäeva jooksul pärast broneerimist e-mailis näidatud kontole."
-      },
-      "3": {
-        "q": "Mida saan teha pealtvaataja piletiga?",
-        "a": "Pealtvaataja pilet tagab sulle ligipääsu saali ja meelelahutustele, mis ei vaja arvutit kogu ürituse vältel."
-      },
-      "4": {
-        "q": "Mida peaksin üritusele kaasa võtma?",
-        "a": "Arvuti koos kõige muu vajalikuga (monitor, hiir, klaviatuur) ja pikendusjuhtme."
-      },
-      "5": {
-        "q": "Mis mind kohapeal ootab?",
-        "a": "Lauapind ja tool, võrgukaabel, üks vooluvõtu koht. OMA PIKENDUSJUHE KAASA!"
-      },
-      "6": {
-        "q": "Kas üritusel on võimalik ööbida?",
-        "a": "Jah, üritusel on võimalik tasuta ööbida TTÜ ruumides, selleks võta kaasa madrats ja magamiskott."
-      },
-      "7": {
-        "q": "Mul ei ole meeskonda, kas saan osaleda ka üksinda?",
-        "a": "Üritusele on võimalik osta ka tavamängija pilet. CS:GO turniiril üksinda osaleda ei saa."
-      },
-      "8": {
-        "q": "Kas alaealised saavad ka üritusel osaleda?",
-        "a": "Jah, kuid alla 16 aasta vanustel tuleb lasta täita",
-        "parentalPermit": "lapsevanema luba",
-        "file": "https://esport.ituk.ee/lapsevanema_luba.pdf"
-      }
-    }
+    "faqLong": "Korduma kippuvad küsimused"
   },
   "buy": {
     "shouldConnectWithSteam": "Ühenda pilet Steami kasutajaga \"{username}\"",

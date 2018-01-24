@@ -11,6 +11,7 @@ function DocumentService (Vue) {
 
   const converter = new Showdown.Converter();
   converter.setOption('disableForced4SpacesIndentedSublists', true);
+  converter.setOption('headerLevelStart', 2);
 
   svc.getDocument = (name, language) => {
     return Vue.http.get(window.location.origin + '/static/documents/{name}.{language}.md',
