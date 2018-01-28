@@ -42,7 +42,7 @@ function TicketService (Vue) {
 
   svc.adminCanCancel = ticket => ticket.status !== 'CANCELED';
 
-  svc.canCancel = ticket => ['IN_WAITING_LIST', 'PAID'].includes(ticket.status);
+  svc.ownerCanCancel = ticket => ['IN_WAITING_LIST', 'AWAITING_PAYMENT'].includes(ticket.status);
 
   svc.confirm = ticket => Vue.http.post('api/ticket/' + ticket.id + '/confirm').then(res => res.body);
 
