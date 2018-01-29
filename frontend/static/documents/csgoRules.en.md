@@ -87,7 +87,7 @@ in a match forfeit.
 
 ### 3.1.3 In-Game overlays
 
-Overlays provided by the game are allowed, except these are forbidden:
+Overlays provided by the game are not allowed, except these are allowed:
 * cl_showpos 1
 * cl_showfps 1
 * net_graph 0/1
@@ -162,7 +162,8 @@ Players can't be changed during the game
 
 ### 4.4.5 Overtime
 
-Players won't play overtime since draws are considered as one of the outcomes
+Players won't play overtime in group stage since draws are considered as one of the outcomes.
+Overtime will be played after group stage has ended.
 
 ### 4.4.6 Map picking
 

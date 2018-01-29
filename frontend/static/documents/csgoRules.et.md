@@ -81,10 +81,10 @@ Nende kasutamisel tuleb esimene kord hoiatus. Järgmisel korral tähendab see m�
 
 ### 3.1.3 Mängu sisesed kuvad
 
-Mängu sisesed kuvad on üldiselt lubatud v.a. järgmised:
+Mängu sisesed kuvad on üldiselt keelatud v.a. järgmised:
 * cl_showpos 1
 * cl_showfps 1
-* net_graph 0/1
+* net_graph 0/1 (1 puhul ei tohi seda ära kasutada sihtimiseks)
 
 ### 3.1.4 Failide muutmine
 
@@ -211,7 +211,7 @@ Kõik serverid on lokaalses võrgus (LAN).
 ## 5 Võistluse struktuur
 
 * Grupi tasand - 4 tiimi pääsevad edasi
-* Topelt eemaldimine tiimist - Ülemine võistlus parim ühest, semi finaal parim kolmest,
+* Double elimination - Ülemine võistlus parim ühest, semi finaal parim kolmest,
  finaal parim viiest, alumine võistlus parim ühest
 * Täpne võistluse struktuur ja tiimide väljapanek selgub kohapeal
 
