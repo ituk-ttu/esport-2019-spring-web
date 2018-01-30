@@ -45,12 +45,12 @@ public class TicketController {
     public ResponseEntity<List<Ticket>> getMyTickets(EsportClaimsHolder claimsHolder) {
         return new ResponseEntity<>(ticketService.getAllTickets()
                                                  .stream()
-                                                 .filter(getTicketAccessRules(claimsHolder.get()))
+                                                 .filter(getAccessPrdicate(claimsHolder.get()))
                                                  .collect(Collectors.toList()),
                                     HttpStatus.OK);
     }
 
-    private Predicate<Ticket> getTicketAccessRules(EsportClaims claims) {
+    private Predicate<Ticket> getAccessPrdicate(EsportClaims claims) {
         List<Predicate<Ticket>> predicates = new ArrayList<>();
         SteamUser steamUser = claims.getSteamUser();
         if (steamUser != null) {
@@ -108,6 +108,40 @@ public class TicketController {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         ticketService.confirmTicketPaid(ticket, webClientUrl);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/ticket/{ticketId}/member")
+    public ResponseEntity<Void> addMember(@PathVariable int ticketId, EsportClaimsHolder claimsHolder,
+                                          @RequestBody TicketMember member) {
+        Ticket ticket = ticketService.getTicket(ticketId);
+        if (!getAccessPrdicate(claimsHolder.get()).test(ticket)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        try {
+            if (member.getId() == null) {
+                ticketService.addMember(ticketId, member);
+            } else {
+                ticketService.updateMember(ticketId, member);
+            }
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/ticket/{ticketId}/member/{memberId}")
+    public ResponseEntity<Void> addMember(@PathVariable int ticketId, @PathVariable int memberId,
+                                          EsportClaimsHolder claimsHolder) {
+        Ticket ticket = ticketService.getTicket(ticketId);
+        if (!getAccessPrdicate(claimsHolder.get()).test(ticket)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        try {
+            ticketService.deleteMember(ticketId, memberId);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

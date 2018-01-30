@@ -1,8 +1,12 @@
 package ee.esport.spring2018.web.ticket;
 
+import ee.esport.spring2018.jooq.Keys;
+import ee.esport.spring2018.jooq.tables.records.TicketMembersRecord;
 import ee.esport.spring2018.jooq.tables.records.TicketTypesRecord;
 import ee.esport.spring2018.jooq.tables.records.TicketsRecord;
 import org.jooq.DSLContext;
+import org.jooq.Record;
+import org.jooq.RecordMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -19,6 +23,15 @@ public class TicketRepository {
 
     @Resource
     private DSLContext dsl;
+
+    private RecordMapper<Record, Ticket> ticketRecordMapper = record -> {
+        TicketsRecord ticketsRecord = record.into(TICKETS);
+        Ticket ticket = ticketsRecord.into(Ticket.class);
+        ticket.setType(record.into(TICKET_TYPES).into(TicketType.class));
+        ticket.setMembers(ticketsRecord.fetchChildren(Keys.TICKET_MEMBERS_TICKETS_ID_FK)
+                                       .into(TicketMember.class));
+        return ticket;
+    };
 
     public int addType(TicketType type) {
         TicketTypesRecord record = dsl.newRecord(TICKET_TYPES, type);
@@ -109,11 +122,25 @@ public class TicketRepository {
                 .from(TICKETS)
                 .leftJoin(TICKET_TYPES)
                 .onKey()
-                .fetch(record -> {
-                    Ticket ticket = record.into(TICKETS).into(Ticket.class);
-                    ticket.setType(record.into(TICKET_TYPES).into(TicketType.class));
-                    return ticket;
-                });
+                .fetch(ticketRecordMapper);
+    }
+
+    public void addMember(int ticketId, TicketMember member) {
+        dsl.newRecord(TICKET_MEMBERS, member)
+           .with(TICKET_MEMBERS.TICKET_ID, ticketId)
+           .insert();
+    }
+    public void updateMember(int ticketId, TicketMember member) {
+        TicketMembersRecord record = dsl.newRecord(TICKET_MEMBERS, member);
+        record.reset(TICKET_MEMBERS.TICKET_ID);
+        record.update();
+    }
+
+    public void deleteMember(int ticketId, int memberId) {
+        dsl.delete(TICKET_MEMBERS)
+           .where(TICKET_MEMBERS.ID.eq(memberId))
+           .and(TICKET_MEMBERS.TICKET_ID.eq(ticketId))
+           .execute();
     }
 
     //TODO: optimize
@@ -138,11 +165,7 @@ public class TicketRepository {
                   .leftJoin(TICKET_TYPES)
                   .onKey()
                   .where(TICKETS.ID.eq(ticketId))
-                  .fetchAny(record -> {
-                      Ticket ticket = record.into(TICKETS).into(Ticket.class);
-                      ticket.setType(record.into(TICKET_TYPES).into(TicketType.class));
-                      return ticket;
-                  });
+                  .fetchAny(ticketRecordMapper);
     }
 
     public void setStatus(int id, TicketStatus canceled) {

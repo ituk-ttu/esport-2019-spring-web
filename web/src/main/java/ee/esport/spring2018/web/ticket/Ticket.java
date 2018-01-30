@@ -4,11 +4,12 @@ import lombok.Data;
 import org.hibernate.validator.constraints.Email;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 
 @Data
 public class Ticket {
 
-    private int id;
+    private Integer id;
     private TicketType type;
     private String name;
 
@@ -17,5 +18,6 @@ public class Ticket {
     private String ownerSteamId;
     private TicketStatus status;
     private OffsetDateTime dateCreated;
+    private List<TicketMember> members;
 
 }
