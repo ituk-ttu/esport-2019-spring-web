@@ -33,6 +33,10 @@
     "pieces": "pc",
     "atLocation": "At location",
     "buy": "Buy",
+    "members": {
+      "title": "Members",
+      "add": "Add member"
+    },
     "names": {
       "CS:GO Team": "CS:GO Team",
       "CS:GO Team Early Bird": "CS:GO Team",

@@ -33,6 +33,10 @@
     "pieces": "tk",
     "atLocation": "Kohapealt ostes",
     "buy": "Osta",
+    "members": {
+      "title": "Liikmed",
+      "add": "Lisa liige"
+    },
     "names": {
       "CS:GO Team": "CS:GO meeskond",
       "CS:GO Team Early Bird": "CS:GO meeskond",
