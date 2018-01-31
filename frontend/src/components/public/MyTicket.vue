@@ -86,7 +86,7 @@
         return this.ticket.members.length < this.ticket.type.teamSize && !this.addMemberPolling && !this.addMemberOpen;
       },
       openAddMember: function () {
-        this.idCode = "";
+        this.idCode = '';
         this.addMemberOpen = true;
         this.existingMemberOpen = null;
       },
