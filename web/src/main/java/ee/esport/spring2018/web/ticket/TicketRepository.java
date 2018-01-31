@@ -125,15 +125,18 @@ public class TicketRepository {
                 .fetch(ticketRecordMapper);
     }
 
-    public void addMember(int ticketId, TicketMember member) {
-        dsl.newRecord(TICKET_MEMBERS, member)
-           .with(TICKET_MEMBERS.TICKET_ID, ticketId)
-           .insert();
+    public TicketMember addMember(int ticketId, TicketMember member) {
+        TicketMembersRecord record = dsl.newRecord(TICKET_MEMBERS, member);
+        record.with(TICKET_MEMBERS.TICKET_ID, ticketId)
+              .insert();
+        return record.into(TicketMember.class);
     }
-    public void updateMember(int ticketId, TicketMember member) {
+
+    public TicketMember updateMember(TicketMember member) {
         TicketMembersRecord record = dsl.newRecord(TICKET_MEMBERS, member);
         record.reset(TICKET_MEMBERS.TICKET_ID);
         record.update();
+        return record.into(TicketMember.class);
     }
 
     public void deleteMember(int ticketId, int memberId) {

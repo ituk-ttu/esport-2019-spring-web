@@ -112,26 +112,21 @@ public class TicketController {
     }
 
     @PostMapping("/ticket/{ticketId}/member")
-    public ResponseEntity<Void> addMember(@PathVariable int ticketId, EsportClaimsHolder claimsHolder,
+    public ResponseEntity<TicketMember> addMember(@PathVariable int ticketId, EsportClaimsHolder claimsHolder,
                                           @RequestBody TicketMember member) {
         Ticket ticket = ticketService.getTicket(ticketId);
         if (!getAccessPrdicate(claimsHolder.get()).test(ticket)) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         try {
-            if (member.getId() == null) {
-                ticketService.addMember(ticketId, member);
-            } else {
-                ticketService.updateMember(ticketId, member);
-            }
+            return new ResponseEntity<>(ticketService.storeMember(ticketId, member), HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/ticket/{ticketId}/member/{memberId}")
-    public ResponseEntity<Void> addMember(@PathVariable int ticketId, @PathVariable int memberId,
+    public ResponseEntity<Void> deleteMember(@PathVariable int ticketId, @PathVariable int memberId,
                                           EsportClaimsHolder claimsHolder) {
         Ticket ticket = ticketService.getTicket(ticketId);
         if (!getAccessPrdicate(claimsHolder.get()).test(ticket)) {

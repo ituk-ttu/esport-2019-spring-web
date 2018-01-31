@@ -122,21 +122,17 @@ public class TicketService {
                (availableUntil == null || now.isBefore(availableUntil));
     }
 
-    public void addMember(int ticketId, TicketMember member) {
+    public TicketMember storeMember(int ticketId, TicketMember member) {
+        if (member.getId() != null) {
+            return ticketRepository.updateMember(member);
+        }
         Ticket ticket = ticketRepository.getTicket(ticketId);
         if (ticket.getMembers().size() >= ticket.getType().getTeamSize()) {
             throw new IllegalArgumentException("Cannot add a new member to ticket " + ticketId + ", " +
                                                "all slots already filled");
         }
         member.setId(null);
-        ticketRepository.addMember(ticketId, member);
-    }
-
-    public void updateMember(int ticketId, TicketMember member) {
-        if (member.getId() == null) {
-            throw new IllegalArgumentException("Cannot update member, 'memberId' is null");
-        }
-        ticketRepository.updateMember(ticketId, member);
+        return ticketRepository.addMember(ticketId, member);
     }
 
     public void deleteMember(int ticketId, int memberId) {

@@ -146,7 +146,7 @@ ja kaotaja tiim peab kirjutama konsooli kill, seda roundi ei võeta arvesse ja k
 
 Juhul, kui mängija kaob mängust, siis tuleb kirjutada mängus .pause
 
-Mängijal on aega 15 minutit, et tagasi tulle. Pärast seda mängitakse edasi isegi, kui mängija ei jõua selle aja sees
+Mängijal on aega 15 minutit, et tagasi tulla. Pärast seda mängitakse edasi isegi, kui mängija ei jõua selle aja sees
 tagasi.
 
 
