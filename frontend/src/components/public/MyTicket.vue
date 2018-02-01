@@ -21,10 +21,10 @@
           form.form-inline(v-show="member.id === existingMemberOpen")
             .form-group
               input.form-control(v-model="idCode")
-              button.btn.btn-sm.btn-primary
-                i.glyphicon.glyphicon-ok(v-on:click="saveMember(member)")
-              button.btn.btn-sm.btn-primary
-                i.glyphicon.glyphicon-remove(v-on:click="closeOpen()")
+              button.btn.btn-sm.btn-primary(v-on:click="saveMember(member)")
+                i.glyphicon.glyphicon-ok
+              button.btn.btn-sm.btn-primary(v-on:click="closeOpen()")
+                i.glyphicon.glyphicon-remove
           div(v-show="member.id !== existingMemberOpen")
             span.idCode {{ member.idCode }}
             button.btn.btn-sm.btn-primary(v-on:click="openMember(member)")
@@ -39,10 +39,10 @@
           form.form-inline
             .form-group
               input.form-control(v-model="idCode")
-              button.btn.btn-sm.btn-primary
-                i.glyphicon.glyphicon-ok(v-on:click="addMember()")
-              button.btn.btn-sm.btn-primary
-                i.glyphicon.glyphicon-remove(v-on:click="closeOpen()")
+              button.btn.btn-sm.btn-primary(v-on:click="addMember()")
+                i.glyphicon.glyphicon-ok
+              button.btn.btn-sm.btn-primary(v-on:click="closeOpen()")
+                i.glyphicon.glyphicon-remove
     //confirm-dialog(:show.sync="shouldShowCancelDialog", :onConfirm="cancelTicket")
       | {{ $t('tickets.cancel.confirm', ticket) }}:
 
