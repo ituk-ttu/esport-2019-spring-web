@@ -54,7 +54,6 @@ function TicketService (Vue) {
 
   svc.storeMember = (ticket, member) => Vue.http.post('api/ticket/' + ticket.id + '/member', member).then(res => {
     const newMember = res.body;
-    console.log(ticket.members);
     if (member.id == null) {
       ticket.members.push(newMember);
     } else {

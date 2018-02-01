@@ -18,24 +18,24 @@
       | {{ $t('tickets.members.title') }}
       ul.members
         li.member(v-for="member in ticket.members")
-          form.form-inline(v-if="member.id === existingMemberOpen")
+          form.form-inline(v-show="member.id === existingMemberOpen")
             .form-group
               input.form-control(v-model="idCode")
               button.btn.btn-sm.btn-primary
                 i.glyphicon.glyphicon-ok(v-on:click="saveMember(member)")
               button.btn.btn-sm.btn-primary
                 i.glyphicon.glyphicon-remove(v-on:click="closeOpen()")
-          div(v-else)
+          div(v-show="member.id !== existingMemberOpen")
             span.idCode {{ member.idCode }}
             button.btn.btn-sm.btn-primary(v-on:click="openMember(member)")
               i.glyphicon.glyphicon-pencil
             button.btn.btn-sm.btn-default(v-on:click="deleteMember(member)")
               i.glyphicon.glyphicon-trash
-        li.member(v-if="canAddMember()")
+        li.member(v-show="canAddMember()")
           button.btn.btn-sm.btn-primary(v-on:click="openAddMember()")
             i.glyphicon.glyphicon-plus
             | &nbsp; {{ $t('tickets.members.add') }}
-        li.member(v-if="addMemberOpen")
+        li.member(v-show="addMemberOpen")
           form.form-inline
             .form-group
               input.form-control(v-model="idCode")
