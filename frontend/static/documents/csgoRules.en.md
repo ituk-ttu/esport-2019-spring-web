@@ -218,7 +218,7 @@ All servers will be hosted in a Local Area Network (LAN).
 ## 5 Tournament structure
 
 * Group stage - 4 teams advance from each group
-* Brackets double elimination - upper bracket Best of 1(BO1), semi-final BO3, final BO5, lower bracket BO1
+* Brackets double elimination - upper bracket Best of 1(BO1), quarter-final BO3, semi-final BO3, final BO5, lower bracket BO1
 * The exact tournament structure with standoffs is determined at the event
 
 ## Special thanks
