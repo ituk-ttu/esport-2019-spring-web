@@ -35,7 +35,9 @@
     "buy": "Buy",
     "members": {
       "title": "Members",
-      "add": "Add member"
+      "add": "Add member",
+      "idCode": "ID code",
+      "igName": "In-game name"
     },
     "names": {
       "CS:GO Team": "CS:GO Team",

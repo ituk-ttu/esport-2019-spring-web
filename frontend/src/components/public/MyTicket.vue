@@ -18,7 +18,7 @@
       | {{ $t('tickets.members.title') }}
       ul.members
         li.member(v-for="member in ticket.members")
-          form(v-if="member.id === existingMemberOpen")
+          form.form-inline(v-if="member.id === existingMemberOpen")
             .form-group
               label {{ $t('tickets.members.idCode') }}
                 input.form-control(v-model="newMember.idCode")
@@ -31,8 +31,9 @@
               button.btn.btn-sm.btn-primary(v-on:click="closeOpen()")
                 i.glyphicon.glyphicon-remove
           div(v-else)
-            span.idCode {{ member.idCode }}
-            span.igName(v-if="member.igName") ({{ member.igName }})
+            span.memberInfo
+              span.idCode {{ member.idCode }}
+              span.igName(v-if="member.igName") &nbsp; ({{ member.igName }})
             button.btn.btn-sm.btn-primary(v-on:click="openMember(member)")
               i.glyphicon.glyphicon-pencil
             button.btn.btn-sm.btn-default(v-on:click="deleteMember(member)")
@@ -42,7 +43,7 @@
             i.glyphicon.glyphicon-plus
             | &nbsp; {{ $t('tickets.members.add') }}
         li.member(v-if="addMemberOpen")
-          form
+          form.form-inline
             .form-group
               input.form-control(v-model="newMember.idCode", :placeholder="$t('tickets.members.idCode')")
             .form-group
@@ -139,10 +140,7 @@
   .member {
     margin: 5px 0;
   }
-  .member .btn {
-    margin-left: 5px;
-  }
-  .member .idCode {
-    margin: 0 10px;
+  .member .btn, .member .form-control, .member .memberInfo {
+    margin-right: 10px;
   }
 </style>

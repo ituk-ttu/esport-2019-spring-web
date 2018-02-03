@@ -35,7 +35,9 @@
     "buy": "Osta",
     "members": {
       "title": "Liikmed",
-      "add": "Lisa liige"
+      "add": "Lisa liige",
+      "idCode": "Isikukood",
+      "igName": "In-game nimi"
     },
     "names": {
       "CS:GO Team": "CS:GO meeskond",
