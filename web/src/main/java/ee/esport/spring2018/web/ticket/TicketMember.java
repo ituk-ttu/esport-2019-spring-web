@@ -7,5 +7,6 @@ public class TicketMember {
 
     private Integer id;
     private String idCode;
+    private String igName;
 
 }
