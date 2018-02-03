@@ -18,27 +18,36 @@
       | {{ $t('tickets.members.title') }}
       ul.members
         li.member(v-for="member in ticket.members")
-          form.form-inline(v-show="member.id === existingMemberOpen")
+          form(v-if="member.id === existingMemberOpen")
             .form-group
-              input.form-control(v-model="idCode")
-              button.btn.btn-sm.btn-primary(v-on:click="saveMember(member)")
+              label {{ $t('tickets.members.idCode') }}
+                input.form-control(v-model="newMember.idCode")
+            .form-group
+              label {{ $t('tickets.members.igName') }}
+                input.form-control(v-model="newMember.igName")
+            .form-group
+              button.btn.btn-sm.btn-primary(v-on:click="saveMember()")
                 i.glyphicon.glyphicon-ok
               button.btn.btn-sm.btn-primary(v-on:click="closeOpen()")
                 i.glyphicon.glyphicon-remove
-          div(v-show="member.id !== existingMemberOpen")
+          div(v-else)
             span.idCode {{ member.idCode }}
+            span.igName(v-if="member.igName") ({{ member.igName }})
             button.btn.btn-sm.btn-primary(v-on:click="openMember(member)")
               i.glyphicon.glyphicon-pencil
             button.btn.btn-sm.btn-default(v-on:click="deleteMember(member)")
               i.glyphicon.glyphicon-trash
-        li.member(v-show="canAddMember()")
+        li.member(v-if="canAddMember()")
           button.btn.btn-sm.btn-primary(v-on:click="openAddMember()")
             i.glyphicon.glyphicon-plus
             | &nbsp; {{ $t('tickets.members.add') }}
-        li.member(v-show="addMemberOpen")
-          form.form-inline
+        li.member(v-if="addMemberOpen")
+          form
             .form-group
-              input.form-control(v-model="idCode")
+              input.form-control(v-model="newMember.idCode", :placeholder="$t('tickets.members.idCode')")
+            .form-group
+              input.form-control(v-model="newMember.igName", :placeholder="$t('tickets.members.igName')")
+            .form-group
               button.btn.btn-sm.btn-primary(v-on:click="addMember()")
                 i.glyphicon.glyphicon-ok
               button.btn.btn-sm.btn-primary(v-on:click="closeOpen()")
@@ -62,7 +71,10 @@
         addMemberOpen: false,
         addMemberPolling: false,
         existingMemberOpen: null,
-        idCode: null
+        newMember: {
+          idCode: null,
+          igName: null
+        }
       };
     },
     methods: {
@@ -86,7 +98,10 @@
         return this.ticket.members.length < this.ticket.type.teamSize && !this.addMemberPolling && !this.addMemberOpen;
       },
       openAddMember: function () {
-        this.idCode = '';
+        this.newMember = {
+          idCode: '',
+          igName: ''
+        };
         this.addMemberOpen = true;
         this.existingMemberOpen = null;
       },
@@ -94,21 +109,20 @@
         const self = this;
         self.addMemberPolling = true;
         self.addMemberOpen = false;
-        return this.$ticket.storeMember(this.ticket, { idCode: this.idCode }).then(res => {
+        return this.$ticket.storeMember(this.ticket, this.newMember).then(res => {
           self.addMemberPolling = false;
           self.$forceUpdate();
         });
       },
       openMember: function (member) {
-        this.idCode = member.idCode;
+        this.newMember = Object.assign({}, member);
         this.addMemberOpen = false;
         this.existingMemberOpen = member.id;
       },
-      saveMember: function (member) {
+      saveMember: function () {
         const self = this;
         self.existingMemberOpen = null;
-        member.idCode = this.idCode;
-        return this.$ticket.storeMember(this.ticket, member).then(res => { self.$forceUpdate(); });
+        return this.$ticket.storeMember(this.ticket, this.newMember).then(res => { self.$forceUpdate(); });
       },
       closeOpen: function () {
         this.addMemberOpen = false;
