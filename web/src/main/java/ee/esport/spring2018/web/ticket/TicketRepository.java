@@ -7,9 +7,12 @@ import ee.esport.spring2018.jooq.tables.records.TicketsRecord;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.RecordMapper;
+import org.jooq.UpdateSetStep;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -119,10 +122,25 @@ public class TicketRepository {
 
     public List<Ticket> getAllTickets() {
         return dsl.select()
-                .from(TICKETS)
-                .leftJoin(TICKET_TYPES)
-                .onKey()
-                .fetch(ticketRecordMapper);
+                  .from(TICKETS)
+                  .leftJoin(TICKET_TYPES)
+                  .onKey()
+                  .fetch(ticketRecordMapper);
+    }
+
+    public List<Ticket> getWaitingListTickets(int ticketTypeId, int limit) {
+        return dsl.select()
+                  .from(TICKETS)
+                  .leftJoin(TICKET_TYPES)
+                  .onKey()
+                  .where(TICKETS.TYPE_ID.eq(ticketTypeId))
+                  .and(TICKETS.STATUS.eq(TicketStatus.IN_WAITING_LIST.name()))
+                  .orderBy(TICKETS.DATE_CREATED.asc())
+                  .limit(limit)
+                  .fetch(ticketRecordMapper);
+//                  .stream()
+//                  .limit(limit)
+//                  .collect(Collectors.toList());
     }
 
     public TicketMember addMember(int ticketId, TicketMember member) {
@@ -144,6 +162,16 @@ public class TicketRepository {
            .where(TICKET_MEMBERS.ID.eq(memberId))
            .and(TICKET_MEMBERS.TICKET_ID.eq(ticketId))
            .execute();
+    }
+
+    public int getAmountReserved(int typeId) {
+        return dsl.selectCount()
+                  .from(TICKETS)
+                  .where(TICKETS.TYPE_ID.eq(typeId))
+                  .and(TICKETS.STATUS.in(Arrays.asList(TicketStatus.AWAITING_PAYMENT,
+                                                       TicketStatus.PAID)))
+                  .fetchAny()
+                  .into(Integer.class);
     }
 
     //TODO: optimize
@@ -171,10 +199,13 @@ public class TicketRepository {
                   .fetchAny(ticketRecordMapper);
     }
 
-    public void setStatus(int id, TicketStatus canceled) {
-        dsl.update(TICKETS)
-           .set(TICKETS.STATUS, canceled.name())
-           .where(TICKETS.ID.eq(id))
-           .execute();
+    public void setStatus(int id, TicketStatus status) {
+        UpdateSetStep<TicketsRecord> update = dsl.update(TICKETS);
+        if (status == TicketStatus.AWAITING_PAYMENT) {
+            update = update.set(TICKETS.DATE_CREATED, Timestamp.from(Instant.now()));
+        }
+        update.set(TICKETS.STATUS, status.name())
+              .where(TICKETS.ID.eq(id))
+              .execute();
     }
 }
