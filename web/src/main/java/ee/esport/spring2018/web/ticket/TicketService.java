@@ -105,7 +105,7 @@ public class TicketService {
         if (type.getAmountAvailable() == null) {
             return;
         }
-        int amountReserved = ticketRepository.getAmountReserved(typeId);
+        int amountReserved = ticketRepository.getAmountReserved(type.getId());
         int limit = type.getAmountAvailable() - amountReserved;
         if (limit <= 0) {
             return;

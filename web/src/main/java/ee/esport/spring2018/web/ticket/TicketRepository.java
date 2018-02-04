@@ -138,9 +138,6 @@ public class TicketRepository {
                   .orderBy(TICKETS.DATE_CREATED.asc())
                   .limit(limit)
                   .fetch(ticketRecordMapper);
-//                  .stream()
-//                  .limit(limit)
-//                  .collect(Collectors.toList());
     }
 
     public TicketMember addMember(int ticketId, TicketMember member) {
@@ -165,9 +162,19 @@ public class TicketRepository {
     }
 
     public int getAmountReserved(int typeId) {
+        List<Integer> typeIds = new ArrayList<>();
+        Queue<TicketType> types = new ArrayDeque<>(Collections.singletonList(getTicketType(typeId)));
+        while (!types.isEmpty()) {
+            TicketType type = types.poll();
+            typeIds.add(type.getId());
+            List<TicketType> promotions = type.getPromotions();
+            if (promotions != null) {
+                types.addAll(promotions);
+            }
+        }
         return dsl.selectCount()
                   .from(TICKETS)
-                  .where(TICKETS.TYPE_ID.eq(typeId))
+                  .where(TICKETS.TYPE_ID.in(typeIds))
                   .and(TICKETS.STATUS.in(Arrays.asList(TicketStatus.AWAITING_PAYMENT,
                                                        TicketStatus.PAID)))
                   .fetchAny()
