@@ -32,4 +32,12 @@ public class TicketType {
         return getAmountAvailable() == null || getAmountAvailable() > getAmountReserved();
     }
 
+    public Integer getAmountRemaining() {
+        return getAmountAvailable() != null ? getAmountAvailable() - getAmountReserved() : null;
+    }
+
+    public void decrementRemaining() {
+        amountReserved--;
+    }
+
 }

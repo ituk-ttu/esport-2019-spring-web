@@ -94,8 +94,27 @@ public class TicketService {
         if (ticket.getStatus() == TicketStatus.CANCELED) {
             throw new IllegalStateException("Cannot cancel ticket with status " + ticket.getStatus());
         }
+        ticket.getType().decrementRemaining();
         ticketRepository.setStatus(ticket.getId(), TicketStatus.CANCELED);
         emailService.sendTicketCanceled(ticket, createLoginLink(ticket, referer));
+        promoteWaitingListTickets(ticket.getType().getId(), referer);
+    }
+
+    public void promoteWaitingListTickets(int typeId, String referer) {
+        TicketType type = ticketRepository.getTicketType(typeId);
+        if (type.getAmountAvailable() == null) {
+            return;
+        }
+        int amountReserved = ticketRepository.getAmountReserved(typeId);
+        int limit = type.getAmountAvailable() - amountReserved;
+        if (limit <= 0) {
+            return;
+        }
+        List<Ticket> tickets = ticketRepository.getWaitingListTickets(type.getId(), limit);
+        for (Ticket ticket : tickets) {
+            ticketRepository.setStatus(ticket.getId(), TicketStatus.AWAITING_PAYMENT);
+            emailService.sendTicketReservation(ticket, createLoginLink(ticket, referer));
+        }
     }
 
     public void confirmTicketPaid(Ticket ticket, String referer) {
