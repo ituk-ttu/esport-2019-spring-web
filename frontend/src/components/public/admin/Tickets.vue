@@ -106,7 +106,9 @@
               }
             };
           }
-          stats[type.id].total += 1;
+          if (ticket.status !== 'CANCELED') {
+            stats[type.id].total += 1;
+          }
           stats[type.id].byStatus[ticket.status] += 1;
         });
         console.log(stats);
