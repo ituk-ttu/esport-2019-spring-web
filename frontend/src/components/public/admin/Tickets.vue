@@ -26,6 +26,9 @@
       table-column(show="type.name" label="Type")
       table-column(show="ownerEmail" label="Owner Email")
       table-column(show="type.cost" label="Cost" data-type="numeric")
+      table-column(label="Members entered" data-type="numeric")
+        template(slot-scope="row")
+          | {{ row.members.length }}/{{ row.type.teamSize }}
       table-column(show="status" label="Status")
         template(slot-scope="row")
           ticket-status(:status="row.status")
