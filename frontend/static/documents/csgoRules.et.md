@@ -210,7 +210,7 @@ Kõik serverid on lokaalses võrgus (LAN).
 
 ## 5 Võistluse struktuur
 
-* Grupi tasand - 4 tiimi pääsevad edasi
+* Grupi tasand - 2 tiimi pääsevad edasi
 * Double elimination - Ülemine võistlus parim ühest, veerandfinaal parim kolmest, semi finaal parim kolmest,
  finaal parim viiest, alumine võistlus parim ühest
 * Täpne võistluse struktuur ja tiimide väljapanek selgub kohapeal
