@@ -1,5 +1,9 @@
 // https://eslint.org/docs/user-guide/configuring
 
+const OFF = 0;
+const WARNING = 1;
+const ERROR = 2;
+
 module.exports = {
   root: true,
   parser: 'babel-eslint',
@@ -21,6 +25,12 @@ module.exports = {
     'generator-star-spacing': 'off',
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    "semi": [2, "always"]
+    "semi": [ERROR, "always"],
+    "operator-linebreak": [WARNING, "after"],
+    "space-before-function-paren": [OFF, {
+      "anonymous": "never",
+      "named": "never",
+      "asyncArrow": "always"
+    }]
   }
 };

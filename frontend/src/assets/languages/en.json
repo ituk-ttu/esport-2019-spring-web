@@ -3,15 +3,22 @@
   "navbar": {
     "home": "Home",
     "contact": "Contact",
+    "info": "Info",
     "faq": "FAQ",
     "timetable": "Schedule",
     "houseRules": "House Rules",
     "csgoRules": "CS:GO Rules",
     "login": "Login",
     "myTickets": "My Tickets",
+    "adminTickets": "Manage Tickets",
     "logOut": "Log out",
+    "discord": "Discord",
     "admin": "Admin",
-    "defaultUsername": "User"
+    "defaultUsername": "User",
+    "lang": {
+      "en": "EN",
+      "et": "ET"
+    }
   },
   "hero": {
     "date": "February 9.-11.",

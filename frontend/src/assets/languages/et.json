@@ -3,15 +3,22 @@
   "navbar": {
     "home": "Avaleht",
     "contact": "Kontakt",
+    "info": "Info",
     "faq": "KKK",
     "timetable": "Ajakava",
     "houseRules": "Kodukord",
     "csgoRules": "CS:GO reeglid",
     "login": "Logi sisse",
     "myTickets": "Minu piletid",
+    "adminTickets": "Halda pileteid",
     "logOut": "Logi välja",
+    "discord": "Discord",
     "admin": "Admin",
-    "defaultUsername": "Kasutaja"
+    "defaultUsername": "Kasutaja",
+    "lang": {
+      "en": "EN",
+      "et": "ET"
+    }
   },
   "hero": {
     "date": "9.-11. veebruar",
