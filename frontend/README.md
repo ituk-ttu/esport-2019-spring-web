@@ -1,6 +1,6 @@
 # esport-winter-2019-web-frontend
 
-> Fontend for TTÜ e-Sport 2019 Spring website
+> Fontend for TalTech e-Sport 2019 Spring website
 
 ## Build Setup
 

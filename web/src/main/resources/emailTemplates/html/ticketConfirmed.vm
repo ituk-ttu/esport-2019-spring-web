@@ -3,7 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>TTÜ e-Sport</title>
+    <title>TalTech e-Sport</title>
     <style>
         /* -------------------------------------
             GLOBAL RESETS
@@ -299,7 +299,7 @@
         <td>&nbsp;</td>
         <td class="container">
             <div class="content">
-                <img class="logo-img" src="https://esport.ituk.ee/logo.png" alt="TTÜ e-Sport">
+                <img class="logo-img" src="https://esport.ituk.ee/logo.png" alt="TalTech e-Sport">
                 <!-- START CENTERED WHITE CONTAINER -->
                 <table class="main">
 
@@ -311,7 +311,7 @@
                                     <td>
                                         <h1>Pilet kinnitatud / Ticket confirmed</h1>
                                         <h2>$ticket.name</h2>
-                                        <p>Näeme TTÜ e-Spordil! / See You at TTÜ e-Sport!</p>
+                                        <p>Näeme TalTech e-Spordil! / See You at TalTech e-Sport!</p>
                                         <table border="0" cellpadding="0" cellspacing="0" class="btn">
                                             <tbody>
                                             <tr>
@@ -351,7 +351,7 @@
                         </tr>
                         <tr>
                             <td class="content-block">
-                                <a href="https://e-sport.ee">TTÜ e-Sport</a>
+                                <a href="https://e-sport.ee">TalTech e-Sport</a>
                             </td>
                         </tr>
                     </table>

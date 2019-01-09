@@ -4,7 +4,7 @@
 * Smoking (also using an e-cigarette) anywhere but in a smoking room or outside near a bin
 * It is forbidden to:
   * Smoke while underaged
-  * Using snus on the territory of TTÜ
+  * Using snus on the territory of TalTech
 * Using force on others or belongings of others
 * Using/touching belongings of others without permission
 * Breaking the rules of a tournament

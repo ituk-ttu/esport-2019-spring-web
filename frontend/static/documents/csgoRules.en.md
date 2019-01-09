@@ -1,4 +1,4 @@
-# TTÜ E-Sport
+# TalTech E-Sport
 
 Rules for the upcoming LAN party that will be held 9.-11. February
 
@@ -25,7 +25,7 @@ these penalties apply to all team members.
 
 * Players caught cheating will be disqualified with their team from the tournament.
 * Depending on the severity of cheating they might be disqualified entering any future tournaments
-hosted by TTÜ E-Sport.
+hosted by TalTech E-Sport.
 * Cheating includes, but not limited to, aimbots, wallhacks, sound hacks, no recoil, no smoke, no flash, colored models
 ambient occlusion, third-party created assisting programs and Lua scripts.
 

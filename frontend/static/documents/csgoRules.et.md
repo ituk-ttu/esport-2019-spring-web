@@ -1,9 +1,9 @@
-# TTÜ E-Sport
+# TalTech E-Sport
 
 Reeglid tulevaseks võrgupeoks, mis toimub 9.-11. veebruar
 ## 1. Üldiselt
 
-Need reeglid baseeruvad ESL 5vs5 avatud liiga reeglistikule, kuid neid on muudetud vastavalt TTÜ e-spordi vajadustele.
+Need reeglid baseeruvad ESL 5vs5 avatud liiga reeglistikule, kuid neid on muudetud vastavalt TalTech e-spordi vajadustele.
 Järgmised reeglid on ausa mängu tagamiseks.
 
 Mänguvana (GM) võib igal hetkel muuta neid reegleid.
@@ -21,7 +21,7 @@ Siia alla ei lähe muudatused, mida otsustab GM iseseisvalt, et tagada mängjate
 ### 1.2 Koodimine
 
 * Mängijad, kes jäävad koodimisega vahele diskvalitseeritakse võistlusest koos tiimiga
-* Olenevalt olukorrast võib rakenduda keeld edaspidistele turniiridele, mis on korraldatud TTÜ e-spordi poolt
+* Olenevalt olukorrast võib rakenduda keeld edaspidistele turniiridele, mis on korraldatud TalTech e-spordi poolt
 * Koodimise alla kuuluvad aimbots, wallhacks, sound hacks, no recoil, no smoke, no flash, colored models
 ambient occlusion ja teised kolmanda osapoole programmid.
 

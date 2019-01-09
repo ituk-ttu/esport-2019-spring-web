@@ -39,7 +39,7 @@ import java.util.regex.Pattern;
 @AllArgsConstructor
 public class JwtService {
 
-    private static final String ISSUER = "TTÜ e-Sport";
+    private static final String ISSUER = "TalTech e-Sport";
     private static final Pattern JWT_PATTERN = Pattern.compile("^Bearer (.+)$");
     private static final Duration LIFESPAN = Duration.of(7, ChronoUnit.DAYS);
 
