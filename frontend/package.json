@@ -1,7 +1,7 @@
 {
-  "name": "esport-winter-2018-web-frontend",
+  "name": "esport-2019-spring-web",
   "version": "1.0.0",
-  "description": "Fontend for TTÜ e-Sport 2018 Winter website",
+  "description": "Fontend for TTÜ e-Sport 2019 Winter website",
   "author": "Johannes Kümmel <johannes@ituk.ee>",
   "private": true,
   "scripts": {

@@ -1,6 +1,6 @@
-# esport-winter-2018-web-frontend
+# esport-winter-2019-web-frontend
 
-> Fontend for TTÜ e-Sport 2018 Winter website
+> Fontend for TTÜ e-Sport 2019 Spring website
 
 ## Build Setup
 

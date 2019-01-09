@@ -14,11 +14,11 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 
-group = 'ee.e-sport.spring2018'
+group = 'ee.e-sport.spring2019'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
-jar.archiveName = 'esport2018spring.web.jar'
+jar.archiveName = 'esport2019spring.web.jar'
 
 repositories {
 	mavenCentral()
@@ -45,7 +45,7 @@ dependencies {
 
 println "Running in " + System.properties['user.dir']
 
-springBoot.mainClass = "ee.esport.spring2018.web.EsportWebApplication"
+springBoot.mainClass = "ee.esport.spring2019.web.EsportWebApplication"
 
 bootRun {
 	systemProperties = System.properties

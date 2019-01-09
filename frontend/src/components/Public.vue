@@ -6,7 +6,7 @@
       a.footer-link.footer-social(href="https://www.facebook.com/ttuesport/"): i.fa.fa-lg.fa-facebook
       a.footer-link.footer-social(href="https://www.instagram.com/ttuesport/"): i.fa.fa-lg.fa-instagram
       a.footer-link.footer-social(href="mailto:esport@ituk.ee"): i.fa.fa-lg.fa-envelope
-      a.footer-link.footer-social(href="https://github.com/ituk-ttu/esport-spring-2018-web"): i.fa.fa-lg.fa-github
+      a.footer-link.footer-social(href="https://github.com/ituk-ttu/esport-2019-spring-web"): i.fa.fa-lg.fa-github
 </template>
 
 <script>

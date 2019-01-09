@@ -81,7 +81,7 @@
     methods: {
       getInvoiceNumber: function () {
         let ticketId = this.ticket.id.toString();
-        return '2018-359027-' + '000'.substring(0, 3 - ticketId.length) + ticketId;
+        return '2019-359027-' + '000'.substring(0, 3 - ticketId.length) + ticketId;
       },
       canCancelTicket: function () {
         return this.$ticket.ownerCanCancel(this.ticket);
