@@ -1,4 +1,4 @@
-## Reede, 9. veebruar
+## Reede, 19. aprill
 
 **18:00:** Uste avamine
 
@@ -6,7 +6,7 @@
 
 **01:00-07:00:** Öörahu
 
-## Laupäev, 10. veebruar
+## Laupäev, 20. aprill
 
 **10:00-14:00:** CS:GO turniir jätkub
 
@@ -16,7 +16,7 @@
 
 **20:00-00:00:** CS:GO turniiri semi-finaalid
 
-## Pühapäev, 11. veebruar
+## Pühapäev, 21. aprill
 
 **10:00-13:00:** CS:GO turniiri kolmanda koha mängud ja finaalmängud
 
