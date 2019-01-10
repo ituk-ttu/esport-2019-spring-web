@@ -1,4 +1,4 @@
-## Friday, February 9rd
+## Friday, April 19th
 
 **18:00:** Doors open
 
@@ -6,7 +6,7 @@
 
 **01:00-07:00:** Rest
 
-## Saturday, February 10th
+## Saturday, April 20th
 
 **10:00-14:00:** CS:GO tournament continues
 
@@ -16,7 +16,7 @@
 
 **20:00-00:00:** CS:GO tournament semi-finals
 
-## Sunday, February 11th
+## Sunday, April 21st
 
 **10:00-13:00:** CS:GO tournament 3rd place games and finals
 
