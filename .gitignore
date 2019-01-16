@@ -4,3 +4,4 @@
 /web/build/
 **/src/generated/
 config/application-*-secret.yaml
+**/rebel.xml
