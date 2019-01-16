@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,600,700&subset=latin-ext');
+@import url('https://maxcdn.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.css');
+
+body {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.navbar {
+  .navbar-brand {
+    justify-content:center;
+    flex-grow: 1;
+  }
+}
+
+.home-hero {
+  background: url("../images/cover.jpg") no-repeat center;
+  background-size: cover;
+  clip-path: polygon(100% calc(100% - 60px), 40px calc(100% - 60px), 40px calc(100% - 40px), 20px calc(100% - 40px), 20px 100%, 0 100%, 0 0, 100% 0);
+  padding-bottom: 60px;
+}
+
+.top-container-after-hero {
+  margin-top: -20px;
+}
+
+.main-footer {
+  clip-path: polygon(calc(100% - 20px) 20px, calc(100% - 20px) 0, 100% 0, 100% 100%, 0 100%, 0 40px, calc(100% - 40px) 40px, calc(100% - 40px) 20px);
+  padding-top: 6rem;
+  padding-bottom: calc(6rem - 40px);
+}
+
+.full-height-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  .card-footer {
+    margin-top: auto;
+  }
+}
+
+.team-tag {
+  margin-bottom: 20px;
+}
+.navbar-brand {
+  img {
+    height: $navbar-height - $navbar-padding-vertical - $navbar-padding-vertical;
+    max-height: $navbar-height;
+  }
+}
+.link-discord {
+  font-weight: bold;
+  color: #7289DA;
+  &:hover, &:active {
+    color: $tt-grey-2;
+  }
+}
+.has-text-burgundy {
+  color: $tt-burgundy;
+}
+.has-text-line-through {
+  text-decoration: line-through;
+}
+
+.sponsor > img{
+  max-height: 15rem;
+}
+
+.footer-link {
+  padding: 1rem;
+  color: $tt-grey-1;
+  &:hover {
+    color: $tt-grey-2;
+  }
+}
+
+.content.md-content {
+  h1, h2, h3, h4, h5, h6 {
+    color: $tt-burgundy;
+  }
+}
+
+body, html, #app, #public {
+  height: 100%;
+}
+
+#public {
+  display: flex;
+  flex-direction: column;
+}
+
+.view {
+  flex: 1 0 auto;
+}
+
+.footer {
+  flex-shrink: 0;
+}

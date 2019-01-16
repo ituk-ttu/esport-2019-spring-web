@@ -1,7 +1,7 @@
 <template lang="pug">
-  .container
-    h1.text-center(v-t="'faq.faqLong'")
-    .faqs(v-html="document")
+  section.section: .container
+    h1.has-text-primary.has-text-centered.title.is-1(v-t="'faq.faqLong'")
+    .content.md-content(v-html="document")
 </template>
 
 <script>

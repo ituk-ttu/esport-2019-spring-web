@@ -1,4 +1,4 @@
-# TalTech E-Sport
+# TalTech e-Sport
 
 Rules for the upcoming LAN party that will be held 9.-11. February
 

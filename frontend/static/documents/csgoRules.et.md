@@ -1,6 +1,7 @@
-# TalTech E-Sport
+# TalTech e-Sport
 
 Reeglid tulevaseks võrgupeoks, mis toimub 9.-11. veebruar
+
 ## 1. Üldiselt
 
 Need reeglid baseeruvad ESL 5vs5 avatud liiga reeglistikule, kuid neid on muudetud vastavalt TalTech e-spordi vajadustele.

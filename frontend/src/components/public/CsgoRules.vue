@@ -1,7 +1,7 @@
 <template lang="pug">
-  .container
-    h1.text-center(v-t="'navbar.csgoRules'")
-    .csgo-rules(v-html="document")
+  section.section: .container
+    h1.has-text-centered.has-text-primary.title.is-1(v-t="'navbar.csgoRules'")
+    .content.md-content(v-html="document")
 </template>
 
 <script>
@@ -26,8 +26,3 @@
   };
 </script>
 
-<style>
-  li {
-    margin: 10px 0;
-  }
-</style>

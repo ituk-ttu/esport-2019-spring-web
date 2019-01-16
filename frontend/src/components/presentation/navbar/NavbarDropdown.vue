@@ -1,8 +1,8 @@
 <template lang="pug">
-  li.dropdown
-    a.dropdown-toggle(href="#" data-toggle="dropdown" role="button" aria-expanded="false") {{ title }}&nbsp
+  .navbar-item.has-dropdown.is-hoverable
+    a.navbar-link.has-text-weight-semibold {{ title }}&nbsp
       span.caret
-    ul.dropdown-menu(role="menu")
+    .navbar-dropdown(role="menu")
       slot
 </template>
 

@@ -1,11 +1,10 @@
 <template lang="pug">
-  li
     router-link(v-if="getType() === LINK_LOCAL" :class="getStyleClass()"  v-on:click="onClick()"
-                :to="{ name: targetPage }") {{ title }}
-    a(v-if="getType() === LINK_EXTERNAL" :class="getStyleClass()" v-on:click="onClick()"
-      :href="targetUrl" :target="newWindow ? '_blank' : null") {{ title }}
-    a(v-if="getType() === LINK_VOID" :class="getStyleClass()"
-      href="#" @click.prevent="onClick()") {{ title }}
+                :to="{ name: targetPage }").navbar-item {{ title }}
+    a(v-else-if="getType() === LINK_EXTERNAL" :class="getStyleClass()" v-on:click="onClick()"
+      :href="targetUrl" :target="newWindow ? '_blank' : null").navbar-item {{ title }}
+    a(v-else-if="getType() === LINK_VOID" :class="getStyleClass()"
+      href="#" @click.prevent="onClick()").navbar-item {{ title }}
 </template>
 
 <script>
@@ -14,8 +13,9 @@
   const LINK_VOID = 'LINK_VOID';
 
   const STYLE_CLASSES = {
-    'bold': 'link-bold',
-    'discord': 'link-discord'
+    'bold': 'has-text-weight-bold',
+    'discord': 'link-discord',
+    'default': 'has-text-weight-semibold'
   };
 
   export default {
@@ -41,7 +41,7 @@
       },
       getStyleClass () {
         if (this.look == null) {
-          return null;
+          return STYLE_CLASSES['default'];
         }
         const styleClass = STYLE_CLASSES[this.look];
         if (styleClass == null) {
@@ -62,16 +62,3 @@
     }
   };
 </script>
-
-<style lang="less">
-  .link-bold {
-    font-weight: bold;
-  }
-  .link-discord {
-    font-weight: bold;
-    color: #7289DA;
-    &:hover, &:active {
-      color: #99AAB5;
-    }
-  }
-</style>
