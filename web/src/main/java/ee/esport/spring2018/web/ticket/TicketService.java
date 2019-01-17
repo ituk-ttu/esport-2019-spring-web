@@ -1,21 +1,22 @@
 package ee.esport.spring2018.web.ticket;
 
-import ee.esport.spring2018.web.auth.EsportClaims;
-import ee.esport.spring2018.web.auth.SteamUser;
 import ee.esport.spring2018.web.email.EmailService;
+import ee.esport.spring2018.web.ticket.domain.Ticket;
+import ee.esport.spring2018.web.ticket.domain.TicketCandidate;
+import ee.esport.spring2018.web.ticket.domain.TicketCreation;
+import ee.esport.spring2018.web.ticket.domain.TicketType;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.UriComponentsBuilder;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.time.OffsetDateTime;
-import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class TicketService {
 
     @Resource
@@ -28,35 +29,31 @@ public class TicketService {
         return ticketRepository.getAllTypes();
     }
 
+
     public TicketType getType(int typeId) {
-        return ticketRepository.getTicketType(typeId);
+        return ticketRepository.getType(typeId);
     }
 
-    public void addType(TicketType type) {
-        ticketRepository.addType(type);
-    }
-
-    @SneakyThrows //temporarily wait for emailService to finish sending email, just in case
-    public Ticket buyTicket(Ticket ticket, String referrer) {
-        ticket.setDateCreated(OffsetDateTime.now());
-        TicketType type = getType(ticket.getType().getId());
-        if(!isActive(type)) {
-            throw new IllegalArgumentException("Ticket type not currently available");
-        }
-        ticket.setStatus(type.hasRemaining() ? TicketStatus.AWAITING_PAYMENT : TicketStatus.IN_WAITING_LIST);
-        ticket.setId(ticketRepository.addTicket(ticket));
-        ticket.setType(type);
-        String loginLink = createLoginLink(ticket, referrer);
-        sendTicketCreationEmail(ticket, loginLink);
+    public Ticket createTicket(TicketCreation creation) {
+        //TODO: Check if ticket available and remaining
+        TicketCandidate candidate = TicketCandidate.builder()
+                                               .offeringId(creation.getOfferingId())
+                                               .ownerId(creation.getOwnerId())
+                                               .seat(creation.getSeat())
+                                               .status(Ticket.Status.AWAITING_PAYMENT) //FIXME: or waiting list?
+                                               .build();
+        Ticket ticket = ticketRepository.createTicket(candidate);
+        sendTicketCreationEmail(ticket);
         return ticket;
     }
 
-    private void sendTicketCreationEmail(Ticket ticket, String loginLink) throws InterruptedException,
-                                                                                 ExecutionException {
-        if(ticket.getStatus() == TicketStatus.AWAITING_PAYMENT) {
-            emailService.sendTicketReservation(ticket, loginLink).get();
+    //FIXME: loginLink
+    @SneakyThrows //FIXME: remove
+    private void sendTicketCreationEmail(Ticket ticket) {
+        if(ticket.getStatus() == Ticket.Status.AWAITING_PAYMENT) {
+            emailService.sendTicketReservation(ticket, "loginLink").get();
         } else {
-            emailService.sendTicketWaiting(ticket, loginLink).get();
+            emailService.sendTicketWaiting(ticket, "loginLink").get();
         }
     }
 
@@ -64,94 +61,16 @@ public class TicketService {
         return ticketRepository.getTicket(ticketId);
     }
 
-    public Integer getLoginLinkTicketId(String key) {
-        return ticketRepository.getLoginLinkTicketId(key);
-    }
-
     public List<Ticket> getAllTickets() {
         return ticketRepository.getAllTickets();
     }
 
-    public boolean isOwner(EsportClaims claims, Ticket ticket) {
-        SteamUser steamUser = claims.getSteamUser();
-        String claimsSteamId = steamUser != null ? steamUser.getId() : null;
-        if(claimsSteamId != null && claimsSteamId.equals(ticket.getOwnerSteamId())) {
-            return true;
-        }
-        Long claimsTicketId = claims.getTicketId();
-        if(claimsTicketId != null && claimsTicketId.intValue() == ticket.getId()) {
-            return true;
-        }
-        return false;
-    }
-
-    public boolean ownerCanCancel(Ticket ticket) {
-        return Arrays.asList(TicketStatus.IN_WAITING_LIST, TicketStatus.AWAITING_PAYMENT)
-                     .contains(ticket.getStatus());
-    }
-
-    public void cancelTicket(Ticket ticket, String referer) {
-        if (ticket.getStatus() == TicketStatus.CANCELED) {
-            throw new IllegalStateException("Cannot cancel ticket with status " + ticket.getStatus());
-        }
-        ticket.getType().decrementRemaining();
-        ticketRepository.setStatus(ticket.getId(), TicketStatus.CANCELED);
-        emailService.sendTicketCanceled(ticket, createLoginLink(ticket, referer));
-        promoteWaitingListTickets(ticket.getType().getId(), referer);
-    }
-
-    public void promoteWaitingListTickets(int typeId, String referer) {
-        TicketType type = ticketRepository.getTicketType(typeId);
-        if (type.getAmountAvailable() == null) {
-            return;
-        }
-        int amountReserved = ticketRepository.getAmountReserved(type.getId());
-        int limit = type.getAmountAvailable() - amountReserved;
-        if (limit <= 0) {
-            return;
-        }
-        List<Ticket> tickets = ticketRepository.getWaitingListTickets(type.getId(), limit);
-        for (Ticket ticket : tickets) {
-            ticketRepository.setStatus(ticket.getId(), TicketStatus.AWAITING_PAYMENT);
-            emailService.sendTicketReservation(ticket, createLoginLink(ticket, referer));
-        }
+    public void cancelTicket(Ticket ticket) {
+        throw new NotImplementedException("Ticket cancellation not yet implemented");
     }
 
     public void confirmTicketPaid(Ticket ticket, String referer) {
-        if (ticket.getStatus() != TicketStatus.AWAITING_PAYMENT) {
-            throw new IllegalStateException("Cannot confirm ticket with status " + ticket.getStatus());
-        }
-        ticketRepository.setStatus(ticket.getId(), TicketStatus.PAID);
-        emailService.sendTicketConfirmed(ticket, createLoginLink(ticket, referer));
-    }
-
-    private String createLoginLink(Ticket ticket, String referrer) {
-        String loginLinkKey = ticketRepository.createLoginLink(ticket.getId());
-        return UriComponentsBuilder.fromUriString(referrer)
-                                   .replacePath("/")
-                                   .fragment("/ticketLogin/" + loginLinkKey)
-                                   .toUriString();
-    }
-
-    private boolean isActive(TicketType type) {
-        OffsetDateTime now = OffsetDateTime.now();
-        OffsetDateTime availableFrom = type.getAvailableFrom();
-        OffsetDateTime availableUntil = type.getAvailableUntil();
-        return (availableFrom == null || now.isAfter(availableFrom)) &&
-               (availableUntil == null || now.isBefore(availableUntil));
-    }
-
-    public TicketMember storeMember(int ticketId, TicketMember member) {
-        if (member.getId() != null) {
-            return ticketRepository.updateMember(member);
-        }
-        Ticket ticket = ticketRepository.getTicket(ticketId);
-        if (ticket.getMembers().size() >= ticket.getType().getTeamSize()) {
-            throw new IllegalArgumentException("Cannot add a new member to ticket " + ticketId + ", " +
-                                               "all slots already filled");
-        }
-        member.setId(null);
-        return ticketRepository.addMember(ticketId, member);
+        throw new NotImplementedException("Ticket payment confirmation not yet implemented");
     }
 
     public void deleteMember(int ticketId, int memberId) {

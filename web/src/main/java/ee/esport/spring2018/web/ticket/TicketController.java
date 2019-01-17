@@ -1,142 +1,114 @@
 package ee.esport.spring2018.web.ticket;
 
-import ee.esport.spring2018.web.auth.EsportClaims;
-import ee.esport.spring2018.web.auth.EsportClaimsHolder;
-import ee.esport.spring2018.web.auth.SteamUser;
-import ee.esport.spring2018.web.web.WebClientUrl;
+import ee.esport.spring2018.web.auth.user.User;
+import ee.esport.spring2018.web.auth.user.UserRole;
+import ee.esport.spring2018.web.core.WebClientUrl;
+import ee.esport.spring2018.web.ticket.domain.Ticket;
+import ee.esport.spring2018.web.ticket.domain.TicketCreation;
+import ee.esport.spring2018.web.ticket.domain.TicketType;
+import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/api")
+@RequestMapping("/api/tickets")
 public class TicketController {
 
     @Resource
     private TicketService ticketService;
 
-    @GetMapping("/ticketTypes")
+    @GetMapping("/types")
     public ResponseEntity<List<TicketType>> getAllTicketTypes() {
         return new ResponseEntity<>(ticketService.getAllTypes(), HttpStatus.OK);
     }
 
-    @PostMapping("/ticketType")
-    public ResponseEntity<Void> addTicketTypes(@RequestBody TicketType type, EsportClaimsHolder claimsHolder) {
-        if (!claimsHolder.get().isAdmin()) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
-        ticketService.addType(type);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @GetMapping("/ticketType/{typeId}")
+    @GetMapping("/types/{typeId}")
     public ResponseEntity<TicketType> getTicketType(@PathVariable int typeId) {
         return new ResponseEntity<>(ticketService.getType(typeId), HttpStatus.OK);
     }
 
-    @GetMapping("/tickets/mine")
-    public ResponseEntity<List<Ticket>> getMyTickets(EsportClaimsHolder claimsHolder) {
-        return new ResponseEntity<>(ticketService.getAllTickets()
-                                                 .stream()
-                                                 .filter(getAccessPrdicate(claimsHolder.get()))
-                                                 .collect(Collectors.toList()),
-                                    HttpStatus.OK);
-    }
-
-    private Predicate<Ticket> getAccessPrdicate(EsportClaims claims) {
-        List<Predicate<Ticket>> predicates = new ArrayList<>();
-        SteamUser steamUser = claims.getSteamUser();
-        if (steamUser != null) {
-            predicates.add(ticket -> steamUser.getId().equals(ticket.getOwnerSteamId()));
+    @GetMapping("/")
+    public ResponseEntity<List<Ticket>> getAllTickets(User user) {
+        if (user == null) {
+            throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
         }
-        Long ticketId = claims.getTicketId();
-        if (ticketId != null) {
-            predicates.add(ticket -> ticketId.intValue() == ticket.getId());
-        }
-        return predicates.stream().reduce(Predicate::or).orElse(ticket -> false);
-    }
-
-    @GetMapping("/tickets")
-    public ResponseEntity<List<Ticket>> getAllTickets(EsportClaimsHolder claimsHolder) {
-        if(!claimsHolder.get().isAdmin()) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        if (!user.getRole().isAtleast(UserRole.ADMIN)) {
+            throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
         }
         return new ResponseEntity<>(ticketService.getAllTickets(), HttpStatus.OK);
     }
 
-    @PostMapping("/ticket")
-    public ResponseEntity<Ticket> buyTicket(@RequestBody Ticket ticket, EsportClaimsHolder claimsHolder,
-                                            @WebClientUrl String webClientUrl) {
-        SteamUser steamUser = claimsHolder.get().getSteamUser();
-        ticket.setOwnerSteamId(steamUser != null ? steamUser.getId() : null);
-        Ticket boughtTicket = ticketService.buyTicket(ticket, webClientUrl);
+    @PostMapping("/")
+    public ResponseEntity<Ticket> buyTicket(@RequestBody TicketCreation ticketRequest, User user) {
+        if (user == null) {
+            throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
+        }
+        if (!user.getRole().isAtleast(UserRole.ADMIN) && !ticketRequest.getOwnerId().equals(user.getId())) {
+            throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
+        }
+        Ticket boughtTicket = ticketService.createTicket(ticketRequest);
         return new ResponseEntity<>(boughtTicket, HttpStatus.OK);
     }
 
-    @PostMapping("/ticket/{ticketId}/cancel")
-    public ResponseEntity<Void> cancelTicket(@PathVariable int ticketId, EsportClaimsHolder claimsHolder,
-                                             @WebClientUrl String webClientUrl) {
+    @PostMapping("/{ticketId}/cancel")
+    public ResponseEntity<Void> cancelTicket(@PathVariable int ticketId, User user) {
+        if (user == null) {
+            throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
+        }
         Ticket ticket = ticketService.getTicket(ticketId);
-        EsportClaims claims = claimsHolder.get();
-        if(ticket.getStatus() == TicketStatus.CANCELED) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        if(!user.getRole().isAtleast(UserRole.ADMIN) &&
+           !(ticket.getOwnerId().equals(user.getId()) && ticket.getStatus() != Ticket.Status.PAID)) {
+            throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
         }
-        if(!canCancelTicket(ticket, claims)) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
-        ticketService.cancelTicket(ticket, webClientUrl);
+        ticketService.cancelTicket(ticket);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    private boolean canCancelTicket(Ticket ticket, EsportClaims claims) {
-        return claims.isAdmin() || ticketService.isOwner(claims, ticket) && ticketService.ownerCanCancel(ticket);
-    }
-
-    @PostMapping("/ticket/{ticketId}/confirm")
-    public ResponseEntity<Void> confirmTicket(@PathVariable int ticketId, EsportClaimsHolder claimsHolder,
+    @PostMapping("/{ticketId}/confirm")
+    public ResponseEntity<Void> confirmTicket(@PathVariable int ticketId, User user,
                                               @WebClientUrl String webClientUrl) {
-        Ticket ticket = ticketService.getTicket(ticketId);
-        EsportClaims claims = claimsHolder.get();
-        if(!claims.isAdmin()) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        if (user == null) {
+            throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
         }
+        if(!user.getRole().isAtleast(UserRole.ADMIN)) {
+            throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
+        }
+        Ticket ticket = ticketService.getTicket(ticketId);
         ticketService.confirmTicketPaid(ticket, webClientUrl);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/ticket/{ticketId}/member")
-    public ResponseEntity<TicketMember> addMember(@PathVariable int ticketId, EsportClaimsHolder claimsHolder,
-                                          @RequestBody TicketMember member) {
+    @PostMapping("/{ticketId}/members")
+    public ResponseEntity<Ticket.Member> addMember(@PathVariable int ticketId, User user) {
+        if (user == null) {
+            throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
+        }
         Ticket ticket = ticketService.getTicket(ticketId);
-        if (!getAccessPrdicate(claimsHolder.get()).test(ticket)) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        if (!user.getRole().isAtleast(UserRole.ADMIN) && ticket.getOwnerId().equals(user.getId())) {
+            throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
         }
-        try {
-            return new ResponseEntity<>(ticketService.storeMember(ticketId, member), HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        throw new NotImplementedException("Adding member to ticket not yet implemented");
     }
 
-    @DeleteMapping("/ticket/{ticketId}/member/{memberId}")
-    public ResponseEntity<Void> deleteMember(@PathVariable int ticketId, @PathVariable int memberId,
-                                          EsportClaimsHolder claimsHolder) {
+    @DeleteMapping("/{ticketId}/members/{memberId}")
+    public ResponseEntity<Void> deleteMember(@PathVariable int ticketId, @PathVariable int memberId, User user) {
+        if (user == null) {
+            throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
+        }
         Ticket ticket = ticketService.getTicket(ticketId);
-        if (!getAccessPrdicate(claimsHolder.get()).test(ticket)) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        if (!user.getRole().isAtleast(UserRole.ADMIN) && ticket.getOwnerId().equals(user.getId())) {
+            throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
         }
-        try {
-            ticketService.deleteMember(ticketId, memberId);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        if (ticket.getMembers().stream().noneMatch(member -> member.getId() == memberId)) {
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Ticket does not have member with given ID");
         }
+        ticketService.deleteMember(ticketId, memberId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

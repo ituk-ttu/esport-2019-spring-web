@@ -29,9 +29,11 @@ dependencies {
 	compile('org.jooq:jooq-codegen')
 	compile('org.jooq:jooq-meta')
 	compile('org.mariadb.jdbc:mariadb-java-client:2.2.0')
+
 	compileOnly('org.springframework.boot:spring-boot-configuration-processor')
 	compileOnly('org.projectlombok:lombok')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
+
 }
 
 def generatedSourcesDir = file('src/generated/java')

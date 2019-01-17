@@ -1,218 +1,146 @@
 package ee.esport.spring2018.web.ticket;
 
-import ee.esport.spring2018.jooq.Keys;
 import ee.esport.spring2018.jooq.tables.records.TicketMembersRecord;
+import ee.esport.spring2018.jooq.tables.records.TicketOfferingsRecord;
 import ee.esport.spring2018.jooq.tables.records.TicketTypesRecord;
 import ee.esport.spring2018.jooq.tables.records.TicketsRecord;
+import ee.esport.spring2018.web.ticket.domain.Ticket;
+import ee.esport.spring2018.web.ticket.domain.TicketCandidate;
+import ee.esport.spring2018.web.ticket.domain.TicketType;
+import lombok.RequiredArgsConstructor;
+import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Record;
-import org.jooq.RecordMapper;
-import org.jooq.UpdateSetStep;
+import org.jooq.impl.DSL;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.*;
-import java.util.function.Function;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static ee.esport.spring2018.jooq.Tables.*;
-import static org.jooq.impl.DSL.count;
+import static ee.esport.spring2018.jooq.tables.Tickets.TICKETS;
 
 @Service
+@RequiredArgsConstructor
 public class TicketRepository {
 
-    @Resource
-    private DSLContext dsl;
+    private final DSLContext dsl;
+    private final TicketRecordsMapper mapper;
+    public static final String ACTIVE_TICKETS_COUNT = "ACTIVE_TICKETS_COUNT";
 
-    private RecordMapper<Record, Ticket> ticketRecordMapper = record -> {
-        TicketsRecord ticketsRecord = record.into(TICKETS);
-        Ticket ticket = ticketsRecord.into(Ticket.class);
-        ticket.setType(record.into(TICKET_TYPES).into(TicketType.class));
-        ticket.setMembers(ticketsRecord.fetchChildren(Keys.TICKET_MEMBERS_TICKETS_ID_FK)
-                                       .into(TicketMember.class));
-        return ticket;
-    };
-
-    public int addType(TicketType type) {
-        TicketTypesRecord record = dsl.newRecord(TICKET_TYPES, type);
-        record.store();
-        return record.getId();
+    public Ticket createTicket(TicketCandidate candidate) {
+        TicketsRecord ticketsRecord = dsl.insertInto(TICKETS)
+                                         .set(TICKETS.DATE_CREATED, getCurrentTimestamp())
+                                         .set(TICKETS.OFFERING_ID, candidate.getOfferingId())
+                                         .set(TICKETS.OWNER_ID, candidate.getOwnerId())
+                                         .set(TICKETS.SEAT, candidate.getSeat())
+                                         .set(TICKETS.STATUS, candidate.getStatus().name())
+                                         .returning()
+                                         .fetchOne();
+        return mapper.toTicket(ticketsRecord,
+                               getOfferingsRecord(ticketsRecord.getOfferingId()),
+                               Collections.emptyList());
     }
 
-    public List<TicketType> getAllTypes() {
-        return withRelationsRelations(getAllTicketTypesFlat()).stream()
-                                                              .filter(type -> type.getParentTicketTypeId() == null)
-                                                              .map(this::fixAmountReserved)
-                                                              .collect(Collectors.toList());
+    private TicketOfferingsRecord getOfferingsRecord(int offeringId) {
+        return dsl.selectFrom(TICKET_OFFERINGS)
+                  .where(TICKET_OFFERINGS.ID.eq(offeringId))
+                  .fetchOptional()
+                  .orElseThrow(() -> new NoSuchElementException("Ticket offering not found"));
     }
 
-    private TicketType fixAmountReserved(TicketType type) {
-        if (type.getPromotions() == null) {
-            return type;
-        }
-        type.getPromotions().forEach(this::fixAmountReserved);
-        type.setAmountReserved(type.getAmountReserved() + type.getPromotions()
-                                                                .stream()
-                                                                .mapToInt(TicketType::getAmountReserved)
-                                                                .sum());
-        return type;
-    }
-
-
-    private List<TicketType> withRelationsRelations(List<TicketType> ticketTypes) {
-        Map<Integer, TicketType> typesById = ticketTypes.stream()
-                                                        .collect(Collectors.toMap(TicketType::getId,
-                                                                                  Function.identity()));
-        ticketTypes.stream()
-                   .filter(type -> type.getParentTicketTypeId() != null)
-                   .forEach(type -> {
-                       TicketType parentType = typesById.get(type.getParentTicketTypeId());
-                       if (parentType.getPromotions() == null) {
-                           parentType.setPromotions(new ArrayList<>());
-                       }
-                       parentType.getPromotions().add(type);
-                   });
-
-        return ticketTypes;
-    }
-
-    private List<TicketType> getAllTicketTypesFlat() {
-        return dsl.select(Stream.concat(Arrays.stream(TICKET_TYPES.fields()),
-                                        Stream.of(count(TICKETS).as("amountReserved")))
-                                .collect(Collectors.toList()))
-                  .from(TICKET_TYPES)
-                  .leftJoin(TICKETS)
-                  .on(TICKET_TYPES.ID.eq(TICKETS.TYPE_ID)
-                                     .and(TICKETS.STATUS.in(Arrays.asList(TicketStatus.IN_WAITING_LIST,
-                                                                          TicketStatus.AWAITING_PAYMENT,
-                                                                          TicketStatus.PAID))))
-                  .groupBy(TICKET_TYPES.ID)
-                  .fetchInto(TicketType.class);
-    }
-
-    public int addTicket(Ticket ticket) {
-        TicketsRecord record = dsl.newRecord(TICKETS, ticket)
-                                  .with(TICKETS.TYPE_ID, Optional.of(ticket)
-                                                                 .map(Ticket::getType)
-                                                                 .map(TicketType::getId)
-                                                                 .orElse(null));
-        record.store();
-        return record.getId();
-    }
-
-    public String createLoginLink(int ticketId) {
-        String name = UUID.randomUUID()
-                          .toString();
-        dsl.newRecord(TICKET_LOGIN_LINKS)
-           .with(TICKET_LOGIN_LINKS.NAME, name)
-           .with(TICKET_LOGIN_LINKS.TICKET_ID, ticketId)
-           .store();
-        return name;
-    }
-
-    public Integer getLoginLinkTicketId(String name) {
-        return dsl.select(TICKET_LOGIN_LINKS.TICKET_ID)
-                  .from(TICKET_LOGIN_LINKS)
-                  .where(TICKET_LOGIN_LINKS.NAME.eq(name))
-                  .fetchAny(TICKET_LOGIN_LINKS.TICKET_ID);
+    public Ticket getTicket(int id) {
+        return getTickets(TICKETS.ID.eq(id)).findAny()
+                                            .orElseThrow(() -> new NoSuchElementException("Ticket not found"));
     }
 
     public List<Ticket> getAllTickets() {
-        return dsl.select()
-                  .from(TICKETS)
-                  .leftJoin(TICKET_TYPES)
-                  .onKey()
-                  .fetch(ticketRecordMapper);
+        return getTickets(DSL.trueCondition()).collect(Collectors.toList());
     }
 
-    public List<Ticket> getWaitingListTickets(int ticketTypeId, int limit) {
-        return dsl.select()
-                  .from(TICKETS)
-                  .leftJoin(TICKET_TYPES)
-                  .onKey()
-                  .where(TICKETS.TYPE_ID.eq(ticketTypeId))
-                  .and(TICKETS.STATUS.eq(TicketStatus.IN_WAITING_LIST.name()))
-                  .orderBy(TICKETS.DATE_CREATED.asc())
-                  .limit(limit)
-                  .fetch(ticketRecordMapper);
-    }
-
-    public TicketMember addMember(int ticketId, TicketMember member) {
-        TicketMembersRecord record = dsl.newRecord(TICKET_MEMBERS, member);
-        record.with(TICKET_MEMBERS.TICKET_ID, ticketId)
-              .insert();
-        return record.into(TicketMember.class);
-    }
-
-    public TicketMember updateMember(TicketMember member) {
-        TicketMembersRecord record = dsl.newRecord(TICKET_MEMBERS, member);
-        record.reset(TICKET_MEMBERS.TICKET_ID);
-        record.update();
-        return record.into(TicketMember.class);
+    private Stream<Ticket> getTickets(Condition condition) {
+        Stream<Record> ticketAndOfferingRecords = dsl.select()
+                                                     .from(TICKETS.leftJoin(TICKET_OFFERINGS).onKey())
+                                                     .where(condition)
+                                                     .stream();
+        Map<Integer, List<TicketMembersRecord>> memberRecordsByTicketId =
+                dsl.select(TICKET_MEMBERS.fields())
+                   .select(TICKETS.ID)
+                   .from(TICKET_MEMBERS.leftJoin(TICKET_OFFERINGS).onKey())
+                   .where(condition)
+                   .fetchGroups(TICKETS.ID, it -> it.into(TICKET_MEMBERS));
+        return ticketAndOfferingRecords.map(it -> {
+            TicketsRecord ticketsRecord = it.into(TICKETS);
+            TicketOfferingsRecord offeringsRecord = it.into(TICKET_OFFERINGS);
+            List<Ticket.Member> members = memberRecordsByTicketId.getOrDefault(ticketsRecord.getId(),
+                                                                               Collections.emptyList())
+                                                                 .stream()
+                                                                 .map(mapper::toMember)
+                                                                 .collect(Collectors.toList());
+            return mapper.toTicket(ticketsRecord, offeringsRecord, members);
+        });
     }
 
     public void deleteMember(int ticketId, int memberId) {
-        dsl.delete(TICKET_MEMBERS)
-           .where(TICKET_MEMBERS.ID.eq(memberId))
-           .and(TICKET_MEMBERS.TICKET_ID.eq(ticketId))
-           .execute();
-    }
-
-    public int getAmountReserved(int typeId) {
-        List<Integer> typeIds = new ArrayList<>();
-        Queue<TicketType> types = new ArrayDeque<>(Collections.singletonList(getTicketType(typeId)));
-        while (!types.isEmpty()) {
-            TicketType type = types.poll();
-            typeIds.add(type.getId());
-            List<TicketType> promotions = type.getPromotions();
-            if (promotions != null) {
-                types.addAll(promotions);
-            }
+        int rowsDeleted = dsl.delete(TICKET_MEMBERS)
+                             .where(TICKET_MEMBERS.TICKET_ID.eq(ticketId))
+                             .and(TICKET_MEMBERS.ID.eq(memberId))
+                             .execute();
+        if (rowsDeleted == 0) {
+            throw new NoSuchElementException("Ticket member not found");
         }
-        return dsl.selectCount()
-                  .from(TICKETS)
-                  .where(TICKETS.TYPE_ID.in(typeIds))
-                  .and(TICKETS.STATUS.in(Arrays.asList(TicketStatus.AWAITING_PAYMENT,
-                                                       TicketStatus.PAID)))
-                  .fetchAny()
-                  .into(Integer.class);
     }
 
-    //TODO: optimize
-    public TicketType getTicketType(int typeId) {
-        Queue<TicketType> types = new ArrayDeque<>(getAllTypes());
-        while (!types.isEmpty()) {
-            TicketType type = types.poll();
-            if (type.getId() == typeId) {
-                return type;
-            }
-            List<TicketType> promotions = type.getPromotions();
-            if (promotions != null) {
-                types.addAll(promotions);
-            }
-        }
-        return null;
+    public List<TicketType> getAllTypes() {
+        return getTicketTypes(DSL.trueCondition()).collect(Collectors.toList());
     }
 
-    public Ticket getTicket(int ticketId) {
-        return dsl.select()
-                  .from(TICKETS)
-                  .leftJoin(TICKET_TYPES)
-                  .onKey()
-                  .where(TICKETS.ID.eq(ticketId))
-                  .fetchAny(ticketRecordMapper);
+    public TicketType getType(int typeId) {
+        Stream<TicketType> typeStream = getTicketTypes(DSL.trueCondition());
+        return typeStream.findAny()
+                         .orElseThrow(() -> new NoSuchElementException("Ticket type not found"));
     }
 
-    public void setStatus(int id, TicketStatus status) {
-        UpdateSetStep<TicketsRecord> update = dsl.update(TICKETS);
-        if (status == TicketStatus.AWAITING_PAYMENT) {
-            update = update.set(TICKETS.DATE_CREATED, Timestamp.from(Instant.now()));
-        }
-        update.set(TICKETS.STATUS, status.name())
-              .where(TICKETS.ID.eq(id))
-              .execute();
+    private Stream<TicketType> getTicketTypes(Condition condition) {
+        Stream<Record> typesRecords = dsl.select(TICKET_TYPES.fields())
+                                        .select(TICKETS.ID.count().as(ACTIVE_TICKETS_COUNT))
+                                        .from(TICKET_TYPES.leftJoin(TICKET_OFFERINGS).onKey()
+                                                          .leftJoin(TICKETS).onKey())
+                                        .where(condition)
+                                        .groupBy(TICKET_TYPES.ID)
+                                        .stream();
+        Map<Integer, List<Record>> offeringsByTypeId =
+                dsl.select(TICKET_OFFERINGS.fields())
+                   .select(TICKET_TYPES.ID)
+                   .select(TICKETS.ID.count().as(ACTIVE_TICKETS_COUNT))
+                   .from(TICKET_OFFERINGS.leftJoin(TICKET_TYPES).onKey())
+                   .where(condition)
+                   .groupBy(TICKET_OFFERINGS.ID)
+                   .fetchGroups(TICKET_TYPES.ID, it -> it.into(TICKET_OFFERINGS));
+        return typesRecords.map(it -> {
+            TicketTypesRecord typesRecord = it.into(TICKET_TYPES);
+            List<TicketType.Offering> offerings = offeringsByTypeId.getOrDefault(typesRecord.getId(),
+                                                                                          Collections.emptyList())
+                    .stream()
+                    .map(it2 -> {
+                        TicketOfferingsRecord offeringsRecord = it2.into(TICKET_OFFERINGS);
+                        Integer amountActive = it2.get(ACTIVE_TICKETS_COUNT, Integer.class);
+                        return mapper.toTicketOffering(offeringsRecord, amountActive);
+                    })
+                    .collect(Collectors.toList());
+            Integer amountActive = it.get(ACTIVE_TICKETS_COUNT, Integer.class);
+            return mapper.toTicketType(typesRecord, offerings, amountActive);
+        });
     }
+
+    private Timestamp getCurrentTimestamp() {
+        return new Timestamp(Instant.now().getEpochSecond());
+    }
+
 }

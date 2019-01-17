@@ -1,4 +1,4 @@
-package ee.esport.spring2018.web.auth;
+package ee.esport.spring2018.web.auth.steam;
 
 import com.lukaspradel.steamapi.data.json.playersummaries.Player;
 import lombok.AllArgsConstructor;

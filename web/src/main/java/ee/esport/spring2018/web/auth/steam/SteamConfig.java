@@ -1,4 +1,4 @@
-package ee.esport.spring2018.web.auth;
+package ee.esport.spring2018.web.auth.steam;
 
 import com.lukaspradel.steamapi.webapi.client.SteamWebApiClient;
 import lombok.Setter;
@@ -15,7 +15,8 @@ public class SteamConfig {
 
     private static final String STEAM_OPENID = "http://steamcommunity.com/openid";
 
-    @Setter private String apiKey;
+    @Setter
+    private String apiKey;
 
     @Bean
     public ConsumerManager getConsumerManager() {

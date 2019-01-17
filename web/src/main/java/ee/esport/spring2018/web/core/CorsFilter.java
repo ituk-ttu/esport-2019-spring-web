@@ -1,4 +1,4 @@
-package ee.esport.spring2018.web.web;
+package ee.esport.spring2018.web.core;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;

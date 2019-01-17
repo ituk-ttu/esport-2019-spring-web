@@ -1,4 +1,4 @@
-package ee.esport.spring2018.web.web;
+package ee.esport.spring2018.web.core;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

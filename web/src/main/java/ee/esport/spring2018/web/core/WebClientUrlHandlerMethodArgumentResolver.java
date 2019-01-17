@@ -1,4 +1,4 @@
-package ee.esport.spring2018.web.web;
+package ee.esport.spring2018.web.core;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpHeaders;
@@ -9,6 +9,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import javax.servlet.http.HttpServletRequest;
 
+@ArgumentResolverComponent
 public class WebClientUrlHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver{
 
     @Override

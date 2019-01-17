@@ -1,10 +1,11 @@
 package ee.esport.spring2018.web.email;
 
-import ee.esport.spring2018.web.ticket.Ticket;
+import ee.esport.spring2018.web.ticket.domain.Ticket;
 import lombok.RequiredArgsConstructor;
 import net.sargue.mailgun.Mail;
 import net.sargue.mailgun.MailRequestCallback;
 import net.sargue.mailgun.Response;
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.springframework.stereotype.Service;
@@ -35,8 +36,12 @@ public class EmailService {
                     "2018-359027-" + "000".substring(Integer.toString(ticket.getId()).length()) + ticket.getId());
         context.put("payByDate",
                     OffsetDateTime.ofInstant(ticket.getDateCreated().plusDays(3).toInstant(), ZoneId.systemDefault()));
-        String to = ticket.getOwnerEmail();
+        String to = getOwnerId();
         return sendAsync(to, "ticketReserved", context, "Pilet reserveeritud / Ticket Reserved");
+    }
+
+    private String getOwnerId() {
+        throw new NotImplementedException("Getting owner email nott ye implemented");
     }
 
     public CompletableFuture<Response> sendTicketWaiting(Ticket ticket, String loginLink) {
@@ -47,21 +52,21 @@ public class EmailService {
                     "2018-359027-" + "000".substring(Integer.toString(ticket.getId()).length()) + ticket.getId());
         context.put("payByDate",
                     OffsetDateTime.ofInstant(ticket.getDateCreated().plusDays(3).toInstant(), ZoneId.systemDefault()));
-        return sendAsync(ticket.getOwnerEmail(), "ticketWaiting", context, "Pilet ootel / Ticket In Waiting List ");
+        return sendAsync(getOwnerId(), "ticketWaiting", context, "Pilet ootel / Ticket In Waiting List ");
     }
 
     public CompletableFuture<Response> sendTicketCanceled(Ticket ticket, String loginLink) {
         VelocityContext context = createContext();
         context.put("ticket", ticket);
         context.put("loginLink", loginLink);
-        return sendAsync(ticket.getOwnerEmail(), "ticketCanceled", context, "Pilet tühistatud / Ticket Canceled");
+        return sendAsync(getOwnerId(), "ticketCanceled", context, "Pilet tühistatud / Ticket Canceled");
     }
 
     public CompletableFuture<Response> sendTicketConfirmed(Ticket ticket, String loginLink) {
         VelocityContext context = createContext();
         context.put("ticket", ticket);
         context.put("loginLink", loginLink);
-        return sendAsync(ticket.getOwnerEmail(), "ticketConfirmed", context, "Pilet kinnitatud / Ticket Confirmed");
+        return sendAsync(getOwnerId(), "ticketConfirmed", context, "Pilet kinnitatud / Ticket Confirmed");
     }
 
     private CompletableFuture<Response> sendAsync(String to, String templateName, VelocityContext context,

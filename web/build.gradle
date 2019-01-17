@@ -11,6 +11,7 @@ buildscript {
 }
 
 apply plugin: 'java'
+apply plugin: 'idea'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 
@@ -25,6 +26,8 @@ repositories {
 }
 
 dependencies {
+	compileOnly 'org.projectlombok:lombok'
+
 	compile project(':db')
 	compile('org.flywaydb:flyway-core')
 	compile('org.springframework.boot:spring-boot-starter-cache')
@@ -39,8 +42,10 @@ dependencies {
 	compile('com.fasterxml.jackson.datatype:jackson-datatype-jsr310')
 	compile('com.lukaspradel:steam-web-api:1.2')
 	compileOnly('org.springframework.boot:spring-boot-configuration-processor')
-	compileOnly('org.projectlombok:lombok')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
+
+	compileOnly 'org.mapstruct:mapstruct-processor:1.3.0.Beta2'
+	compile 'org.mapstruct:mapstruct-jdk8:1.3.0.Beta2'
 }
 
 println "Running in " + System.properties['user.dir']
@@ -55,4 +60,10 @@ bootRun {
 	if ( project.hasProperty('jvmArgs') ) {
 		jvmArgs (project.jvmArgs.split('\\s+') as List)
 	}
+}
+
+compileJava {
+	options.compilerArgs = [
+		'-Amapstruct.defaultComponentModel=spring'
+	]
 }
