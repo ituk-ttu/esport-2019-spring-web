@@ -1,4 +1,4 @@
-package ee.esport.spring2018.db;
+package ee.esport.spring2019.db;
 
 import org.jooq.util.ColumnDefinition;
 import org.jooq.util.DefaultGeneratorStrategy;

@@ -4,7 +4,7 @@
 * suitsetamine (ka e-sigaret) selleks mitte ettenähtud kohtades - suitsetada võib suitsuruumis või õues vastava prügikasti juures
 * keelatud on
   * suitsetamine alaealistel
-  * mokatubaka kasutamine TTÜ territooriumil
+  * mokatubaka kasutamine TalTech-i territooriumil
 * ürituse alal igasuguse vägivalla kasutamine teiste ja teiste vara suhtes
 * teiste vara omavoliline kasutamine, näppimine
 * turniiri reeglitele mittevastavalt mängimine
@@ -14,6 +14,6 @@
 * korraldajale varalise kahju tekitanud külastaja on kohustatud korvama täies ulatuses tekitatud kahju
 * magamiseks ettenähtud ajal ja magamiseks ettenähtud ruumis tuleb olla vaikselt ja võimaldada kaasmängijatel magada
 * korraldajad ei vastuta külastajate eest
-* mängijad on TTÜ e-Spordil kohustatud kinni pidama mängule seatud vanusepiirangutest
+* mängijad on TalTech e-Spordil kohustatud kinni pidama mängule seatud vanusepiirangutest
 
-NB! Reeglite rikkumise puhul on korraldajatel õigus mängija (koos tema meeskonnaga) eemaldada ja rakendada edasist keeldu TTÜ e-Spordi üritustelt.
+NB! Reeglite rikkumise puhul on korraldajatel õigus mängija (koos tema meeskonnaga) eemaldada ja rakendada edasist keeldu TalTech e-Spordi üritustelt.

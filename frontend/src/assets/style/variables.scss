@@ -1,0 +1,19 @@
+@import "colors";
+
+$text: $tt-dark-blue;
+$primary: $tt-magenta;
+$dark: $tt-dark-blue;
+$light: $tt-grey-1;
+$link: $tt-magenta;
+$link-hover: darken($tt-magenta, 20%);
+$footer-background-color: $tt-dark-blue;
+$grey-light: $tt-grey-2;
+$navbar-background-color: $tt-dark-blue;
+$navbar-height: 6rem;
+$navbar-item-color: $tt-white;
+$navbar-item-hover-background-color: $tt-dark-blue;
+$navbar-item-hover-color: $tt-magenta;
+$navbar-dropdown-background-color: $tt-dark-blue;
+$navbar-dropdown-item-hover-background-color: $tt-dark-blue;
+$navbar-dropdown-item-hover-color: $tt-magenta;
+$navbar-dropdown-arrow: $tt-magenta;

@@ -24,7 +24,13 @@ function TicketService (Vue) {
     const availableFrom = type.availableFrom;
     const availableUntil = type.availableUntil;
     return (availableFrom == null || now.isAfter(availableFrom)) &&
-           (availableUntil == null || now.isBefore(availableUntil));
+      (availableUntil == null || now.isBefore(availableUntil));
+  };
+
+  svc.hasEnded = type => {
+    const now = moment();
+    const availableUntil = type.availableUntil;
+    return (availableUntil == null || now.isAfter(availableUntil));
   };
 
   svc.hasActivePromotion = type => {
@@ -35,8 +41,8 @@ function TicketService (Vue) {
   };
 
   svc.buy = (ticketDetails, typeId) => Vue.http.post('api/ticket',
-                                                     Object.assign({}, ticketDetails, { type: { id: typeId } }))
-                                               .then(res => res.body);
+    Object.assign({}, ticketDetails, {type: {id: typeId}}))
+    .then(res => res.body);
 
   svc.adminCanConfirm = ticket => ticket.status === 'AWAITING_PAYMENT';
 
@@ -142,4 +148,4 @@ if (!Array.prototype.findIndex) {
   });
 }
 
-export default { install };
+export default {install};

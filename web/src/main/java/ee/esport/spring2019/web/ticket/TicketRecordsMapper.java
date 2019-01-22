@@ -1,12 +1,13 @@
 package ee.esport.spring2019.web.ticket;
 
-import ee.esport.spring2018.jooq.tables.records.TicketMembersRecord;
-import ee.esport.spring2018.jooq.tables.records.TicketOfferingsRecord;
-import ee.esport.spring2018.jooq.tables.records.TicketTypesRecord;
-import ee.esport.spring2018.jooq.tables.records.TicketsRecord;
+import ee.esport.spring2019.jooq.tables.records.TicketMembersRecord;
+import ee.esport.spring2019.jooq.tables.records.TicketTypesRecord;
+import ee.esport.spring2019.jooq.tables.records.TicketsRecord;
+import ee.esport.spring2019.jooq.tables.records.TicketOfferingsRecord;
 import ee.esport.spring2019.web.core.BaseMapper;
 import ee.esport.spring2019.web.ticket.domain.Ticket;
 import ee.esport.spring2019.web.ticket.domain.TicketType;
+import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -18,6 +19,7 @@ public interface TicketRecordsMapper extends BaseMapper {
     @Mapping(target = "id", source = "ticketsRecord.id")
     @Mapping(target = "typeId", source = "offeringsRecord.id")
     @Mapping(target = "offeringId", source = "offeringsRecord.ticketTypeId")
+    @Mapping(target = "ownerId", source = "ticketsRecord.ownerId")
     @Mapping(target = "seat", source = "ticketsRecord.seat")
     @Mapping(target = "status", source = "ticketsRecord.status")
     @Mapping(target = "dateCreated", source = "ticketsRecord.dateCreated")
@@ -35,14 +37,14 @@ public interface TicketRecordsMapper extends BaseMapper {
     @Mapping(target = "amountActive", source = "amountActive")
     @Mapping(target = "teamSize", source = "typesRecord.amountAvailable")
     @Mapping(target = "assignedSeating", source = "typesRecord.assignedSeating")
-    @Mapping(target = "offerings", expression = "offerings")
+    @Mapping(target = "offerings", source = "offerings")
     TicketType toTicketType(TicketTypesRecord typesRecord, List<TicketType.Offering> offerings, Integer amountActive);
 
     @Mapping(target = "id", source = "offeringsRecord.id")
     @Mapping(target = "name", source = "offeringsRecord.name")
     @Mapping(target = "amountAvailable", source = "offeringsRecord.amountAvailable")
     @Mapping(target = "amountActive", source = "amountActive")
-    @Mapping(target = "availableFrom", source = "offeringsRecord.availableForm")
+    @Mapping(target = "availableFrom", source = "offeringsRecord.availableFrom")
     @Mapping(target = "availableUntil", source = "offeringsRecord.availableUntil")
     @Mapping(target = "availableOnline", source = "offeringsRecord.availableOnline")
     @Mapping(target = "promotional", source = "offeringsRecord.promotional")

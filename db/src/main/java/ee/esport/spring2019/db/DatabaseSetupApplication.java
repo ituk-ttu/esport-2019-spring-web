@@ -1,4 +1,4 @@
-package ee.esport.spring2018.db;
+package ee.esport.spring2019.db;
 
 import lombok.extern.apachecommons.CommonsLog;
 import org.apache.tomcat.jdbc.pool.DataSource;
@@ -40,7 +40,7 @@ public class DatabaseSetupApplication implements CommandLineRunner {
         Database databaseConfig = new Database().withName("org.jooq.util.mariadb.MariaDBDatabase")
                                                 .withExcludes("schema_version")
                                                 .withInputSchema(schema);
-        Target targetConfig = new Target().withPackageName("ee.esport.spring2018.jooq")
+        Target targetConfig = new Target().withPackageName("ee.esport.spring2019.jooq")
                                           .withDirectory("src/generated/java");
         Strategy strategyConfig = new Strategy().withName(EsportGenerationStrategy.class.getCanonicalName());
         return new Configuration().withGenerator(new Generator().withDatabase(databaseConfig)

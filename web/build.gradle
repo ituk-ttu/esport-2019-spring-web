@@ -10,23 +10,31 @@ buildscript {
 	}
 }
 
+plugins {
+    id 'net.ltgt.apt' version '0.9'
+}
+
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 
-group = 'ee.e-sport.spring2018'
+group = 'ee.e-sport.spring2019'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
-jar.archiveName = 'esport2018spring.web.jar'
+jar.archiveName = 'esport2019spring.web.jar'
 
 repositories {
 	mavenCentral()
 }
 
+ext {
+	mapstructVersion = "1.3.0.Beta2"
+	lombokVersion = "1.18.4"
+}
+
 dependencies {
-	compileOnly 'org.projectlombok:lombok:1.18.4'
 	compile project(':db')
 	compile('org.flywaydb:flyway-core')
 	compile('org.springframework.boot:spring-boot-starter-cache')
@@ -43,13 +51,15 @@ dependencies {
 	compileOnly('org.springframework.boot:spring-boot-configuration-processor')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 
-	compileOnly 'org.mapstruct:mapstruct-processor:1.3.0.Beta2'
-	compile 'org.mapstruct:mapstruct-jdk8:1.3.0.Beta2'
+	compile "org.mapstruct:mapstruct:${mapstructVersion}"
+	compile "org.projectlombok:lombok:${lombokVersion}"
+	apt "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+	apt "org.projectlombok:lombok:${lombokVersion}"
 }
 
 println "Running in " + System.properties['user.dir']
 
-springBoot.mainClass = "ee.esport.spring2018.web.EsportWebApplication"
+springBoot.mainClass = "ee.esport.spring2019.web.EsportWebApplication"
 
 bootRun {
 	systemProperties = System.properties

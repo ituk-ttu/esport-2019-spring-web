@@ -19,12 +19,11 @@ import AuthService from './services/AuthService';
 import TicketService from './services/TicketService';
 import DocumentService from './services/DocumentService';
 
-import './assets/less/style.less';
+import './assets/style/style.scss';
 const $ = require('jquery');
 
 window.jQuery = $;
 
-require('bootstrap-less/js/bootstrap');
 Vue.use(VueLocalStorage);
 
 Vue.use(Vuex);

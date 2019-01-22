@@ -63,7 +63,7 @@
     },
     methods: {
       getInvoiceNumber: function (id) {
-        return '2018-359027-' + '000'.substring(0, 3 - id.toString().length) + id.toString();
+        return '2019-359027-' + '000'.substring(0, 3 - id.toString().length) + id.toString();
       },
       canConfirmTicket: function (ticket) {
         return this.$ticket.adminCanConfirm(ticket);

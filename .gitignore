@@ -1,6 +1,10 @@
 .gradle/
 .idea/
 *.iml
-/web/build/
+web/out/
+web/build/
+db/out/
+db/build/
 **/src/generated/
 config/application-*-secret.yaml
+**/rebel.xml

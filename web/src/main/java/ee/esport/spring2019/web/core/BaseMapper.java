@@ -11,4 +11,8 @@ public interface BaseMapper {
         return OffsetDateTime.ofInstant(Instant.ofEpochMilli(timestamp.getTime()), ZoneId.systemDefault());
     }
 
+    default Boolean toBoolean(Byte booleanAsByte) {
+        return booleanAsByte != null ? booleanAsByte != 0 : null;
+    }
+
 }

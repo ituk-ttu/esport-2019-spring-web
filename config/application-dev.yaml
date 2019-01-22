@@ -5,5 +5,5 @@ jwt:
     signature:
         algorithm: "HS512"
 email:
-    fromName: "TTÜ e-Sport DEV"
+    fromName: "TalTech e-Sport DEV"
     fromEmail: "dev.no-reply@e-sport.ee"

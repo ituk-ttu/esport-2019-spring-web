@@ -22,7 +22,7 @@
   },
   "hero": {
     "date": "9.-11. veebruar",
-    "game": "CSGO",
+    "game": "CS:GO",
     "teams": "32 meeskonda",
     "ticketsSoon": "Piletid varsti müügil!"
   },
@@ -32,7 +32,9 @@
     "tickets": "Piletid",
     "perPerson": "/inimene",
     "perPersonShort": "/in",
+    "from": "alates",
     "until": "kuni",
+    "availableFrom": "saadaval alates",
     "availableUntil": "saadaval kuni",
     "regularTicket": "Tavapilet",
     "remaining": "alles",

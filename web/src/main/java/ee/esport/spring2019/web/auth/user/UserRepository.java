@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
 
-import static ee.esport.spring2018.jooq.Tables.USERS;
+import static ee.esport.spring2019.jooq.Tables.USERS;
 
 @Repository
 @RequiredArgsConstructor

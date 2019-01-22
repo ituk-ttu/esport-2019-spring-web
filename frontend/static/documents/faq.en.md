@@ -22,7 +22,7 @@ Deskspace, a chair, a network cable and one power socket. BRING YOUR OWN EXTENSI
 
 ### Can I sleep at the location during the event?
 
-Yes, you can sleep in designated TTÜ rooms. Bring a matt and a sleeping bag.
+Yes, you can sleep in designated TalTech rooms. Bring a matt and a sleeping bag.
 
 ### I don't have a team, can I join alone?
 

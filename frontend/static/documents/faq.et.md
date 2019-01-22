@@ -22,7 +22,7 @@ Lauapind ja tool, võrgukaabel, üks vooluvõtu koht. OMA PIKENDUSJUHE KAASA!
 
 ### Kas üritusel on võimalik ööbida?
 
-Jah, üritusel on võimalik tasuta ööbida TTÜ ruumides, selleks võta kaasa madrats ja magamiskott.
+Jah, üritusel on võimalik tasuta ööbida TalTech ruumides, selleks võta kaasa madrats ja magamiskott.
 
 ### Mul ei ole meeskonda, kas saan osaleda ka üksinda?
 

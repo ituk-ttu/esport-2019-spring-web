@@ -1,6 +1,6 @@
 <template lang="pug">
-  .container.center-content
-      steam-login(:onSuccess="onSuccess")
+  section.section: .container.has-text-centered
+    steam-login(:onSuccess="onSuccess")
 </template>
 
 <script>

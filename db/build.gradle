@@ -15,7 +15,7 @@ apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 
-group = 'ee.e-sport.spring2018'
+group = 'ee.e-sport.spring2019'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
