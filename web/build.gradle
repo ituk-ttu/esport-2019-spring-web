@@ -26,8 +26,7 @@ repositories {
 }
 
 dependencies {
-	compileOnly 'org.projectlombok:lombok'
-
+	compileOnly 'org.projectlombok:lombok:1.18.4'
 	compile project(':db')
 	compile('org.flywaydb:flyway-core')
 	compile('org.springframework.boot:spring-boot-starter-cache')
