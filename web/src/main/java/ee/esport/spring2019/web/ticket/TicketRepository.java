@@ -1,9 +1,9 @@
 package ee.esport.spring2019.web.ticket;
 
-import ee.esport.spring2018.jooq.tables.records.TicketMembersRecord;
-import ee.esport.spring2018.jooq.tables.records.TicketOfferingsRecord;
-import ee.esport.spring2018.jooq.tables.records.TicketTypesRecord;
-import ee.esport.spring2018.jooq.tables.records.TicketsRecord;
+import ee.esport.spring2019.jooq.tables.records.TicketMembersRecord;
+import ee.esport.spring2019.jooq.tables.records.TicketOfferingsRecord;
+import ee.esport.spring2019.jooq.tables.records.TicketTypesRecord;
+import ee.esport.spring2019.jooq.tables.records.TicketsRecord;
 import ee.esport.spring2019.web.ticket.domain.Ticket;
 import ee.esport.spring2019.web.ticket.domain.TicketCandidate;
 import ee.esport.spring2019.web.ticket.domain.TicketType;
@@ -23,8 +23,8 @@ import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static ee.esport.spring2018.jooq.Tables.*;
-import static ee.esport.spring2018.jooq.tables.Tickets.TICKETS;
+import static ee.esport.spring2019.jooq.Tables.*;
+import static ee.esport.spring2019.jooq.tables.Tickets.TICKETS;
 
 @Service
 @RequiredArgsConstructor
