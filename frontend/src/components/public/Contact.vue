@@ -6,7 +6,7 @@
         .card.full-height-card
           .card-image
             figure.image
-              img(src="../../assets/images/lauri_kukk.jpg")
+              img(src="../../assets/images/rasmus.jpg")
           .card-content
             h1.title.has-text-primary Rasmus Rüngenen
             h2.subtitle.has-text-dark.has-text-weight-bold(v-t="'contact.chiefOrganizer'")
