@@ -4,8 +4,8 @@
     router-view.view
     footer.footer.main-footer
       .content.has-text-centered
-        a.footer-link(href="https://www.facebook.com/ttuesport/"): i.fa.fa-lg.fa-facebook
-        a.footer-link(href="https://www.instagram.com/ttuesport/"): i.fa.fa-lg.fa-instagram
+        a.footer-link(href="https://www.facebook.com/taltech.esport/"): i.fa.fa-lg.fa-facebook
+        a.footer-link(href="https://www.instagram.com/taltech.esport/"): i.fa.fa-lg.fa-instagram
         a.footer-link(href="mailto:esport@ituk.ee"): i.fa.fa-lg.fa-envelope
         a.footer-link(href="https://github.com/ituk-ttu/esport-2019-spring-web"): i.fa.fa-lg.fa-github
 </template>
