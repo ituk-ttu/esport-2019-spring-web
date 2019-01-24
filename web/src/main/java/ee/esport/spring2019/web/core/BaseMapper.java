@@ -8,7 +8,9 @@ import java.time.ZoneId;
 public interface BaseMapper {
 
     default OffsetDateTime toOffsetDateTime(Timestamp timestamp) {
-        return OffsetDateTime.ofInstant(Instant.ofEpochMilli(timestamp.getTime()), ZoneId.systemDefault());
+        return timestamp != null ?
+               OffsetDateTime.ofInstant(Instant.ofEpochMilli(timestamp.getTime()), ZoneId.systemDefault()) :
+               null;
     }
 
     default Boolean toBoolean(Byte booleanAsByte) {

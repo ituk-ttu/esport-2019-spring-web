@@ -110,8 +110,10 @@ public class TicketRepository {
     private Stream<TicketType> getTicketTypes(Condition condition) {
         Stream<Record> typesRecords = dsl.select(TICKET_TYPES.fields())
                                         .select(TICKETS.ID.count().as(ACTIVE_TICKETS_COUNT))
-                                        .from(TICKET_TYPES.leftJoin(TICKET_OFFERINGS).onKey()
-                                                          .leftJoin(TICKETS).onKey())
+                                        .from(TICKET_TYPES.leftJoin(TICKET_OFFERINGS)
+                                                          .on(TICKET_OFFERINGS.TICKETTYPE_ID.eq(TICKET_TYPES.ID))
+                                                          .leftJoin(TICKETS)
+                                                          .on(TICKETS.OFFERING_ID.eq(TICKET_OFFERINGS.ID)))
                                         .where(condition)
                                         .groupBy(TICKET_TYPES.ID)
                                         .stream();
@@ -119,22 +121,28 @@ public class TicketRepository {
                 dsl.select(TICKET_OFFERINGS.fields())
                    .select(TICKET_TYPES.ID)
                    .select(TICKETS.ID.count().as(ACTIVE_TICKETS_COUNT))
-                   .from(TICKET_OFFERINGS.leftJoin(TICKET_TYPES).onKey())
+                   .from(TICKET_OFFERINGS.leftJoin(TICKET_TYPES)
+                                         .onKey()
+                                         .leftJoin(TICKETS)
+                                         .on(TICKETS.OFFERING_ID.eq(TICKET_OFFERINGS.ID)))
                    .where(condition)
                    .groupBy(TICKET_OFFERINGS.ID)
-                   .fetchGroups(TICKET_TYPES.ID, it -> it.into(TICKET_OFFERINGS));
+                   .fetchGroups(TICKET_TYPES.ID, record -> record);
         return typesRecords.map(it -> {
             TicketTypesRecord typesRecord = it.into(TICKET_TYPES);
-            List<TicketType.Offering> offerings = offeringsByTypeId.getOrDefault(typesRecord.getId(),
-                                                                                          Collections.emptyList())
-                    .stream()
-                    .map(it2 -> {
-                        TicketOfferingsRecord offeringsRecord = it2.into(TICKET_OFFERINGS);
-                        Integer amountActive = it2.get(ACTIVE_TICKETS_COUNT, Integer.class);
-                        return mapper.toTicketOffering(offeringsRecord, amountActive);
-                    })
+            List<TicketType.Offering> offerings =
+                    offeringsByTypeId.getOrDefault(typesRecord.getId(),
+                                                   Collections.emptyList())
+                                     .stream()
+                                     .map(offering -> {
+                                         TicketOfferingsRecord offeringsRecord = offering.into(TICKET_OFFERINGS);
+                                         Integer amountActive = offering.get(ACTIVE_TICKETS_COUNT, Integer.class);
+                                         return mapper.toTicketOffering(offeringsRecord, amountActive);
+                                     })
                     .collect(Collectors.toList());
-            Integer amountActive = it.get(ACTIVE_TICKETS_COUNT, Integer.class);
+            Integer amountActive = offerings.stream()
+                                            .mapToInt(TicketType.Offering::getAmountActive)
+                                            .sum();
             return mapper.toTicketType(typesRecord, offerings, amountActive);
         });
     }

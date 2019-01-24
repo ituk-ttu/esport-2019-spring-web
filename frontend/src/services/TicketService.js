@@ -74,7 +74,7 @@ function TicketService (Vue) {
   });
 
   function loadTicketTypes () {
-    ticketTypes = Vue.http.get('api/ticketTypes').then(res => res.body);
+    ticketTypes = Vue.http.get('api/tickets/types').then(res => res.body);
   }
 
   function findType (typeId, types) {
