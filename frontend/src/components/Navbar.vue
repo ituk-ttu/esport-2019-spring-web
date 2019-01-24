@@ -3,11 +3,11 @@
     .navbar-start
       .navbar-brand
         a.navbar-item(href="https://e-sport.ee"): img(src="../assets/svg/logo.onpurple.svg")
-        a.navbar-burger.burger(role='button' aria-label='menu' aria-expanded='false' data-target='menu')
+        a.navbar-burger.burger(role='button' aria-label='menu' aria-expanded='false' data-target='menu' v-on:click="isExpanded = !isExpanded")
           span(aria-hidden='true')
           span(aria-hidden='true')
           span(aria-hidden='true')
-    .navbar-menu#menu
+    .navbar-menu#menu(v-bind:class="isExpanded ? 'is-active' : ''")
       .navbar-end
         navbar-link(:title="$t('navbar.home')" target-page="Home")
         navbar-dropdown(:title="$t('navbar.info')")
@@ -36,6 +36,11 @@
 
   export default {
     name: 'navbar',
+    data() {
+      return {
+        isExpanded: false
+      };
+    },
     methods: {
       setLanguage: function (language) {
         this.$root.$i18n.locale = language;
