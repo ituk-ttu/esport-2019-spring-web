@@ -22,7 +22,7 @@
         navbar-link(:title="$t('navbar.volunteer')" target-url="https://volunteer.e-sport.ee" new-window)
         navbar-dropdown(v-if="isAdmin" :title="$t('navbar.admin')")
           navbar-link(:title="$t('navbar.adminTickets')" target-page="AdminTickets")
-        navbar-link(v-else :title="$t('navbar.login')" target-page="Login")
+        //navbar-link(v-else :title="$t('navbar.login')" target-page="Login")
         navbar-link(:title="$t('navbar.discord')" target-url="https://discord.gg/W5Psxu3" new-window
                     look="discord")
       template(v-for="language in languages")
