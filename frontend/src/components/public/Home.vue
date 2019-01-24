@@ -9,7 +9,7 @@
     section.section
       .container
         h1.title.has-text-centered.has-text-primary.is-1(v-t="'tickets.tickets'")
-        .has-text-centered(v-if="$parent.tickets == null"): i.fa.fa-2x.fa-cog.fa-spin
+        .has-text-centered(v-if="offerings == null"): i.fa.fa-2x.fa-cog.fa-spin
         .columns.is-multiline.is-centered
           ticket(v-for="ticket in $parent.tickets" v-if="$parent.tickets != null" :ticket="ticket" :key="ticket.id")
     section.section
