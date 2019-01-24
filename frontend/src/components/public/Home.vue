@@ -18,25 +18,10 @@
         .columns.is-multiline.is-centered.is-vcentered
           sponsor(url="https://ituk.ee" image="ituk.svg" big)
           sponsor(url="https://ttu.ee/itt" image="itt.png" big)
-          sponsor(url="https://ituk.ee" image="ituk.svg" big)
-          sponsor(url="https://ttu.ee/itt" image="itt.png" big)
+          sponsor(url="https://ttu.ee/itt" image="ye.jpg" big)
         .columns.is-multiline.is-centered.is-vcentered
-          sponsor(url="https://ituk.ee" image="ituk.svg")
-          sponsor(url="https://ituk.ee" image="ituk.svg")
-          sponsor(url="https://ttu.ee/itt" image="itt.png")
-          sponsor(url="https://lauri.ee" image="lauri_kukk.jpg")
-          sponsor(url="https://ituk.ee" image="ituk.svg")
-          sponsor(url="https://ituk.ee" image="ituk.svg")
-          sponsor(url="https://ttu.ee/itt" image="itt.png")
-          sponsor(url="https://ituk.ee" image="ituk.svg")
-          sponsor(url="https://lauri.ee" image="lauri_kukk.jpg")
-          sponsor(url="https://ituk.ee" image="ituk.svg")
-          sponsor(url="https://ttu.ee/itt" image="itt.png")
-          sponsor(url="https://lauri.ee" image="lauri_kukk.jpg")
-          sponsor(url="https://ituk.ee" image="ituk.svg")
-          sponsor(url="https://ituk.ee" image="ituk.svg")
-          sponsor(url="https://ttu.ee/itt" image="itt.png")
-          sponsor(url="https://lauri.ee" image="lauri_kukk.jpg")
+          sponsor(url="https://ituk.ee" image="filmiklubi-03.svg")
+          sponsor(url="https://ttu.ee/itt" image="thorgate.png" big)
 </template>
 
 <script>
