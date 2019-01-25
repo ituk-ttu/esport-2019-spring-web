@@ -36,7 +36,7 @@ public interface TicketRecordsMapper extends BaseMapper {
     @Mapping(target = "code", source = "typesRecord.code")
     @Mapping(target = "amountAvailable", source = "typesRecord.amountAvailable")
     @Mapping(target = "amountRemaining", source = "amountRemaining")
-    @Mapping(target = "teamSize", source = "typesRecord.amountAvailable")
+    @Mapping(target = "teamSize", source = "typesRecord.teamSize")
     @Mapping(target = "assignedSeating", source = "typesRecord.assignedSeating")
     TicketType toTicketType(TicketTypesRecord typesRecord, Integer amountRemaining);
 

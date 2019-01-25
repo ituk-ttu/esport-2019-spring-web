@@ -5,14 +5,16 @@
         h2.title.has-text-primary {{ offering.name }}
         h3.title.has-text-weight-bold
           | {{ offering.cost }}€
-          // TODO: More info (revert)
-        p.subtitle.has-text-burgundy
+        h4.subtitle(v-if="isTeamType")
+          | {{ costPerMember }}€
+          | {{ $t('tickets.perPerson') }}
+        p.has-text-burgundy
           span(v-if="isActive")
             | {{ $t('tickets.until') }}
-            |  {{ availableUntilDisplay | moment('Do MMMM') }}
+            | {{ availableUntilDisplay | moment('Do MMMM') }}
           span(v-else)
             | {{ $t('tickets.from') }}
-            |  {{ offering.availableFrom | moment('Do MMMM')}}
+            | {{ offering.availableFrom | moment('Do MMMM')}}
           div &nbsp
 
 </template>
