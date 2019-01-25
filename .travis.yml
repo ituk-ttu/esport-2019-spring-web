@@ -11,6 +11,6 @@ install: cd frontend && npm install
 branches:
   only:
   - master
-script: cd frontend && npm run build
+script: npm run build
 after_success:
 - rsync -chavzP --rsh="sshpass -p $FTP_PASSWORD ssh -o StrictHostKeyChecking=no -l $FTP_USER" frontend/dist/* $FTP_USER@e-sport.ee:/web/www-staging
