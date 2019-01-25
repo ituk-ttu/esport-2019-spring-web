@@ -1,20 +1,16 @@
-matrix:
-  include:
-  - language: node_js
-  - addons:
-      apt:
-        packages:
-        - rsync
-        - sshpass
-    sudo: true
-    dist: trusty
-    node_js:
-    - "stable"
-    branches:
-      only:
-      - master
-    before_install: cd frontend
-    script:
-    - npm run build
-    after_success:
-    - rsync -chavzP --rsh="sshpass -p $FTP_PASSWORD ssh -o StrictHostKeyChecking=no -l $FTP_USER" dist/* $FTP_USER@e-sport.ee:/web/www-staging
+language: java
+addons:
+  apt:
+    packages:
+    - rsync
+    - sshpass
+sudo: true
+dist: trusty
+node_js: "stable"
+install: cd frontend && npm install
+branches:
+  only:
+  - master
+script: cd frontend && npm run build
+after_success:
+- rsync -chavzP --rsh="sshpass -p $FTP_PASSWORD ssh -o StrictHostKeyChecking=no -l $FTP_USER" frontend/dist/* $FTP_USER@e-sport.ee:/web/www-staging
