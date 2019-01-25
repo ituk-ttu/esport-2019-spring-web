@@ -5,7 +5,7 @@
         h2.title.has-text-primary {{ offering.name }}
         h3.title.has-text-weight-bold
           | {{ offering.cost }}€
-        h4.subtitle(v-if="isTeamType")
+        h4.subtitle(v-if="isTeamType && false")
           | {{ costPerMember }}€
           | {{ $t('tickets.perPerson') }}
         p.has-text-burgundy

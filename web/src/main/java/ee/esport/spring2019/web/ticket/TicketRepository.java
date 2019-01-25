@@ -49,6 +49,7 @@ public class TicketRepository {
                                Collections.emptyList());
     }
 
+    @Deprecated
     private TicketOfferingsRecord getOfferingsRecord(int offeringId) {
         return dsl.selectFrom(TICKET_OFFERINGS)
                   .where(TICKET_OFFERINGS.ID.eq(offeringId))
