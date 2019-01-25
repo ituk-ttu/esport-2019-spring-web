@@ -1,6 +1,6 @@
 # TalTech e-Sport
 
-Reeglid tulevaseks võrgupeoks, mis toimub 9.-11. veebruar
+Reeglid tulevaseks võrgupeoks, mis toimub 19.-21. aprillil.
 
 ## 1. Üldiselt
 
