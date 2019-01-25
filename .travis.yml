@@ -13,4 +13,4 @@ branches:
   - master
 script: npm run build
 after_success:
-- rsync -chavzP --rsh="sshpass -p $FTP_PASSWORD ssh -o StrictHostKeyChecking=no -l $FTP_USER" frontend/dist/* $FTP_USER@e-sport.ee:/web/www-staging
+- rsync -chavzP --rsh="sshpass -p $FTP_PASSWORD ssh -o StrictHostKeyChecking=no -l $FTP_USER" dist/* $FTP_USER@e-sport.ee:/web/www-staging
