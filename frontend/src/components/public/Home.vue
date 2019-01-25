@@ -25,11 +25,10 @@
 </template>
 
 <script>
-  import Ticket from './Ticket';
   import Sponsor from './Sponsor';
 
   export default {
-    components: {Ticket, Sponsor},
+    components: {Sponsor},
     name: 'Home',
     props: ['tickets']
   };
