@@ -34,7 +34,8 @@
     name: 'Home',
     data: function() {
       return {
-        offerings: null
+        offerings: null,
+        types: null
       };
     },
     methods: {
