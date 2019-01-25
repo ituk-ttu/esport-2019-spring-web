@@ -1,0 +1,16 @@
+language: java
+addons:
+  apt:
+    packages:
+    - rsync
+    - sshpass
+sudo: true
+dist: trusty
+node_js: "stable"
+install: cd frontend && npm install
+branches:
+  only:
+  - master
+script: npm run build
+after_success:
+- rsync -chavzP --rsh="sshpass -p $FTP_PASSWORD ssh -o StrictHostKeyChecking=no -l $FTP_USER" dist/* $FTP_USER@e-sport.ee:/web/www-staging
