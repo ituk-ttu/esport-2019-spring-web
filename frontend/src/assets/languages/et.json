@@ -22,7 +22,7 @@
     }
   },
   "hero": {
-    "date": "9.-11. veebruar",
+    "date": "19.-21. veebruar",
     "game": "CS:GO",
     "teams": "32 meeskonda",
     "ticketsSoon": "Piletid varsti müügil!"
@@ -125,35 +125,6 @@
       "title": "Sisse logitud!",
       "text": "Oled edukalt Steamiga sisse logitud!"
     }
-  },
-  "schedule": {
-    "days": [
-      {
-        "title": "Reede, 9. veebruar",
-        "times": {
-          "18:00": "Uste avamine",
-          "20:00": "CS:GO grupifaasi algus",
-          "01:00-07:00": "Öörahu"
-        }
-      },
-      {
-        "title": "Laupäev, 10. veebruar",
-        "times": {
-          "10:00-14:00": "CS:GO turniir jätkub",
-          "14:00-15:00": "Lõunapaus",
-          "15:00-20:00": "CS:GO turniir jätkub",
-          "20:00-00:00": "CS:GO turniiri semi-finaalid"
-        }
-      },
-      {
-        "title": "Pühapäev, 11. veebruar",
-        "times": {
-          "10:00-13:00": "CS:GO turniiri kolmanda koha mängud ja finaalmängud",
-          "14:00-15:00": "Pidulik autasustamine",
-          "15:00": "Tuled maha"
-        }
-      }
-    ]
   },
   "admin": {
     "general": {
