@@ -13,9 +13,8 @@ matrix:
     branches:
       only:
       - master
+    before_install: cd frontend
     script:
-    - cd frontend
-    - npm install
     - npm run build
     after_success:
     - rsync -chavzP --rsh="sshpass -p $FTP_PASSWORD ssh -o StrictHostKeyChecking=no -l $FTP_USER" dist/* $FTP_USER@e-sport.ee:/web/www-staging
