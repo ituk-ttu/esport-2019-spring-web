@@ -6,6 +6,7 @@ import ee.esport.spring2019.jooq.tables.records.TicketsRecord;
 import ee.esport.spring2019.jooq.tables.records.TicketOfferingsRecord;
 import ee.esport.spring2019.web.core.BaseMapper;
 import ee.esport.spring2019.web.ticket.domain.Ticket;
+import ee.esport.spring2019.web.ticket.domain.TicketOffering;
 import ee.esport.spring2019.web.ticket.domain.TicketType;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
@@ -34,21 +35,21 @@ public interface TicketRecordsMapper extends BaseMapper {
     @Mapping(target = "id", source = "typesRecord.id")
     @Mapping(target = "code", source = "typesRecord.code")
     @Mapping(target = "amountAvailable", source = "typesRecord.amountAvailable")
-    @Mapping(target = "amountActive", source = "amountActive")
+    @Mapping(target = "amountRemaining", source = "amountRemaining")
     @Mapping(target = "teamSize", source = "typesRecord.amountAvailable")
     @Mapping(target = "assignedSeating", source = "typesRecord.assignedSeating")
-    @Mapping(target = "offerings", source = "offerings")
-    TicketType toTicketType(TicketTypesRecord typesRecord, List<TicketType.Offering> offerings, Integer amountActive);
+    TicketType toTicketType(TicketTypesRecord typesRecord, Integer amountRemaining);
 
     @Mapping(target = "id", source = "offeringsRecord.id")
     @Mapping(target = "name", source = "offeringsRecord.name")
+    @Mapping(target = "typeId", source = "offeringsRecord.ticketTypeId")
     @Mapping(target = "amountAvailable", source = "offeringsRecord.amountAvailable")
-    @Mapping(target = "amountActive", source = "amountActive")
+    @Mapping(target = "amountRemaining", source = "amountRemaining")
     @Mapping(target = "availableFrom", source = "offeringsRecord.availableFrom")
     @Mapping(target = "availableUntil", source = "offeringsRecord.availableUntil")
     @Mapping(target = "availableOnline", source = "offeringsRecord.availableOnline")
     @Mapping(target = "promotional", source = "offeringsRecord.promotional")
     @Mapping(target = "cost", source = "offeringsRecord.cost")
-    TicketType.Offering toTicketOffering(TicketOfferingsRecord offeringsRecord, Integer amountActive);
+    TicketOffering toTicketOffering(TicketOfferingsRecord offeringsRecord, Integer amountRemaining);
 
 }

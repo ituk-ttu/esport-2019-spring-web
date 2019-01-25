@@ -5,6 +5,7 @@ import ee.esport.spring2019.web.auth.user.UserRole;
 import ee.esport.spring2019.web.core.WebClientUrl;
 import ee.esport.spring2019.web.ticket.domain.Ticket;
 import ee.esport.spring2019.web.ticket.domain.TicketCreation;
+import ee.esport.spring2019.web.ticket.domain.TicketOffering;
 import ee.esport.spring2019.web.ticket.domain.TicketType;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.HttpStatus;
@@ -31,6 +32,11 @@ public class TicketController {
     @GetMapping("/types/{typeId}")
     public ResponseEntity<TicketType> getTicketType(@PathVariable int typeId) {
         return new ResponseEntity<>(ticketService.getType(typeId), HttpStatus.OK);
+    }
+
+    @GetMapping("/offerings/visible")
+    public ResponseEntity<List<TicketOffering>> getVisibleOfferings() {
+        return new ResponseEntity<>(ticketService.getVisibleOfferings(), HttpStatus.OK);
     }
 
     @GetMapping("/")

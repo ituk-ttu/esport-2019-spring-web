@@ -6,6 +6,7 @@ import ee.esport.spring2019.jooq.tables.records.TicketTypesRecord;
 import ee.esport.spring2019.jooq.tables.records.TicketsRecord;
 import ee.esport.spring2019.web.ticket.domain.Ticket;
 import ee.esport.spring2019.web.ticket.domain.TicketCandidate;
+import ee.esport.spring2019.web.ticket.domain.TicketOffering;
 import ee.esport.spring2019.web.ticket.domain.TicketType;
 import lombok.RequiredArgsConstructor;
 import org.jooq.Condition;
@@ -107,8 +108,33 @@ public class TicketRepository {
                          .orElseThrow(() -> new NoSuchElementException("Ticket type not found"));
     }
 
+    public List<TicketOffering> getAllOfferings() {
+        return getTicketOfferings(DSL.trueCondition()).collect(Collectors.toList());
+    }
+
+    private Stream<TicketOffering> getTicketOfferings(Condition condition) {
+        Stream<Record> records = dsl.select(TICKET_OFFERINGS.fields())
+                                   .select(TICKET_TYPES.ID)
+                                   .select(TICKETS.ID.count().as(ACTIVE_TICKETS_COUNT))
+                                   .from(TICKET_OFFERINGS.leftJoin(TICKET_TYPES)
+                                                         .onKey()
+                                                         .leftJoin(TICKETS)
+                                                         .on(TICKETS.OFFERING_ID.eq(TICKET_OFFERINGS.ID)))
+                                   .where(condition)
+                                   .groupBy(TICKET_OFFERINGS.ID)
+                                   .stream();
+        return records.map(record -> {
+            TicketOfferingsRecord offeringsRecord = record.into(TICKET_OFFERINGS);
+            int offeringAmountRemaining = offeringsRecord.getAmountAvailable() != null ?
+                                          offeringsRecord.getAmountAvailable() :
+                                          Integer.MAX_VALUE;
+            Integer typeAmountRemaining = getType(offeringsRecord.getTicketTypeId()).getAmountRemaining();
+            return mapper.toTicketOffering(offeringsRecord, Math.min(offeringAmountRemaining, typeAmountRemaining));
+        });
+    }
+
     private Stream<TicketType> getTicketTypes(Condition condition) {
-        Stream<Record> typesRecords = dsl.select(TICKET_TYPES.fields())
+        Stream<Record> records = dsl.select(TICKET_TYPES.fields())
                                         .select(TICKETS.ID.count().as(ACTIVE_TICKETS_COUNT))
                                         .from(TICKET_TYPES.leftJoin(TICKET_OFFERINGS)
                                                           .on(TICKET_OFFERINGS.TICKETTYPE_ID.eq(TICKET_TYPES.ID))
@@ -117,33 +143,11 @@ public class TicketRepository {
                                         .where(condition)
                                         .groupBy(TICKET_TYPES.ID)
                                         .stream();
-        Map<Integer, List<Record>> offeringsByTypeId =
-                dsl.select(TICKET_OFFERINGS.fields())
-                   .select(TICKET_TYPES.ID)
-                   .select(TICKETS.ID.count().as(ACTIVE_TICKETS_COUNT))
-                   .from(TICKET_OFFERINGS.leftJoin(TICKET_TYPES)
-                                         .onKey()
-                                         .leftJoin(TICKETS)
-                                         .on(TICKETS.OFFERING_ID.eq(TICKET_OFFERINGS.ID)))
-                   .where(condition)
-                   .groupBy(TICKET_OFFERINGS.ID)
-                   .fetchGroups(TICKET_TYPES.ID, record -> record);
-        return typesRecords.map(it -> {
-            TicketTypesRecord typesRecord = it.into(TICKET_TYPES);
-            List<TicketType.Offering> offerings =
-                    offeringsByTypeId.getOrDefault(typesRecord.getId(),
-                                                   Collections.emptyList())
-                                     .stream()
-                                     .map(offering -> {
-                                         TicketOfferingsRecord offeringsRecord = offering.into(TICKET_OFFERINGS);
-                                         Integer amountActive = offering.get(ACTIVE_TICKETS_COUNT, Integer.class);
-                                         return mapper.toTicketOffering(offeringsRecord, amountActive);
-                                     })
-                    .collect(Collectors.toList());
-            Integer amountActive = offerings.stream()
-                                            .mapToInt(TicketType.Offering::getAmountActive)
-                                            .sum();
-            return mapper.toTicketType(typesRecord, offerings, amountActive);
+        return records.map(record -> {
+            TicketTypesRecord typesRecord = record.into(TICKET_TYPES);
+            Integer amountRemaining = typesRecord.getAmountAvailable() -
+                                      record.get(ACTIVE_TICKETS_COUNT, Integer.class);
+            return mapper.toTicketType(typesRecord, amountRemaining);
         });
     }
 

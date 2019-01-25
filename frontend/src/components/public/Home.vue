@@ -11,7 +11,8 @@
         h1.title.has-text-centered.has-text-primary.is-1(v-t="'tickets.tickets'")
         .has-text-centered(v-if="offerings == null"): i.fa.fa-2x.fa-cog.fa-spin
         .columns.is-multiline.is-centered
-          ticket(v-for="ticket in $parent.tickets" v-if="$parent.tickets != null" :ticket="ticket" :key="ticket.id")
+          ticket-offering-card(v-for="offering in offerings" v-if="offerings != null" :offering="offering"
+                               :key="offering.id")
     section.section
       .container
         h1.title.has-text-centered.has-text-primary(v-t="'home.sponsors'")
@@ -25,11 +26,22 @@
 </template>
 
 <script>
+  import TicketOfferingCard from './TicketOfferingCard';
   import Sponsor from './Sponsor';
 
   export default {
-    components: {Sponsor},
+    components: {TicketOfferingCard, Sponsor},
     name: 'Home',
-    props: ['tickets']
+    data: function() {
+      return {
+        offerings: null
+      }
+    },
+    mounted: function() {
+      const self = this;
+      self.$ticket.getVisibleOfferings().then(offerings => {
+        self.offerings = offerings; //TODO: Loading, error
+      });
+    }
   };
 </script>

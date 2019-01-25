@@ -19,17 +19,6 @@
       this.$root.$i18n.locale = this.$root.$localStorage.get('language', 'et');
       this.$moment.locale(this.$root.$i18n.t('moment'));
     },
-    data () {
-      return {
-        tickets: null
-      };
-    },
-    mounted: function () {
-      const self = this;
-      self.$ticket.getTypes().then(types => {
-        self.tickets = types;
-      });
-    },
     components: {
       Navbar
     }

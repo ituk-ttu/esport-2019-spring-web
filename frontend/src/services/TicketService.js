@@ -15,6 +15,11 @@ function TicketService (Vue) {
     return ticketTypes;
   };
 
+  svc.getVisibleOfferings = () => {
+    // TODO: cache
+    return Vue.http.get('api/tickets/offerings/visible').then(res => res.body);
+  };
+
   svc.getType = typeId => {
     return svc.getTypes().then(types => findType(typeId, types));
   };
