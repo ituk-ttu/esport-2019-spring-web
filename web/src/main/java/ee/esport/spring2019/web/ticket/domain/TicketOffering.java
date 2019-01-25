@@ -16,8 +16,8 @@ public class TicketOffering {
     @NonNull private final Integer typeId;
     private final Integer amountAvailable;
     @NonNull private final Integer amountRemaining;
-    private final OffsetDateTime availableFrom;
-    private final OffsetDateTime availableUntil;
+    @NonNull private final OffsetDateTime availableFrom;
+    @NonNull private final OffsetDateTime availableUntil;
     @NonNull private final Boolean availableOnline;
     @NonNull private final Boolean promotional;
     @NonNull private final BigDecimal cost;

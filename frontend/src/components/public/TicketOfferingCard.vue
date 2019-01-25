@@ -6,13 +6,36 @@
         h3.title.has-text-weight-bold
           | {{ offering.cost }}€
           // TODO: More info (revert)
+        p.subtitle.has-text-burgundy
+          span(v-if="isActive")
+            | {{ $t('tickets.until') }}
+            |  {{ availableUntilDisplay | moment('Do MMMM') }}
+          span(v-else)
+            | {{ $t('tickets.from') }}
+            |  {{ offering.availableFrom | moment('Do MMMM')}}
+          div &nbsp
+
 </template>
 
 <script>
   export default {
     name: 'TicketOfferingCard',
-    props: ['offering'],
-    methods: {
+    props: ['offering', 'type'],
+    computed: {
+      isActive: function() {
+        return !this.$moment(this.offering.availableFrom).isAfter(this.$moment()) &&
+               this.$moment(this.offering.availableUntil).isAfter(this.$moment());
+      },
+      isTeamType: function() {
+        return this.type.teamSize > 1;
+      },
+      costPerMember: function() {
+        return this.offering.cost / this.type.teamSize;
+      },
+      availableUntilDisplay: function() {
+        return this.$moment(this.offering.availableUntil).subtract(1, 'second').format();
+      }
+
     }
   };
 </script>

@@ -9,10 +9,10 @@
     section.section
       .container
         h1.title.has-text-centered.has-text-primary.is-1(v-t="'tickets.tickets'")
-        .has-text-centered(v-if="offerings == null"): i.fa.fa-2x.fa-cog.fa-spin
-        .columns.is-multiline.is-centered
-          ticket-offering-card(v-for="offering in offerings" v-if="offerings != null" :offering="offering"
-                               :key="offering.id")
+        .has-text-centered(v-if="offerings == null || types == null"): i.fa.fa-2x.fa-cog.fa-spin
+        .columns.is-multiline.is-centered(v-else)
+          ticket-offering-card(v-for="offering in offerings" :offering="offering"
+                               :type="getType(offering.typeId)" :key="offering.id")
     section.section
       .container
         h1.title.has-text-centered.has-text-primary(v-t="'home.sponsors'")
@@ -35,12 +35,20 @@
     data: function() {
       return {
         offerings: null
+      };
+    },
+    methods: {
+      getType: function(id) {
+        return this.types.find(type => type.id === id);
       }
     },
     mounted: function() {
       const self = this;
       self.$ticket.getVisibleOfferings().then(offerings => {
-        self.offerings = offerings; //TODO: Loading, error
+        self.offerings = offerings; // TODO: Loading, error
+      });
+      self.$ticket.getTypes().then(types => {
+        self.types = types; // TODO: Loading, error
       });
     }
   };

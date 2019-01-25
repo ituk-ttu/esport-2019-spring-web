@@ -63,11 +63,11 @@ public class TicketService {
     }
 
     private boolean isExpired(TicketOffering offering) {
-        return offering.getAvailableUntil() != null && offering.getAvailableUntil().isBefore(OffsetDateTime.now());
+        return offering.getAvailableUntil().isBefore(OffsetDateTime.now());
     }
 
     private boolean isNotYetActive(TicketOffering offering) {
-        return offering.getAvailableFrom() != null && OffsetDateTime.now().isBefore(offering.getAvailableFrom());
+        return OffsetDateTime.now().isBefore(offering.getAvailableFrom());
     }
 
     public Ticket createTicket(TicketCreation creation) {
