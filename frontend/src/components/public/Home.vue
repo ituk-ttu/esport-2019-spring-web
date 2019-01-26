@@ -20,7 +20,17 @@
           sponsor(url="https://ituk.ee" image="ituk.svg" big)
           sponsor(url="https://ttu.ee/itt" image="itt.png" big)
           sponsor(url="https://ttu.ee/ye" image="ye.jpg" big)
-        .columns.is-multiline.is-centered.is-vcentered
+        .columns.is-multiline.is-centered.is-vcentered.is-flex
+          sponsor(url="https://filmiklubi.ee" image="filmiklubi-03.svg")
+          sponsor(url="https://filmiklubi.ee" image="filmiklubi-03.svg")
+          sponsor(url="https://filmiklubi.ee" image="filmiklubi-03.svg")
+          sponsor(url="https://filmiklubi.ee" image="filmiklubi-03.svg")
+          sponsor(url="https://filmiklubi.ee" image="filmiklubi-03.svg")
+          sponsor(url="https://filmiklubi.ee" image="filmiklubi-03.svg")
+          sponsor(url="https://filmiklubi.ee" image="filmiklubi-03.svg")
+          sponsor(url="https://filmiklubi.ee" image="filmiklubi-03.svg")
+          sponsor(url="https://filmiklubi.ee" image="filmiklubi-03.svg")
+          sponsor(url="https://filmiklubi.ee" image="filmiklubi-03.svg")
           sponsor(url="https://filmiklubi.ee" image="filmiklubi-03.svg")
           sponsor(url="https://thorgate.eu" image="thorgate.png")
 </template>
