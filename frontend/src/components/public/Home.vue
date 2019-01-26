@@ -22,16 +22,6 @@
           sponsor(url="https://ttu.ee/ye" image="ye.jpg" big)
         .columns.is-multiline.is-centered.is-vcentered.is-flex
           sponsor(url="https://filmiklubi.ee" image="filmiklubi-03.svg")
-          sponsor(url="https://filmiklubi.ee" image="filmiklubi-03.svg")
-          sponsor(url="https://filmiklubi.ee" image="filmiklubi-03.svg")
-          sponsor(url="https://filmiklubi.ee" image="filmiklubi-03.svg")
-          sponsor(url="https://filmiklubi.ee" image="filmiklubi-03.svg")
-          sponsor(url="https://filmiklubi.ee" image="filmiklubi-03.svg")
-          sponsor(url="https://filmiklubi.ee" image="filmiklubi-03.svg")
-          sponsor(url="https://filmiklubi.ee" image="filmiklubi-03.svg")
-          sponsor(url="https://filmiklubi.ee" image="filmiklubi-03.svg")
-          sponsor(url="https://filmiklubi.ee" image="filmiklubi-03.svg")
-          sponsor(url="https://filmiklubi.ee" image="filmiklubi-03.svg")
           sponsor(url="https://thorgate.eu" image="thorgate.png")
 </template>
 
