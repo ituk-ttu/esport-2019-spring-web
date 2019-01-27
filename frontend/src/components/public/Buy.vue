@@ -1,14 +1,14 @@
 <template lang="pug">
-  div
+  section.section
     .container(v-if="bought")
-      h1.text-center {{ $t('buy.success.title') }}
-      p.lead(v-t="'buy.checkMail'")
-      p(v-t="'buy.paymentInfo'")
+      h1.title.has-text-centered.has-text-primary.is-1(v-t="'buy.success.title'")
+      h2.subtitle.has-text-centered(v-t="'buy.checkMail'")
+      p.has-text-centered(v-t="'buy.paymentInfo'")
     steam-login(:onSuccess="onSteamLogin" v-else-if="!isLoggedIn()")
     .has-text-centered(v-else-if="offering == null || type == null"): i.fa.fa-2x.fa-cog.fa-spin
     .container(v-else)
-      h1.text-center {{ $t('buy.buyTicket') }}
-      h2.text-center {{ offering.name }}
+      h1.title.has-text-primary(v-t="'buy.buyTicket'")
+      h2.subtitle {{ offering.name }}
       form(v-on:submit.prevent="send()")
         .form-group
           label.control-label(v-t="type.teamSize <= 1 ? 'buy.name' : 'buy.teamName'")

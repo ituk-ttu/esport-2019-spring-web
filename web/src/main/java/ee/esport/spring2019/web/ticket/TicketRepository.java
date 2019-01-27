@@ -31,9 +31,11 @@ import static ee.esport.spring2019.jooq.tables.Tickets.TICKETS;
 @RequiredArgsConstructor
 public class TicketRepository {
 
+    private static final String ACTIVE_TICKETS_COUNT = "ACTIVE_TICKETS_COUNT";
+    private static final Condition ACTIVE_TICKET_CONDITION = TICKETS.STATUS.notEqual(Ticket.Status.CANCELED.name());
+
     private final DSLContext dsl;
     private final TicketRecordsMapper mapper;
-    public static final String ACTIVE_TICKETS_COUNT = "ACTIVE_TICKETS_COUNT";
 
     public Ticket createTicket(TicketCandidate candidate) {
         TicketsRecord ticketsRecord = dsl.insertInto(TICKETS)
@@ -119,7 +121,8 @@ public class TicketRepository {
                                    .from(TICKET_OFFERINGS.leftJoin(TICKET_TYPES)
                                                          .onKey()
                                                          .leftJoin(TICKETS)
-                                                         .on(TICKETS.OFFERING_ID.eq(TICKET_OFFERINGS.ID)))
+                                                         .on(TICKETS.OFFERING_ID.eq(TICKET_OFFERINGS.ID))
+                                                         .and(ACTIVE_TICKET_CONDITION))
                                    .where(condition)
                                    .groupBy(TICKET_OFFERINGS.ID)
                                    .stream();
@@ -139,7 +142,8 @@ public class TicketRepository {
                                         .from(TICKET_TYPES.leftJoin(TICKET_OFFERINGS)
                                                           .on(TICKET_OFFERINGS.TICKETTYPE_ID.eq(TICKET_TYPES.ID))
                                                           .leftJoin(TICKETS)
-                                                          .on(TICKETS.OFFERING_ID.eq(TICKET_OFFERINGS.ID)))
+                                                          .on(TICKETS.OFFERING_ID.eq(TICKET_OFFERINGS.ID))
+                                                          .and(ACTIVE_TICKET_CONDITION))
                                         .where(condition)
                                         .groupBy(TICKET_TYPES.ID)
                                         .stream();

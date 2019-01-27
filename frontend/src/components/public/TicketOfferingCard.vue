@@ -11,10 +11,10 @@
         p.has-text-burgundy
           span(v-if="isActive")
             | {{ $t('tickets.availableUntil') }}
-            | {{ availableUntilDisplay | moment('Do MMMM') }}
+            | {{ availableUntilDisplay | moment('Do MMMM HH:mm') }}
           span(v-else)
             | {{ $t('tickets.availableFrom') }}
-            | {{ offering.availableFrom | moment('Do MMMM')}}
+            | {{ offering.availableFrom | moment('Do MMMM HH:mm')}}
           div &nbsp
         p.has-text-burgundy(v-if="isActive")
           span.has-text-weight-bold {{ offering.amountRemaining }}
