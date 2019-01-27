@@ -74,6 +74,7 @@ function AuthService (Vue) {
       request.headers.set(AUTHORIZATION_HEADER, 'Bearer ' + getToken());
     }
     request.headers.set('Accept', 'application/json');
+    next();
   };
 
   init();
