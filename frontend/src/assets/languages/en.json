@@ -11,7 +11,7 @@
     "login": "Login",
     "myTickets": "My Tickets",
     "adminTickets": "Manage Tickets",
-    "logOut": "Log out",
+    "removeUser": "Log out",
     "discord": "Discord",
     "admin": "Admin",
     "defaultUsername": "User",

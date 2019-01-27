@@ -39,6 +39,7 @@
   import SteamLogin from './SteamLogin.vue';
   export default {
     name: 'Buy',
+    props: ['offeringId'],
     data () {
       return {
         shouldConnectWithSteam: true,
@@ -91,8 +92,8 @@
     },
     mounted: function () {
       const self = this;
-      self.$ticket.getType(parseInt(this.$route.params.ticketId)).then(type => {
-        self.ticket = type;
+      self.$ticket.getOffering(this.offeringId).then(offering => {
+
       });
     },
     components: {

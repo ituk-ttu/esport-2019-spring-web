@@ -32,6 +32,14 @@ public class TicketService {
         return ticketRepository.getType(typeId);
     }
 
+    public TicketOffering getVisibleOffering(int id) {
+        return getVisibleOfferings().stream()
+                                    .filter(it -> it.getId() == id)
+                                    .findAny()
+                                    .orElseThrow(() -> new NoSuchElementException("Ticket offering not visible or" +
+                                                                                  "does not exist"));
+    }
+
     // No more than one per type, active or next to be active
     public List<TicketOffering> getVisibleOfferings() {
         return ticketRepository.getAllOfferings()
@@ -62,24 +70,32 @@ public class TicketService {
         return !isNotYetActive(offering) && !isExpired(offering);
     }
 
-    private boolean isExpired(TicketOffering offering) {
-        return offering.getAvailableUntil().isBefore(OffsetDateTime.now());
-    }
-
     private boolean isNotYetActive(TicketOffering offering) {
-        return OffsetDateTime.now().isBefore(offering.getAvailableFrom());
+        return offering.getAvailableFrom().isAfter(OffsetDateTime.now());
     }
 
+    private boolean isExpired(TicketOffering offering) {
+        return !offering.getAvailableUntil().isAfter(OffsetDateTime.now());
+    }
+
+    @Transactional
     public Ticket createTicket(TicketCreation creation) {
-        //TODO: Check if ticket available and remaining
+        //TODO: Available online check
+        TicketOffering offering = ticketRepository.getOffering(creation.getOfferingId());
+        if (!isActive(offering)) {
+            throw new IllegalArgumentException("Ticket offering not active");
+        }
+        Ticket.Status status = offering.getAmountRemaining() > 0 ?
+                               Ticket.Status.AWAITING_PAYMENT :
+                               Ticket.Status.IN_WAITING_LIST;
         TicketCandidate candidate = TicketCandidate.builder()
                                                .offeringId(creation.getOfferingId())
                                                .ownerId(creation.getOwnerId())
                                                .seat(creation.getSeat())
-                                               .status(Ticket.Status.AWAITING_PAYMENT) //FIXME: or waiting list?
+                                               .status(status)
                                                .build();
         Ticket ticket = ticketRepository.createTicket(candidate);
-        sendTicketCreationEmail(ticket);
+        //sendTicketCreationEmail(ticket);
         return ticket;
     }
 

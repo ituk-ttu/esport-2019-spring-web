@@ -6,8 +6,8 @@ import jwtDecode from 'jwt-decode';
 Vue.use(VueResource);
 
 const AUTHORIZATION_HEADER = 'Authorization';
-const AUTH_TOKEN = 'authToken';
-const TOKEN_REFRESH_INTERVAL = 6000;
+const USER_KEY = 'user';
+const TOKEN_REFRESH_INTERVAL = 6000000; // TODO smaller
 
 function AuthService (Vue) {
   const svc = {};
@@ -15,41 +15,22 @@ function AuthService (Vue) {
   const init = () => {
     Vue.http.interceptors.push(interceptor);
     setInterval(() => {
-      if (!svc.isLoggedIn() || svc.isTokenExpired() || !svc.shouldRefreshToken()) {
+      if (!svc.isLoggedIn() || isTokenExpired() || shouldRefreshToken()) {
         return;
       }
-      Vue.http.get('api/refreshToken');
+      Vue.http.get('api/refreshToken'); // TODO use response
     }, TOKEN_REFRESH_INTERVAL);
   };
 
-  svc.removeToken = () => localStorage.removeItem(AUTH_TOKEN);
+  svc.logIn = (user, token) => localStorage.setItem(USER_KEY, JSON.stringify({user, token}));
 
-  svc.getToken = () => {
-    let token = getToken();
-    if (token !== null && svc.isTokenExpired()) {
-      svc.removeToken();
-    }
-    return token;
-  };
+  svc.logOut = () => localStorage.removeItem(USER_KEY);
 
-  svc.isLoggedIn = () => svc.getToken() !== null;
+  svc.isLoggedIn = () => getUser() !== null;
 
-  svc.isAdmin = () => svc.isLoggedIn() && svc.getClaims().admin === true;
+  svc.getUser = () => getUser();
 
-  svc.setToken = token => localStorage.setItem(AUTH_TOKEN, token);
-
-  svc.getClaims = token => {
-    token = token || getToken();
-    if (token === null || !token.startsWith('Bearer ')) {
-      return null;
-    }
-    return jwtDecode(token.substring(7));
-  };
-
-  svc.isTokenExpired = token => isPassed(svc.getClaims(token).exp - 5); // 5 seconds buffer
-
-  svc.shouldRefreshToken = token => svc.isLoggedIn() &&
-                                     isPassed((svc.getClaims(token).exp + svc.getClaims(token).iat) / 2);
+  svc.isAdmin = () => svc.isLoggedIn() && svc.getUser().role === 'ADMIN';
 
   svc.getSteamLoginLink = returnTo => {
     return Vue.http.get('api/steam/loginLink', { params: { returnTo } }).then(res => res.body);
@@ -61,29 +42,38 @@ function AuthService (Vue) {
       params[entry[0]] = entry[1];
     }
     params['receivingUrl'] = returnUrl;
-    return Vue.http.get('api/steam/verify', { params: params }).then(res => {
-      // TODO: Emit event
-      return res.body;
-    });
+    let verifyResult = Vue.http.get('api/steam/verify', { params: params })
+                          .then(res => res.body);
+    verifyResult.then(({user, token}) => svc.logIn(user, token));
+    return verifyResult;
   };
 
-  svc.performEmailLinkLogin = loginKey => Vue.http.get('api/ticket/token/' + loginKey).then(res => res.body);
+  const shouldRefreshToken = token => svc.isLoggedIn() &&
+                                      isPassed((getClaims(token).exp + getClaims(token).iat) / 2);
+
+  let isTokenExpired = token => isPassed(getClaims(token).exp - 5); // 5 seconds buffer
 
   const isPassed = unixSeconds => unixSeconds - Date.now() / 1000 < 0;
 
-  const getToken = () => localStorage.getItem(AUTH_TOKEN);
+  const getToken = () => {
+    return getAuthDetails() != null ? JSON.parse(getAuthDetails()).token : null;
+  };
+
+  const getClaims = () => {
+    return getToken() != null ? jwtDecode(getToken()) : null;
+  };
+
+  const getUser = () => {
+    return getAuthDetails() != null ? JSON.parse(getAuthDetails()).user : null;
+  };
+
+  const getAuthDetails = () => localStorage.getItem(USER_KEY);
 
   const interceptor = (request, next) => {
     if (svc.isLoggedIn()) {
-      request.headers.set(AUTHORIZATION_HEADER, svc.getToken());
+      request.headers.set(AUTHORIZATION_HEADER, getToken());
     }
     request.headers.set('Accept', 'application/json');
-    next(result => {
-      let authToken = result.headers.get(AUTHORIZATION_HEADER);
-      if (authToken) {
-        svc.setToken(authToken);
-      }
-    });
   };
 
   init();

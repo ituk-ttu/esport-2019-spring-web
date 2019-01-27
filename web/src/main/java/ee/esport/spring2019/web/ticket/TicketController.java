@@ -39,6 +39,12 @@ public class TicketController {
         return new ResponseEntity<>(ticketService.getVisibleOfferings(), HttpStatus.OK);
     }
 
+    @GetMapping("/offerings/{id}")
+    public ResponseEntity<TicketOffering> getOffering(@PathVariable int id) {
+        //TODO: Admins should see all offerings, not only those which are visible
+        return new ResponseEntity<>(ticketService.getVisibleOffering(id), HttpStatus.OK);
+    }
+
     @GetMapping("/")
     public ResponseEntity<List<Ticket>> getAllTickets(User user) {
         if (user == null) {

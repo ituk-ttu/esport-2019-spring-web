@@ -12,17 +12,19 @@
         navbar-link(:title="$t('navbar.home')" target-page="Home")
         navbar-dropdown(:title="$t('navbar.info')")
           navbar-link(:title="$t('navbar.faq')" target-page="Faq")
-          //navbar-link(:title="$t('navbar.timetable')" target-page="Schedule")
+          navbar-link(:title="$t('navbar.timetable')" target-page="Schedule")
           navbar-link(:title="$t('navbar.houseRules')" target-page="HouseRules")
           navbar-link(:title="$t('navbar.csgoRules')" target-page="CsgoRules")
-        navbar-dropdown(v-if="isLoggedIn" :title="username")
-          navbar-link(:title="$t('navbar.myTickets')" target-page="MyTickets")
-          navbar-link(:title="$t('navbar.logOut')" @go="logOut()")
         navbar-link(:title="$t('navbar.contact')" target-page="Contact")
         navbar-link(:title="$t('navbar.volunteer')" target-url="https://volunteer.e-sport.ee" new-window)
-        navbar-dropdown(v-if="isAdmin" :title="$t('navbar.admin')")
+
+        navbar-dropdown(v-if="isLoggedIn" :title="username")
+          navbar-link(:title="$t('navbar.myTickets')" target-page="MyTickets")
+          navbar-link(:title="$t('navbar.removeUser')" @go="logOut()")
+        navbar-dropdown(v-else-if="isAdmin" :title="$t('navbar.admin')")
           navbar-link(:title="$t('navbar.adminTickets')" target-page="AdminTickets")
         //navbar-link(v-else :title="$t('navbar.login')" target-page="Login")
+
         navbar-link(:title="$t('navbar.discord')" target-url="https://discord.gg/W5Psxu3" new-window
                     look="discord")
       template(v-for="language in languages")
@@ -48,7 +50,7 @@
         this.$root.$localStorage.set('language', language);
       },
       logOut: function () {
-        this.$auth.removeToken();
+        this.$auth.logOut();
         this.$router.push({ name: 'Login' });
       }
     },
@@ -60,15 +62,10 @@
         return this.$root.$i18n.locale;
       },
       username() {
-        const steamUser = this.$auth.getClaims()['steam_user'];
-        return steamUser != null ? steamUser.name : this.$t('navbar.defaultUsername');
+        return this.$auth.getUser().name;
       },
       isAdmin() {
-        if (this.isLoggedIn === false) {
-          return false;
-        }
-        const admin = this.$auth.getClaims()['admin'];
-        return admin !== null ? admin : false;
+        return this.$auth.isAdmin();
       },
       isLoggedIn() {
         return this.$auth.isLoggedIn();

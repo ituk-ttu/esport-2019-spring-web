@@ -20,6 +20,10 @@ function TicketService (Vue) {
     return Vue.http.get('api/tickets/offerings/visible').then(res => res.body);
   };
 
+  svc.getOffering = id => {
+    return Vue.http.get('api/tickets/offerings/' + id).then(res => res.body);
+  };
+
   svc.getType = typeId => {
     return svc.getTypes().then(types => findType(typeId, types));
   };

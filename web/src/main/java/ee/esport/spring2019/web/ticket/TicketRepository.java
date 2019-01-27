@@ -45,16 +45,8 @@ public class TicketRepository {
                                          .returning()
                                          .fetchOne();
         return mapper.toTicket(ticketsRecord,
-                               getOfferingsRecord(ticketsRecord.getOfferingId()),
+                               null, //TODO
                                Collections.emptyList());
-    }
-
-    @Deprecated
-    private TicketOfferingsRecord getOfferingsRecord(int offeringId) {
-        return dsl.selectFrom(TICKET_OFFERINGS)
-                  .where(TICKET_OFFERINGS.ID.eq(offeringId))
-                  .fetchOptional()
-                  .orElseThrow(() -> new NoSuchElementException("Ticket offering not found"));
     }
 
     public Ticket getTicket(int id) {
@@ -103,10 +95,16 @@ public class TicketRepository {
         return getTicketTypes(DSL.trueCondition()).collect(Collectors.toList());
     }
 
-    public TicketType getType(int typeId) {
-        Stream<TicketType> typeStream = getTicketTypes(DSL.trueCondition());
+    public TicketType getType(int id) {
+        Stream<TicketType> typeStream = getTicketTypes(TICKET_TYPES.ID.eq(id));
         return typeStream.findAny()
                          .orElseThrow(() -> new NoSuchElementException("Ticket type not found"));
+    }
+
+    public TicketOffering getOffering(int id) {
+        Stream<TicketOffering> offeringStream = getTicketOfferings(TICKET_OFFERINGS.ID.eq(id));
+        return offeringStream.findAny()
+                             .orElseThrow(() -> new NoSuchElementException("Ticket offering not found"));
     }
 
     public List<TicketOffering> getAllOfferings() {

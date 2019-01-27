@@ -53,9 +53,10 @@ export default new Router({
           component: CsgoRules
         },
         {
-          path: 'buy/:ticketId',
+          path: 'buy/:offeringId',
           name: 'Buy',
-          component: Buy
+          component: Buy,
+          props: true
         },
         {
           path: 'myTickets',

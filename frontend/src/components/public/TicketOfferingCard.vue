@@ -16,6 +16,19 @@
             | {{ $t('tickets.availableFrom') }}
             | {{ offering.availableFrom | moment('Do MMMM')}}
           div &nbsp
+        p.has-text-burgundy(v-if="isActive")
+          span.has-text-weight-bold {{ offering.amountRemaining }}
+          span(v-if="type.teamSize > 1")  {{ $t('tickets.teams') }}
+          span(v-else)  {{ $t('tickets.pieces') }}
+          |  {{ $t('tickets.remaining') }}
+        p.ticket-out(v-if="isActive && isSoldOut")
+          small {{ $t('tickets.outOfTickets') }}
+      footer.card-footer
+        router-link.has-text-weight-bold.card-footer-item(:to="{name: 'Buy', params: {}}"
+                                                          v-if="isActive")
+          // TODO: Change text
+          span(v-if="isSoldOut") {{ $t('tickets.notifyMe') }}
+          span(v-else) {{ $t('tickets.buy') }}
 
 </template>
 
@@ -36,8 +49,10 @@
       },
       availableUntilDisplay: function() {
         return this.$moment(this.offering.availableUntil).subtract(1, 'second').format();
+      },
+      isSoldOut: function() {
+        return this.offering.amountRemaining <= 0;
       }
-
     }
   };
 </script>

@@ -1,6 +1,7 @@
 package ee.esport.spring2019.web.auth.user;
 
 import lombok.Builder;
+import lombok.NonNull;
 import lombok.Value;
 
 @Value
@@ -8,8 +9,9 @@ import lombok.Value;
 public class User {
 
     private final Integer id;
-    private final String name;
-    private final String steamId;
-    private final UserRole role;
+    @NonNull private final String name;
+    @NonNull private final String steamId;
+    @NonNull private final UserRole role;
+    private final String email;
 
 }
