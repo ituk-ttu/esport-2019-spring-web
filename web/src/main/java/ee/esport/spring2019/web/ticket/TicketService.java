@@ -80,20 +80,23 @@ public class TicketService {
 
     @Transactional
     public Ticket createTicket(TicketCreation creation) {
-        //TODO: Available online check
         TicketOffering offering = ticketRepository.getOffering(creation.getOfferingId());
         if (!isActive(offering)) {
             throw new IllegalArgumentException("Ticket offering not active");
+        }
+        if (!offering.getAvailableOnline()) {
+            throw new IllegalArgumentException("Ticket offering not available online");
         }
         Ticket.Status status = offering.getAmountRemaining() > 0 ?
                                Ticket.Status.AWAITING_PAYMENT :
                                Ticket.Status.IN_WAITING_LIST;
         TicketCandidate candidate = TicketCandidate.builder()
-                                               .offeringId(creation.getOfferingId())
-                                               .ownerId(creation.getOwnerId())
-                                               .seat(creation.getSeat())
-                                               .status(status)
-                                               .build();
+                                                   .offeringId(creation.getOfferingId())
+                                                   .ownerId(creation.getOwnerId())
+                                                   .seat(creation.getSeat())
+                                                   .status(status)
+                                                   .name(creation.getName())
+                                                   .build();
         Ticket ticket = ticketRepository.createTicket(candidate);
         //sendTicketCreationEmail(ticket);
         return ticket;

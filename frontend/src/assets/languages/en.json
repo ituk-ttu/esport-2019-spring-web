@@ -43,6 +43,8 @@
     "pieces": "pc",
     "atLocation": "At location",
     "buy": "Buy",
+    "buyWaitingList": "Add me to waiting list",
+    "notAvailableOnline": "This ticket is only available on location",
     "members": {
       "title": "Members",
       "add": "Add member",

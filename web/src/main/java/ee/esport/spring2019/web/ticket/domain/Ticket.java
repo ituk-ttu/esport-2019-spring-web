@@ -13,9 +13,10 @@ public class Ticket {
 
     @NonNull private final Integer id;
     @NonNull private final Integer typeId;
+    @NonNull private final String name;
     @NonNull private final Integer offeringId;
     @NonNull private final Integer ownerId;
-    @NonNull private final Integer seat;
+    private final Integer seat;
     @NonNull private final Status status;
     @NonNull private final OffsetDateTime dateCreated;
     @NonNull private final List<Ticket.Member> members;

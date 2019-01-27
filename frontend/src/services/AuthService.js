@@ -71,7 +71,7 @@ function AuthService (Vue) {
 
   const interceptor = (request, next) => {
     if (svc.isLoggedIn()) {
-      request.headers.set(AUTHORIZATION_HEADER, getToken());
+      request.headers.set(AUTHORIZATION_HEADER, 'Bearer ' + getToken());
     }
     request.headers.set('Accept', 'application/json');
   };

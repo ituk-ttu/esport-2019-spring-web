@@ -9,6 +9,7 @@ public class TicketCreation {
 
     @NotNull private final Integer offeringId;
     @NotNull private final Integer ownerId;
+    @NotNull private final String name;
     private final Integer seat;
 
 }

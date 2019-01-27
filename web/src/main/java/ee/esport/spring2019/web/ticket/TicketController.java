@@ -45,7 +45,7 @@ public class TicketController {
         return new ResponseEntity<>(ticketService.getVisibleOffering(id), HttpStatus.OK);
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<List<Ticket>> getAllTickets(User user) {
         if (user == null) {
             throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
@@ -56,7 +56,7 @@ public class TicketController {
         return new ResponseEntity<>(ticketService.getAllTickets(), HttpStatus.OK);
     }
 
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<Ticket> buyTicket(@RequestBody TicketCreation ticketRequest, User user) {
         if (user == null) {
             throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);

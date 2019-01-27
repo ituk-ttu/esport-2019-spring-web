@@ -42,10 +42,11 @@ public class TicketRepository {
                                          .set(TICKETS.OWNER_ID, candidate.getOwnerId())
                                          .set(TICKETS.SEAT, candidate.getSeat())
                                          .set(TICKETS.STATUS, candidate.getStatus().name())
+                                         .set(TICKETS.NAME, candidate.getName())
                                          .returning()
                                          .fetchOne();
         return mapper.toTicket(ticketsRecord,
-                               null, //TODO
+                               getOffering(ticketsRecord.getOfferingId()).getTypeId(),
                                Collections.emptyList());
     }
 
@@ -59,7 +60,8 @@ public class TicketRepository {
     }
 
     private Stream<Ticket> getTickets(Condition condition) {
-        Stream<Record> ticketAndOfferingRecords = dsl.select()
+        Stream<Record> ticketAndOfferingRecords = dsl.select(TICKETS.fields())
+                                                     .select(TICKET_OFFERINGS.TICKETTYPE_ID)
                                                      .from(TICKETS.leftJoin(TICKET_OFFERINGS).onKey())
                                                      .where(condition)
                                                      .stream();
@@ -71,13 +73,12 @@ public class TicketRepository {
                    .fetchGroups(TICKETS.ID, it -> it.into(TICKET_MEMBERS));
         return ticketAndOfferingRecords.map(it -> {
             TicketsRecord ticketsRecord = it.into(TICKETS);
-            TicketOfferingsRecord offeringsRecord = it.into(TICKET_OFFERINGS);
             List<Ticket.Member> members = memberRecordsByTicketId.getOrDefault(ticketsRecord.getId(),
                                                                                Collections.emptyList())
                                                                  .stream()
                                                                  .map(mapper::toMember)
                                                                  .collect(Collectors.toList());
-            return mapper.toTicket(ticketsRecord, offeringsRecord, members);
+            return mapper.toTicket(ticketsRecord, it.get(TICKET_OFFERINGS.TICKETTYPE_ID), members);
         });
     }
 

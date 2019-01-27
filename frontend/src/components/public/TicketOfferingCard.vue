@@ -26,8 +26,8 @@
       footer.card-footer
         router-link.has-text-weight-bold.card-footer-item(:to="{name: 'Buy', params: {offeringId: offering.id}}"
                                                           v-if="isActive")
-          // TODO: Change text
-          span(v-if="isSoldOut") {{ $t('tickets.notifyMe') }}
+          span(v-if="!offering.availableOnline") {{ $t('tickets.notAvailableOnline') }}
+          span(v-else-if="isSoldOut") {{ $t('tickets.buyWaitingList') }}
           span(v-else) {{ $t('tickets.buy') }}
 
 </template>

@@ -10,6 +10,7 @@ public class TicketCandidate {
 
     @NonNull private final Integer offeringId;
     @NonNull private final Integer ownerId;
+    @NonNull private final String name;
     private final Integer seat;
     @NonNull private final Ticket.Status status;
 

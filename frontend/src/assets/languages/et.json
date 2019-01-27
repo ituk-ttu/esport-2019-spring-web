@@ -43,6 +43,8 @@
     "pieces": "tk",
     "atLocation": "Kohapealt ostes",
     "buy": "Osta",
+    "buyWaitingList": "Lisa mind ootejärjekorda",
+    "notAvailableOnline": "See pilet on saadaval vaid kohapeal",
     "members": {
       "title": "Liikmed",
       "add": "Lisa liige",

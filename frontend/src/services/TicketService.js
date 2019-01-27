@@ -49,7 +49,7 @@ function TicketService (Vue) {
     return type.promotions.some(promotion => svc.isTypeActive(promotion));
   };
 
-  svc.buy = (ticketDetails, typeId) => Vue.http.post('api/ticket',
+  svc.buy = (ticketDetails, typeId) => Vue.http.post('api/tickets/',
     Object.assign({}, ticketDetails, {type: {id: typeId}}))
     .then(res => res.body);
 
@@ -59,15 +59,15 @@ function TicketService (Vue) {
 
   svc.ownerCanCancel = ticket => ['IN_WAITING_LIST', 'AWAITING_PAYMENT'].includes(ticket.status);
 
-  svc.confirm = ticket => Vue.http.post('api/ticket/' + ticket.id + '/confirm').then(res => res.body);
+  svc.confirm = ticket => Vue.http.post('api/ticket/s' + ticket.id + '/confirm').then(res => res.body);
 
-  svc.cancel = ticket => Vue.http.post('api/ticket/' + ticket.id + '/cancel').then(res => res.body);
+  svc.cancel = ticket => Vue.http.post('api/tickets/' + ticket.id + '/cancel').then(res => res.body);
 
   svc.getMyTickets = () => Vue.http.get('api/tickets/mine').then(res => res.body);
 
   svc.getAllTickets = () => Vue.http.get('api/tickets').then(res => res.body);
 
-  svc.storeMember = (ticket, member) => Vue.http.post('api/ticket/' + ticket.id + '/member', member).then(res => {
+  svc.storeMember = (ticket, member) => Vue.http.post('api/tickets/' + ticket.id + '/member', member).then(res => {
     const newMember = res.body;
     if (member.id == null) {
       ticket.members.push(newMember);
@@ -77,7 +77,7 @@ function TicketService (Vue) {
     }
   });
 
-  svc.removeMember = (ticket, member) => Vue.http.delete('api/ticket/' + ticket.id + '/member/' + member.id).then(res => {
+  svc.removeMember = (ticket, member) => Vue.http.delete('api/tickets/' + ticket.id + '/member/' + member.id).then(res => {
     let memberIndex = ticket.members.findIndex(curMember => curMember.id === member.id);
     ticket.members.splice(memberIndex, 1);
   });

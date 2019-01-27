@@ -18,14 +18,15 @@ import java.util.List;
 public interface TicketRecordsMapper extends BaseMapper {
 
     @Mapping(target = "id", source = "ticketsRecord.id")
-    @Mapping(target = "typeId", source = "offeringsRecord.id")
-    @Mapping(target = "offeringId", source = "offeringsRecord.ticketTypeId")
+    @Mapping(target = "name", source = "ticketsRecord.name")
+    @Mapping(target = "typeId", source = "typeId")
+    @Mapping(target = "offeringId", source = "ticketsRecord.offeringId")
     @Mapping(target = "ownerId", source = "ticketsRecord.ownerId")
     @Mapping(target = "seat", source = "ticketsRecord.seat")
     @Mapping(target = "status", source = "ticketsRecord.status")
     @Mapping(target = "dateCreated", source = "ticketsRecord.dateCreated")
     @Mapping(target = "members", source = "members")
-    Ticket toTicket(TicketsRecord ticketsRecord, TicketOfferingsRecord offeringsRecord, List<Ticket.Member> members);
+    Ticket toTicket(TicketsRecord ticketsRecord, Integer typeId, List<Ticket.Member> members);
 
     @Mapping(target = "id", source = "id")
     @Mapping(target = "igName", source = "igName")
