@@ -11,6 +11,8 @@ install: cd frontend && npm install
 branches:
   only:
   - master
+  - release
 script: npm run build
 after_success:
-- rsync -chavzP --rsh="sshpass -p $FTP_PASSWORD ssh -o StrictHostKeyChecking=no -l $FTP_USER" dist/* $FTP_USER@e-sport.ee:/web
+- test $TRAVIS_BRANCH = "release" && rsync -chavzP --rsh="sshpass -p $FTP_PASSWORD ssh -o StrictHostKeyChecking=no -l $FTP_USER" dist/* $FTP_USER@e-sport.ee:/web
+- test $TRAVIS_BRANCH = "master" && rsync -chavzP --rsh="sshpass -p $FTP_PASSWORD ssh -o StrictHostKeyChecking=no -l $FTP_USER" dist/* $FTP_USER@e-sport.ee:/web/www-staging
