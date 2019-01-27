@@ -42,6 +42,8 @@
     props: ['offeringId'],
     data () {
       return {
+        offering: null,
+        type: null,
         shouldConnectWithSteam: true,
         bought: false,
         sending: false,
