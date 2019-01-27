@@ -55,8 +55,7 @@ export default new Router({
         {
           path: 'buy/:offeringId',
           name: 'Buy',
-          component: Buy,
-          props: true
+          component: Buy
         },
         {
           path: 'myTickets',
