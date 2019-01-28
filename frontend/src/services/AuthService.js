@@ -22,9 +22,19 @@ function AuthService (Vue) {
     }, TOKEN_REFRESH_INTERVAL);
   };
 
-  svc.logIn = (user, token) => localStorage.setItem(USER_KEY, JSON.stringify({user, token}));
+  let eventBus = new Vue();
 
-  svc.logOut = () => localStorage.removeItem(USER_KEY);
+  svc.getEventBus = () => eventBus;
+
+  svc.logIn = (user, token) => {
+    localStorage.setItem(USER_KEY, JSON.stringify({user, token}));
+    eventBus.$emit('authChange')
+  };
+
+  svc.logOut = () => {
+    localStorage.removeItem(USER_KEY);
+    eventBus.$emit('authChange');
+  };
 
   svc.isLoggedIn = () => getUser() !== null;
 
