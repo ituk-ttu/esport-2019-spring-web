@@ -1,7 +1,9 @@
 <template lang="pug">
   .container
-    h1.text-center(v-t="'tickets.tickets'")
-    my-ticket(v-for="ticket in tickets", :key="ticket.id", :ticket="ticket")
+    section.section
+      h1.title.is-center(v-t="'tickets.tickets'")
+      h2.subtitle(v-t="'page.wip'")
+      my-ticket(v-for="ticket in tickets", :key="ticket.id", :ticket="ticket")
 </template>
 
 <script>

@@ -3,9 +3,9 @@
     .card.full-height-card
       .card-content
         h2.title.has-text-primary {{ offering.name }}
-        h3.title.has-text-weight-bold
+        h3.title.has-text-weight-bold.has-text-dark
           | {{ offering.cost }}€
-        h4.subtitle(v-if="isTeamType")
+        h4.subtitle.has-text-dark(v-if="isTeamType")
           | {{ costPerMember }}€
           | {{ $t('tickets.perPerson') }}
         p.has-text-burgundy
@@ -16,6 +16,10 @@
             | {{ $t('tickets.availableFrom') }}
             | {{ offering.availableFrom | moment('Do MMMM HH:mm')}}
           div &nbsp
+        h6.title.is-6.has-text-dark.small-margin-bottom {{ $t('tickets.includes') }}
+          small(v-if="isTeamType")  {{ $t('tickets.perPerson') }}
+          | :
+        .content.md-content.small-margin-bottom.is-size-7(v-html="included")
         p.has-text-burgundy(v-if="isActive")
           span.has-text-weight-bold {{ offering.amountRemaining }}
           span(v-if="type.teamSize > 1")  {{ $t('tickets.teams') }}
@@ -53,6 +57,23 @@
       isSoldOut: function() {
         return this.offering.amountRemaining <= 0;
       }
+    },
+    data () {
+      return {
+        included: ''
+      };
+    },
+    methods: {
+      loadFaq: function () {
+        let self = this;
+        this.$document.getDocument('includedInTickets/' + self.type.code, this.$root.$i18n.locale).then(doc => { this.included = doc; });
+      }
+    },
+    mounted: function () {
+      this.loadFaq();
+    },
+    beforeUpdate: function () {
+      this.loadFaq();
     }
   };
 </script>

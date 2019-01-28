@@ -28,6 +28,7 @@
     "ticketsSoon": "Piletid varsti müügil!"
   },
   "tickets": {
+    "includes": "Sisaldab",
     "notifyMe": "Teavita mind!",
     "outOfTickets": "Hetkel on kõik piletid broneeritud. Lisa ennast ootelisti, et saada teade kui koht vabaneb!",
     "tickets": "Piletid",
@@ -122,15 +123,28 @@
     "paymentInfo": "Pileti kinnitamiseks peab olema raha kantud saaja kontole hiljemalt maksetähtaja kuupäeva lõpuks. Maksmata jätmisel pilet tühistatakse.",
     "checkMail": "Arve saadeti Sinu e-maili aaderssile!"
   },
+  "register": {
+    "title": "Registreeru",
+    "name": "Nimi",
+    "email": "E-post",
+    "register": "Registreeru"
+  },
   "login": {
     "steam": {
       "title": "Sisse logitud!",
       "text": "Oled edukalt Steamiga sisse logitud!"
+    },
+    "failure": {
+      "title": "Sisse logimine ebaõnnestus!",
+      "text": "Palun võtke meiega ühendust!"
     }
   },
   "admin": {
     "general": {
       "notAuthorized": "Siin ei ole kala"
     }
+  },
+  "page": {
+    "wip": "See leht pole veel valmis, vaata homme uuesti ;)"
   }
 }

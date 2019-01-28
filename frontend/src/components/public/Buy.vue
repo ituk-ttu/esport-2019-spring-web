@@ -10,24 +10,25 @@
       h1.title.has-text-primary(v-t="'buy.buyTicket'")
       h2.subtitle {{ offering.name }}
       form(v-on:submit.prevent="send()")
-        .form-group
-          label.control-label(v-t="type.teamSize <= 1 ? 'buy.name' : 'buy.teamName'")
-          input.form-control.input-lg(v-model="ticketDetails.name" required)
-        .form-group
-        blockquote.form-group
+        .field
+          label.label(v-t="type.teamSize <= 1 ? 'buy.name' : 'buy.teamName'")
+          .control
+            input.input(v-model="ticketDetails.name" required)
+        blockquote.field
           p {{ $t('buy.numberOfPlayers') }}:
             span.text-primary  {{ type.teamSize }}
           p {{ $t('buy.pricePerPlayer') }}:
             span.text-primary  {{ offering.cost / type.teamSize }}€
           p.lead {{ $t('buy.total') }}:
             span.text-primary  {{ offering.cost }}€
-        .form-group
-          button.btn.btn-primary.btn-lg(type="submit" v-if="!sending")
-            | {{ $t('buy.buyTicket') }}
-          button.btn.btn-primary.btn-lg.disabled(type="submit" v-else disabled)
-            i.fa.fa-cog.fa-spin
-        .form-group
-          p.text-muted(v-t="'buy.info'")
+        .field
+          .control
+            button.button.is-link(type="submit" v-if="!sending")
+              | {{ $t('buy.buyTicket') }}
+            button.button.is-link(type="submit" v-else disabled)
+              i.fa.fa-cog.fa-spin
+        .field
+          p.is-small(v-t="'buy.info'")
 </template>
 
 <script>
