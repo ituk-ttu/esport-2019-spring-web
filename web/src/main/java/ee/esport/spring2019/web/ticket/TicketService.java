@@ -102,13 +102,12 @@ public class TicketService {
         return ticket;
     }
 
-    //FIXME: loginLink
     @SneakyThrows //FIXME: remove
     private void sendTicketCreationEmail(Ticket ticket) {
         if(ticket.getStatus() == Ticket.Status.AWAITING_PAYMENT) {
-            emailService.sendTicketReservation(ticket, "loginLink").get();
+            emailService.sendTicketReservation(ticket).get();
         } else {
-            emailService.sendTicketWaiting(ticket, "loginLink").get();
+            emailService.sendTicketWaiting(ticket).get();
         }
     }
 

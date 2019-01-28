@@ -28,6 +28,7 @@
     "ticketsSoon": "Tickets available soon!"
   },
   "tickets": {
+    "includes": "Includes",
     "notifyMe": "Notify me!",
     "outOfTickets": "All these tickets are currently reserved, but you can enter the waiting list and we will let you know if a spot opens up!",
     "tickets": "Tickets",
@@ -122,15 +123,28 @@
     "paymentInfo": "To confirm the ticket the payment must be received by the receiver in 3 days after receiving the invoice at the latest. Unpaid tickets will be discarded.",
     "checkMail": "The invoice has been sent to your e-mail"
   },
+  "register": {
+    "title": "Register",
+    "name": "Name",
+    "email": "E-mail",
+    "register": "Register"
+  },
   "login": {
     "steam": {
       "title": "Login successful!",
       "text": "You are now connected with Steam!"
+    },
+    "failure": {
+      "title": "Failed to log in!",
+      "text": "Please contact us!"
     }
   },
   "admin": {
     "general": {
       "notAuthorized": "There is no fish here"
     }
+  },
+  "page": {
+    "wip": "There will be actual content here soon ;)"
   }
 }

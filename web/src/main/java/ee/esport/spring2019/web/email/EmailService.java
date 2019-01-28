@@ -28,10 +28,9 @@ public class EmailService {
     @Resource
     private final VelocityEngine velocityEngine;
 
-    public CompletableFuture<Response> sendTicketReservation(Ticket ticket, String loginLink) {
+    public CompletableFuture<Response> sendTicketReservation(Ticket ticket) {
         VelocityContext context = createContext();
         context.put("ticket", ticket);
-        context.put("loginLink", loginLink);
         context.put("invoiceNumber",
                     "2019-359027-" + "000".substring(Integer.toString(ticket.getId()).length()) + ticket.getId());
         context.put("payByDate",
@@ -44,10 +43,9 @@ public class EmailService {
         throw new NotImplementedException("Getting owner email nott ye implemented");
     }
 
-    public CompletableFuture<Response> sendTicketWaiting(Ticket ticket, String loginLink) {
+    public CompletableFuture<Response> sendTicketWaiting(Ticket ticket) {
         VelocityContext context = createContext();
         context.put("ticket", ticket);
-        context.put("loginLink", loginLink);
         context.put("invoiceNumber",
                     "2019-359027-" + "000".substring(Integer.toString(ticket.getId()).length()) + ticket.getId());
         context.put("payByDate",
@@ -55,17 +53,15 @@ public class EmailService {
         return sendAsync(getOwnerId(), "ticketWaiting", context, "Pilet ootel / Ticket In Waiting List ");
     }
 
-    public CompletableFuture<Response> sendTicketCanceled(Ticket ticket, String loginLink) {
+    public CompletableFuture<Response> sendTicketCanceled(Ticket ticket) {
         VelocityContext context = createContext();
         context.put("ticket", ticket);
-        context.put("loginLink", loginLink);
         return sendAsync(getOwnerId(), "ticketCanceled", context, "Pilet tühistatud / Ticket Canceled");
     }
 
-    public CompletableFuture<Response> sendTicketConfirmed(Ticket ticket, String loginLink) {
+    public CompletableFuture<Response> sendTicketConfirmed(Ticket ticket) {
         VelocityContext context = createContext();
         context.put("ticket", ticket);
-        context.put("loginLink", loginLink);
         return sendAsync(getOwnerId(), "ticketConfirmed", context, "Pilet kinnitatud / Ticket Confirmed");
     }
 

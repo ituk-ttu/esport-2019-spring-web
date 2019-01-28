@@ -42,8 +42,8 @@ public class SteamService {
     @SneakyThrows
     public SteamUser verifySteamLogin(String receivingUrl, Map<String, String[]> parameters) {
         VerificationResult verificationResult = consumerManager.verify(receivingUrl,
-                                                           new ParameterList(parameters),
-                                                           discoveryInformation);
+                                                                       new ParameterList(parameters),
+                                                                       discoveryInformation);
         Identifier verifiedId = verificationResult.getVerifiedId();
         if (verifiedId == null) {
             return null;

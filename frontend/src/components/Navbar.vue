@@ -18,17 +18,17 @@
         navbar-link(:title="$t('navbar.contact')" target-page="Contact")
         navbar-link(:title="$t('navbar.volunteer')" target-url="https://volunteer.e-sport.ee" new-window)
 
-        navbar-dropdown(v-if="isLoggedIn" :title="username")
+        navbar-dropdown(v-if="isLoggedIn()" :title="username()")
           navbar-link(:title="$t('navbar.myTickets')" target-page="MyTickets")
           navbar-link(:title="$t('navbar.removeUser')" @go="logOut()")
-        navbar-dropdown(v-else-if="isAdmin" :title="$t('navbar.admin')")
+        navbar-dropdown(v-else-if="isAdmin()" :title="$t('navbar.admin')")
           navbar-link(:title="$t('navbar.adminTickets')" target-page="AdminTickets")
-        //navbar-link(v-else :title="$t('navbar.login')" target-page="Login")
+        navbar-link(v-else :title="$t('navbar.login')" target-page="Login")
 
         navbar-link(:title="$t('navbar.discord')" target-url="https://discord.gg/W5Psxu3" new-window
                     look="discord")
-      template(v-for="language in languages")
-        navbar-link(v-if="language !== currentLanguage" :title="$t('navbar.lang.' + language)"
+      template(v-for="language in languages()")
+        navbar-link(v-if="language !== currentLanguage()" :title="$t('navbar.lang.' + language)"
                     @go="setLanguage(language)" look="bold")
 </template>
 
@@ -52,9 +52,7 @@
       logOut: function () {
         this.$auth.logOut();
         this.$router.push({ name: 'Login' });
-      }
-    },
-    computed: {
+      },
       languages() {
         return Object.keys(this.$root.$i18n.messages);
       },
@@ -74,6 +72,10 @@
     created () {
       this.$root.$i18n.locale = this.$root.$localStorage.get('language', 'et');
       this.$moment.locale(this.$root.$i18n.t('moment'));
+      const self = this;
+      self.$auth.getEventBus().$on('authChange', () => {
+        self.$forceUpdate();
+      });
     },
     components: {
       NavbarLink,

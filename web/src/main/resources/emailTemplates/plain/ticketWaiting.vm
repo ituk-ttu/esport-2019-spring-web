@@ -8,7 +8,6 @@ You have been added to the waiting list. If a spot frees up, an invoice will aut
 
 Kuupäev / Date: $ticket.dateCreated.format($datePattern)
 Pilet / Ticket: $ticket.type.name
-Minu piletid / My tickets: $loginLink
 
 ---
 

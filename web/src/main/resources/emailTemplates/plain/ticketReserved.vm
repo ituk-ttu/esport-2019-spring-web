@@ -12,20 +12,16 @@ Mängijaid meeskonnas / Players in team: $ticket.type.teamSize
 #end
 Kokku / Total: ${ticket.type.cost}€
 
-MTÜ FOR Tsükkel ei ole käibemaksukohuslane Eesti Käibemaksuseaduse mõistes ja summa ei sisalda käibemaksu.
-MTÜ FOR Tsükkel is not eligible for VAT under the Estonian Value-Added Tax Act and the fee does not include VAT.
-
 Maksmine / Payment
 Pank / Bank: LHV
-Saaja / Receiver: MTÜ FOR Tsükkel
-IBAN: EE617700771002582855
-SWIFT / BIC: LHVBEE22
+Saaja / Receiver: Rasmus Rüngenen
+IBAN: EE701010011758709221
+SWIFT / BIC: EEUHEE2X
 Selgitus / Description: $invoiceNumber
 
 Pileti kinnitamiseks peab olema raha kantud saaja kontole hiljemalt 3 tööpäeva jooksul alates arve saamisest. Maksmata jätmisel pilet tühistatakse.</p>
 To confirm the ticket the payment must be received by the receiver in 3 days after receiving the invoice at the latest. Unpaid tickets will be discarded.</p>
 
-Minu piletid / My tickets: $loginLink
 
 ---
 

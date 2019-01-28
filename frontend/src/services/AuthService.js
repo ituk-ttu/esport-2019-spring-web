@@ -22,9 +22,19 @@ function AuthService (Vue) {
     }, TOKEN_REFRESH_INTERVAL);
   };
 
-  svc.logIn = (user, token) => localStorage.setItem(USER_KEY, JSON.stringify({user, token}));
+  let eventBus = new Vue();
 
-  svc.logOut = () => localStorage.removeItem(USER_KEY);
+  svc.getEventBus = () => eventBus;
+
+  svc.logIn = (user, token) => {
+    localStorage.setItem(USER_KEY, JSON.stringify({user, token}));
+    eventBus.$emit('authChange')
+  };
+
+  svc.logOut = () => {
+    localStorage.removeItem(USER_KEY);
+    eventBus.$emit('authChange');
+  };
 
   svc.isLoggedIn = () => getUser() !== null;
 
@@ -42,17 +52,21 @@ function AuthService (Vue) {
       params[entry[0]] = entry[1];
     }
     params['receivingUrl'] = returnUrl;
-    let verifyResult = Vue.http.get('api/steam/verify', { params: params })
+    return Vue.http.get('api/steam/verify', { params: params })
                           .then(res => res.body);
-    verifyResult.then(({user, token}) => svc.logIn(user, token));
-    return verifyResult;
+
+  };
+
+  svc.register = (registrationToken, userDetails) => {
+    return Vue.http.post('api/steam/register', { registrationToken, userDetails})
+              .then(res => res.body);
   };
 
   const shouldRefreshToken = token => svc.isLoggedIn() &&
                                       isPassed((getClaims(token).exp + getClaims(token).iat) / 2);
 
   let isTokenExpired = token => isPassed(getClaims(token).exp - 5); // 5 seconds buffer
-
+  
   const isPassed = unixSeconds => unixSeconds - Date.now() / 1000 < 0;
 
   const getToken = () => {

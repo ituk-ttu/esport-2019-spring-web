@@ -17,32 +17,15 @@
                                             <br>Mängijaid meeskonnas / Players in team: <span class="text-colored">$ticket.type.teamSize</span></p>
                                             #end
                                         <h3>Kokku / Total: <span class="text-colored">${ticket.type.cost}€</span></h3>
-                                        <p class="text-small text-muted">MTÜ FOR Tsükkel ei ole käibemaksukohuslane Eesti Käibemaksuseaduse mõistes ja summa ei sisalda käibemaksu.</p>
-                                        <p class="text-small text-muted">MTÜ FOR Tsükkel is not eligible for VAT under the Estonian Value-Added Tax Act and the fee does not include VAT.</p>
 
                                         <h2>Maksmine / Payment</h2>
                                         <p>Pank / Bank: <span class="text-colored">LHV</span>
-                                            <br>Saaja / Receiver: <span class="text-colored">MTÜ FOR Tsükkel</span>
-                                            <br>IBAN: <span class="text-colored">EE617700771002582855</span>
-                                            <br>SWIFT / BIC: <span class="text-colored">LHVBEE22</span>
+                                            <br>Saaja / Receiver: <span class="text-colored"Rasmus Rüngenen</span>
+                                            <br>IBAN: <span class="text-colored">EE701010011758709221</span>
+                                            <br>SWIFT / BIC: <span class="text-colored">EEUHEE2X</span>
                                             <br>Selgitus / Description: <span class="text-colored">$invoiceNumber</span>
                                         <p class="text-muted">Pileti kinnitamiseks peab olema raha kantud saaja kontole hiljemalt 3 tööpäeva jooksul alates arve saamisest. Maksmata jätmisel pilet tühistatakse.</p>
                                         <p class="text-muted">To confirm the ticket the payment must be received by the receiver in 3 days after receiving the invoice at the latest. Unpaid tickets will be discarded.</p>
-                                        <table border="0" cellpadding="0" cellspacing="0" class="btn">
-                                            <tbody>
-                                            <tr>
-                                                <td align="left">
-                                                    <table border="0" cellpadding="0" cellspacing="0">
-                                                        <tbody>
-                                                        <tr>
-                                                            <td> <a href="$loginLink">Minu piletid / My tickets</a> </td>
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
                                     </td>
                                 </tr>
                             </table>

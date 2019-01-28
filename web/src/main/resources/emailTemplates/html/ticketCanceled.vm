@@ -11,21 +11,6 @@
                                         <h2>$ticket.name</h2>
                                         <p>Sinu pilet on tühistatud. Kui Sa siiski soovid osaleda, broneeri uus pilet.</p>
                                         <p>Your ticket has been discarded. If You still wnat to attend, reserve a new ticket.</p>
-                                        <table border="0" cellpadding="0" cellspacing="0" class="btn">
-                                            <tbody>
-                                            <tr>
-                                                <td align="left">
-                                                    <table border="0" cellpadding="0" cellspacing="0">
-                                                        <tbody>
-                                                        <tr>
-                                                            <td> <a href="$loginLink">Minu piletid / My tickets</a> </td>
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
                                     </td>
                                 </tr>
                             </table>

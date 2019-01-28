@@ -15,21 +15,6 @@
                                             <br>Kuupäev / Date: <span class="text-colored">$ticket.dateCreated.format($datePattern)</span>
                                             <br>Pilet / Ticket: <span class="text-colored">$ticket.type.name</span>
                                         </p>
-                                        <table border="0" cellpadding="0" cellspacing="0" class="btn">
-                                            <tbody>
-                                            <tr>
-                                                <td align="left">
-                                                    <table border="0" cellpadding="0" cellspacing="0">
-                                                        <tbody>
-                                                        <tr>
-                                                            <td> <a href="$loginLink">Minu piletid / My tickets</a> </td>
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
                                     </td>
                                 </tr>
                             </table>
