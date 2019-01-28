@@ -44,6 +44,29 @@ public class JwtService {
                                       .compact();
     }
 
+    public String createSteamRegistrationToken(String steamId) {
+        Objects.requireNonNull(steamId);
+        LocalDateTime now = LocalDateTime.now(ZoneOffset.UTC);
+        Claims claims = new SteamRegistrationClaims().setSteamId(steamId)
+                                                     .setExpiration(asLegacyDate(now.plus(JWT_LIFESPAN)))
+                                                     .setIssuedAt(asLegacyDate(now))
+                                                     .setIssuer(ISSUER);
+        return new DefaultJwtBuilder().setClaims(claims)
+                                      .signWith(algorithm, key)
+                                      .compact();
+    }
+
+    public String validateSteamRegistrationTokenAndGetSteamId(String token) {
+        Objects.requireNonNull(token);
+        Jws<Claims> parsedToked = new DefaultJwtParser().setSigningKey(key)
+                                                        .parseClaimsJws(token);
+        SteamRegistrationClaims claims = new SteamRegistrationClaims(parsedToked.getBody());
+        if(Instant.now().isAfter(claims.getExpiration().toInstant())) {
+            return null;
+        }
+        return claims.getSteamId();
+   }
+
     public Integer validateAndGetUserId(HttpServletRequest request) {
         String tokenHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         if(tokenHeader == null) {

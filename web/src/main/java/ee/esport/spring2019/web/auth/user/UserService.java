@@ -1,6 +1,5 @@
 package ee.esport.spring2019.web.auth.user;
 
-import ee.esport.spring2019.web.auth.steam.SteamUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,10 +21,11 @@ public class UserService {
         return userRepository.findById(userId);
     }
 
-    public User createUserForSteamUser(SteamUser steamUser) {
+    public User createUser(UserCandidate userCandidate) {
         return userRepository.create(User.builder()
-                                         .name(steamUser.getName())
-                                         .steamId(steamUser.getId())
+                                         .name(userCandidate.getName())
+                                         .steamId(userCandidate.getSteamId())
+                                         .email(userCandidate.getEmail())
                                          .role(UserRole.USER)
                                          .build());
     }

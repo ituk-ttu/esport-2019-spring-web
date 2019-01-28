@@ -29,6 +29,7 @@ public class UserRepository {
                   .set(USERS.NAME, user.getName())
                   .set(USERS.STEAM_ID, user.getSteamId())
                   .set(USERS.ROLE, user.getRole().name())
+                  .set(USERS.EMAIL, user.getEmail())
                   .returning()
                   .fetchOne()
                   .into(User.class);
