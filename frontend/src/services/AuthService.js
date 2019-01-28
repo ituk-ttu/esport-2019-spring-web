@@ -42,24 +42,14 @@ function AuthService (Vue) {
       params[entry[0]] = entry[1];
     }
     params['receivingUrl'] = returnUrl;
-    let verifyResult = Vue.http.get('api/steam/verify', { params: params })
+    return Vue.http.get('api/steam/verify', { params: params })
                           .then(res => res.body);
-    return verifyResult.then(result => {
-      if(result.type === 'LOGIN') {
-        return svc.logIn(result.user, result.token)
-      }
-      if(result.type === 'NEW_USER') {
-        const { registrationToken, userDetails } = result; // TODO: Show modal
-        return Vue.http.post('api/steam/register', {
-          registrationToken,
-          userDetails: {
-            ...userDetails, email: 'info@e-sport.ee'
-          }
-        }).then(res => res.body)
-          .then(({user, token}) => svc.logIn(user, token));
-      }
-      throw new Error("Failed to log in");
-    })
+
+  };
+
+  svc.register = (registrationToken, userDetails) => {
+    return Vue.http.post('api/steam/register', { registrationToken, userDetails})
+              .then(res => res.body);
   };
 
   const shouldRefreshToken = token => svc.isLoggedIn() &&
