@@ -28,6 +28,7 @@
     "ticketsSoon": "Tickets available soon!"
   },
   "tickets": {
+    "includes": "Includes",
     "notifyMe": "Notify me!",
     "outOfTickets": "All these tickets are currently reserved, but you can enter the waiting list and we will let you know if a spot opens up!",
     "tickets": "Tickets",
