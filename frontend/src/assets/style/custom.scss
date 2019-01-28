@@ -95,3 +95,10 @@ body, html, #app, #public {
 .footer {
   flex-shrink: 0;
 }
+
+.small-margin-bottom {
+  margin-bottom: 0.5rem !important; // should find a better solution
+  ul {
+    margin-top: 0;
+  }
+}

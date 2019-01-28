@@ -28,6 +28,7 @@
     "ticketsSoon": "Piletid varsti müügil!"
   },
   "tickets": {
+    "includes": "Sisaldab",
     "notifyMe": "Teavita mind!",
     "outOfTickets": "Hetkel on kõik piletid broneeritud. Lisa ennast ootelisti, et saada teade kui koht vabaneb!",
     "tickets": "Piletid",
