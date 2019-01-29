@@ -105,9 +105,9 @@ public class TicketService {
     @SneakyThrows //FIXME: remove
     private void sendTicketCreationEmail(Ticket ticket) {
         if(ticket.getStatus() == Ticket.Status.AWAITING_PAYMENT) {
-            emailService.sendTicketReservation(ticket).get();
+            emailService.sendEmail("ticketReserved", ticket, getType(ticket.getTypeId()), getVisibleOffering(ticket.getOfferingId())).get();
         } else {
-            emailService.sendTicketWaiting(ticket).get();
+            emailService.sendEmail("ticketWaiting", ticket, getType(ticket.getTypeId()), getVisibleOffering(ticket.getOfferingId())).get();
         }
     }
 
