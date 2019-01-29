@@ -5,7 +5,7 @@
 * keelatud on
   * suitsetamine alaealistel
   * mokatubaka kasutamine TalTech-i territooriumil
-* külm- ja immitatsioonrelvad
+* külm- ja imitatsioonrelvad
 * ürituse alal igasuguse vägivalla kasutamine teiste ja teiste vara suhtes
 * teiste vara omavoliline kasutamine, näppimine
 * turniiri reeglitele mittevastavalt mängimine
