@@ -35,4 +35,9 @@ public class UserRepository {
                   .into(User.class);
     }
 
+    public String getUserEmail(Integer userId) {
+        return dsl.selectFrom(USERS)
+                .where(USERS.ID.eq(userId))
+                .fetchAnyInto(User.class).getEmail();
+    }
 }

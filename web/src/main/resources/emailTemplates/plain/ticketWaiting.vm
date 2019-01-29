@@ -7,7 +7,7 @@ Olete lisatud ootelisti. Kui koht vabaneb, saadetakse Sulle automaatselt pileti 
 You have been added to the waiting list. If a spot frees up, an invoice will automatically be sent to You.
 
 Kuupäev / Date: $ticket.dateCreated.format($datePattern)
-Pilet / Ticket: $ticket.type.name
+Pilet / Ticket: $ticketOffering.name
 
 ---
 

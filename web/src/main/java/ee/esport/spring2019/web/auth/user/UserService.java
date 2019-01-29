@@ -21,6 +21,11 @@ public class UserService {
         return userRepository.findById(userId);
     }
 
+    public String getUserEmail(Integer userId) {
+        Objects.requireNonNull(userId);
+        return userRepository.getUserEmail(userId);
+    }
+
     public User createUser(UserCandidate userCandidate) {
         return userRepository.create(User.builder()
                                          .name(userCandidate.getName())

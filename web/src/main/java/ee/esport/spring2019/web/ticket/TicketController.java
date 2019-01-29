@@ -2,6 +2,7 @@ package ee.esport.spring2019.web.ticket;
 
 import ee.esport.spring2019.web.auth.user.User;
 import ee.esport.spring2019.web.auth.user.UserRole;
+import ee.esport.spring2019.web.auth.user.UserService;
 import ee.esport.spring2019.web.core.WebClientUrl;
 import ee.esport.spring2019.web.ticket.domain.Ticket;
 import ee.esport.spring2019.web.ticket.domain.TicketCreation;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
 import javax.annotation.Resource;
+import javax.jws.soap.SOAPBinding;
 import java.util.List;
 
 @Controller
@@ -23,6 +25,9 @@ public class TicketController {
 
     @Resource
     private TicketService ticketService;
+
+    @Resource
+    private UserService userService;
 
     @GetMapping("/types")
     public ResponseEntity<List<TicketType>> getAllTicketTypes() {
