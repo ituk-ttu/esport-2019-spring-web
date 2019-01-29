@@ -20,7 +20,7 @@
           small(v-if="isTeamType")  {{ $t('tickets.perPerson') }}
           | :
         .content.md-content.small-margin-bottom.is-size-7(v-html="included")
-        p.has-text-burgundy(v-if="isActive && offering.amountRemaining != null")
+        p.has-text-burgundy(v-if="isActive && !isSoldOut && offering.amountRemaining != null")
           span.has-text-weight-bold {{ offering.amountRemaining }}
           span(v-if="type.teamSize > 1")  {{ $t('tickets.teams') }}
           span(v-else)  {{ $t('tickets.pieces') }}
