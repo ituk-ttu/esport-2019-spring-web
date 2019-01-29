@@ -17,10 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -129,11 +126,17 @@ public class TicketRepository {
                                    .stream();
         return records.map(record -> {
             TicketOfferingsRecord offeringsRecord = record.into(TICKET_OFFERINGS);
-            int offeringAmountRemaining = offeringsRecord.getAmountAvailable() != null ?
-                                          offeringsRecord.getAmountAvailable() :
-                                          Integer.MAX_VALUE;
+            Integer offeringAmountAvailable = offeringsRecord.getAmountAvailable();
+            Integer amountActive = record.get(ACTIVE_TICKETS_COUNT, Integer.class);
+            Integer offeringAmountRemaining = offeringAmountAvailable != null ?
+                                              Math.max(offeringAmountAvailable - amountActive, 0) :
+                                              null;
             Integer typeAmountRemaining = getType(offeringsRecord.getTicketTypeId()).getAmountRemaining();
-            return mapper.toTicketOffering(offeringsRecord, Math.min(offeringAmountRemaining, typeAmountRemaining));
+            Integer amountRemaining = Stream.of(offeringAmountRemaining, typeAmountRemaining)
+                                            .filter(Objects::nonNull)
+                                            .reduce(Integer::min)
+                                            .orElse(null);
+            return mapper.toTicketOffering(offeringsRecord, amountRemaining);
         });
     }
 
@@ -150,8 +153,11 @@ public class TicketRepository {
                                         .stream();
         return records.map(record -> {
             TicketTypesRecord typesRecord = record.into(TICKET_TYPES);
-            Integer amountRemaining = typesRecord.getAmountAvailable() -
-                                      record.get(ACTIVE_TICKETS_COUNT, Integer.class);
+            Integer amountActive = record.get(ACTIVE_TICKETS_COUNT, Integer.class);
+            Integer amountAvailable = typesRecord.getAmountAvailable();
+            Integer amountRemaining = amountAvailable != null ?
+                                      Math.max(amountAvailable - amountActive, 0) :
+                                      null;
             return mapper.toTicketType(typesRecord, amountRemaining);
         });
     }

@@ -121,7 +121,7 @@
     "description": "Description",
     "paymentDue": "Payment due date",
     "paymentInfo": "To confirm the ticket the payment must be received by the receiver in 3 days after receiving the invoice at the latest. Unpaid tickets will be discarded.",
-    "checkMail": "The invoice has been sent to your e-mail"
+    "checkMail": "The invoice will be sent to your e-mail in a couple of days."
   },
   "register": {
     "title": "Register",
