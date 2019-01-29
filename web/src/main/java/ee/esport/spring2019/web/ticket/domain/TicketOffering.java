@@ -15,7 +15,7 @@ public class TicketOffering {
     @NonNull private final String name;
     @NonNull private final Integer typeId;
     private final Integer amountAvailable;
-    @NonNull private final Integer amountRemaining;
+    private final Integer amountRemaining;
     @NonNull private final OffsetDateTime availableFrom;
     @NonNull private final OffsetDateTime availableUntil;
     @NonNull private final Boolean availableOnline;
