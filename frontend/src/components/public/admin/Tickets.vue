@@ -42,9 +42,9 @@
         template(slot-scope="row")
           span(v-if="canCancelTicket(row)")
             button.btn.btn-danger.btn-xs(v-on:click="cancelTicket(row)"): small {{ $t('tickets.cancel') }}
-      table-column(label="", :sortable="false", :filterable="false")
-        template(slot-scope="row")
-          button.btn.btn-danger.btn-xs(v-on:click="sendEmail(row)"): small Send email
+      <!--table-column(label="", :sortable="false", :filterable="false")-->
+        <!--template(slot-scope="row")-->
+          <!--button.btn.btn-danger.btn-xs(v-on:click="sendEmail(row)"): small Send email-->
 </template>
 
 <script>
