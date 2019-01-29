@@ -10,8 +10,8 @@ public class TicketType {
 
     @NonNull private final Integer id;
     @NonNull private final String code;
-    @NonNull private final Integer amountAvailable;
-    @NonNull private final Integer amountRemaining;
+    private final Integer amountAvailable;
+    private final Integer amountRemaining;
     @NonNull private final Integer teamSize;
     @NonNull private final Boolean assignedSeating;
 

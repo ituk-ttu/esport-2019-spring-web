@@ -23,12 +23,12 @@
       table-column(show="name" label="Name")
         template(slot-scope="row")
           strong {{ row.name }}
-      table-column(show="type.name" label="Type")
+      table-column(show="typeId" label="Type")
       table-column(show="ownerEmail" label="Owner Email")
       table-column(show="type.cost" label="Cost" data-type="numeric")
       table-column(label="Members entered" data-type="numeric")
         template(slot-scope="row")
-          | {{ row.members.length }}/{{ row.type.teamSize }}
+          | {{ row.members.length }}/{{ 5 }}
       table-column(show="status" label="Status")
         template(slot-scope="row")
           ticket-status(:status="row.status")
@@ -42,6 +42,9 @@
         template(slot-scope="row")
           span(v-if="canCancelTicket(row)")
             button.btn.btn-danger.btn-xs(v-on:click="cancelTicket(row)"): small {{ $t('tickets.cancel') }}
+      table-column(label="", :sortable="false", :filterable="false")
+        template(slot-scope="row")
+          button.btn.btn-danger.btn-xs(v-on:click="sendEmail(row)"): small Send email
 </template>
 
 <script>
@@ -73,6 +76,9 @@
       },
       confirmTicket: function (ticket) {
         this.$ticket.confirm(ticket).then(res => { ticket.status = 'PAID'; });
+      },
+      sendEmail: function (ticket) {
+        this.$ticket.sendEmail(ticket).then(res => { });
       },
       cancelTicket: function (ticket) {
         this.$ticket.cancel(ticket).then(res => { ticket.status = 'CANCELED'; });

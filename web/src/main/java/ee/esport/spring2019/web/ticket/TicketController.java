@@ -87,6 +87,18 @@ public class TicketController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PostMapping("/{ticketId}/sendEmail")
+    public ResponseEntity<Void> sendUnsentEmail(@PathVariable int ticketId, User user) {
+        if (user == null) {
+            throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
+        }
+        if (!user.getRole().isAtleast(UserRole.ADMIN)) {
+            throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
+        }
+        ticketService.sendTicketCreationEmail(ticketService.getTicket(ticketId));
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @PostMapping("/{ticketId}/confirm")
     public ResponseEntity<Void> confirmTicket(@PathVariable int ticketId, User user,
                                               @WebClientUrl String webClientUrl) {

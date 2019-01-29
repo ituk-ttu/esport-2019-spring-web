@@ -10,8 +10,7 @@
     name: 'Admin',
     methods: {
       isAdmin: function () {
-        const admin = this.$auth.getClaims()['admin'];
-        return admin != null ? admin : false;
+        return this.$auth.isAdmin();
       }
     }
   };
