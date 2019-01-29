@@ -63,6 +63,8 @@ function TicketService (Vue) {
 
   svc.cancel = ticket => Vue.http.post('api/tickets/' + ticket.id + '/cancel').then(res => res.body);
 
+  svc.sendEmail = ticket => Vue.http.post('api/tickets/' + ticket.id + '/sendEmail').then(res => res.body);
+
   svc.getMyTickets = () => Vue.http.get('api/tickets/mine').then(res => res.body);
 
   svc.getAllTickets = () => Vue.http.get('api/tickets').then(res => res.body);

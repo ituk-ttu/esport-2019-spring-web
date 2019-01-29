@@ -98,12 +98,12 @@ public class TicketService {
                                                    .name(creation.getName())
                                                    .build();
         Ticket ticket = ticketRepository.createTicket(candidate);
-        //sendTicketCreationEmail(ticket);
+        sendTicketCreationEmail(ticket);
         return ticket;
     }
 
     @SneakyThrows //FIXME: remove
-    private void sendTicketCreationEmail(Ticket ticket) {
+    public void sendTicketCreationEmail(Ticket ticket) {
         if(ticket.getStatus() == Ticket.Status.AWAITING_PAYMENT) {
             emailService.sendEmail("ticketReserved", ticket, getType(ticket.getTypeId()), getVisibleOffering(ticket.getOfferingId())).get();
         } else {

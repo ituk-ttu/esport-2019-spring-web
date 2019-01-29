@@ -67,10 +67,11 @@ public class TicketRepository {
                                                      .from(TICKETS.leftJoin(TICKET_OFFERINGS).onKey())
                                                      .where(condition)
                                                      .stream();
+        System.out.println(ticketAndOfferingRecords.toString());
         Map<Integer, List<TicketMembersRecord>> memberRecordsByTicketId =
                 dsl.select(TICKET_MEMBERS.fields())
                    .select(TICKETS.ID)
-                   .from(TICKET_MEMBERS.leftJoin(TICKET_OFFERINGS).onKey())
+                   .from(TICKET_MEMBERS.leftJoin(TICKETS).onKey())
                    .where(condition)
                    .fetchGroups(TICKETS.ID, it -> it.into(TICKET_MEMBERS));
         return ticketAndOfferingRecords.map(it -> {
