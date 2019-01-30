@@ -120,11 +120,13 @@ public class TicketService {
     }
 
     public void cancelTicket(Ticket ticket) {
-        throw new NotImplementedException("Ticket cancellation not yet implemented");
+        ticketRepository.cancelTicket(ticket);
+        emailService.sendEmail("ticketCanceled", ticket, getType(ticket.getTypeId()), getVisibleOffering(ticket.getOfferingId()));
     }
 
     public void confirmTicketPaid(Ticket ticket, String referer) {
-        throw new NotImplementedException("Ticket payment confirmation not yet implemented");
+        ticketRepository.confirmTicketPaid(ticket);
+        emailService.sendEmail("ticketConfirmed", ticket, getType(ticket.getTypeId()), getVisibleOffering(ticket.getOfferingId()));
     }
 
     public void deleteMember(int ticketId, int memberId) {

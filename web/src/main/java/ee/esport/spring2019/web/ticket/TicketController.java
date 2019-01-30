@@ -4,6 +4,7 @@ import ee.esport.spring2019.web.auth.user.User;
 import ee.esport.spring2019.web.auth.user.UserRole;
 import ee.esport.spring2019.web.auth.user.UserService;
 import ee.esport.spring2019.web.core.WebClientUrl;
+import ee.esport.spring2019.web.email.EmailService;
 import ee.esport.spring2019.web.ticket.domain.Ticket;
 import ee.esport.spring2019.web.ticket.domain.TicketCreation;
 import ee.esport.spring2019.web.ticket.domain.TicketOffering;
@@ -28,6 +29,9 @@ public class TicketController {
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private EmailService emailService;
 
     @GetMapping("/types")
     public ResponseEntity<List<TicketType>> getAllTicketTypes() {
@@ -87,15 +91,16 @@ public class TicketController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/{ticketId}/sendEmail")
-    public ResponseEntity<Void> sendUnsentEmail(@PathVariable int ticketId, User user) {
+    @PostMapping("/{ticketId}/sendEmail/{type}")
+    public ResponseEntity<Void> sendUnsentEmail(@PathVariable int ticketId, @PathVariable String type, User user) {
         if (user == null) {
             throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
         }
         if (!user.getRole().isAtleast(UserRole.ADMIN)) {
             throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
         }
-        ticketService.sendTicketCreationEmail(ticketService.getTicket(ticketId));
+        Ticket ticket = ticketService.getTicket(ticketId);
+        emailService.sendEmail(type, ticket, ticketService.getType(ticket.getTypeId()), ticketService.getVisibleOffering(ticket.getOfferingId()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

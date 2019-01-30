@@ -166,4 +166,17 @@ public class TicketRepository {
         return new Timestamp(Instant.now().getEpochSecond());
     }
 
+    public void confirmTicketPaid(Ticket ticket) {
+        dsl.update(TICKETS)
+                .set(TICKETS.STATUS, Ticket.Status.PAID.toString())
+                .where(TICKETS.ID.eq(ticket.getId()))
+                .execute();
+    }
+
+    public void cancelTicket(Ticket ticket) {
+        dsl.update(TICKETS)
+                .set(TICKETS.STATUS, Ticket.Status.CANCELED.toString())
+                .where(TICKETS.ID.eq(ticket.getId()))
+                .execute();
+    }
 }
