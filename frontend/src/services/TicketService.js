@@ -69,6 +69,12 @@ function TicketService (Vue) {
 
   svc.getAllTickets = () => Vue.http.get('api/tickets').then(res => res.body);
 
+  svc.getAllOfferings = () => Vue.http.get('api/tickets/offerings').then(res => res.body);
+
+  svc.getAllTicketTypes = () => Vue.http.get('api/tickets/types').then(res => res.body);
+
+  svc.getAllOwnerEmails = () => Vue.http.get('api/tickets/ownerEmails').then(res => res.body);
+
   svc.storeMember = (ticket, member) => Vue.http.post('api/tickets/' + ticket.id + '/member', member).then(res => {
     const newMember = res.body;
     if (member.id == null) {

@@ -1,5 +1,6 @@
 package ee.esport.spring2019.web.ticket;
 
+import ee.esport.spring2019.web.auth.user.UserService;
 import ee.esport.spring2019.web.email.EmailService;
 import ee.esport.spring2019.web.ticket.domain.*;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,9 @@ public class TicketService {
     @Resource
     private final EmailService emailService;
 
+    @Resource
+    private final UserService userService;
+
     public List<TicketType> getAllTypes() {
         return ticketRepository.getAllTypes();
     }
@@ -38,6 +42,10 @@ public class TicketService {
                                     .findAny()
                                     .orElseThrow(() -> new NoSuchElementException("Ticket offering not visible or" +
                                                                                   "does not exist"));
+    }
+
+    public List<TicketOffering> getAllOfferings() {
+        return ticketRepository.getAllOfferings();
     }
 
     // No more than one per type, active or next to be active
@@ -133,4 +141,14 @@ public class TicketService {
         ticketRepository.deleteMember(ticketId, memberId);
     }
 
+    public TicketOffering getfromAllOfferings(int id) {
+        return getAllOfferings().stream()
+                .filter(it -> it.getId() == id)
+                .findAny()
+                .orElseThrow(() -> new NoSuchElementException("Ticket offering does not exist"));
+    }
+
+    public Map<Integer, String> getOwnerEmails() {
+        return getAllTickets().stream().collect(Collectors.toMap(Ticket::getId, ticket -> userService.getUserEmail(ticket.getOwnerId()), (a, b) -> b));
+    }
 }
