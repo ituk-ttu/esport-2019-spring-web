@@ -54,6 +54,10 @@ public class TicketRepository {
                                             .orElseThrow(() -> new NoSuchElementException("Ticket not found"));
     }
 
+    public List<Ticket> getUserTickets(int userId) {
+        return getTickets(TICKETS.OWNER_ID.eq(userId)).collect(Collectors.toList());
+    }
+
     public List<Ticket> getAllTickets() {
         return getTickets(DSL.trueCondition()).collect(Collectors.toList());
     }

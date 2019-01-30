@@ -115,6 +115,10 @@ public class TicketService {
         return ticketRepository.getTicket(ticketId);
     }
 
+    public List<Ticket> getUserTickets(int userId) {
+        return ticketRepository.getUserTickets(userId);
+    }
+
     public List<Ticket> getAllTickets() {
         return ticketRepository.getAllTickets();
     }

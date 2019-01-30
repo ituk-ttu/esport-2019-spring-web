@@ -16,11 +16,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
 import javax.annotation.Resource;
-import javax.jws.soap.SOAPBinding;
 import java.util.List;
 
 @Controller
-@RequestMapping("/api/tickets")
+@RequestMapping("/api")
 public class TicketController {
 
     @Resource
@@ -29,28 +28,28 @@ public class TicketController {
     @Resource
     private UserService userService;
 
-    @GetMapping("/types")
+    @GetMapping("/tickets/types")
     public ResponseEntity<List<TicketType>> getAllTicketTypes() {
         return new ResponseEntity<>(ticketService.getAllTypes(), HttpStatus.OK);
     }
 
-    @GetMapping("/types/{typeId}")
+    @GetMapping("/tickets/types/{typeId}")
     public ResponseEntity<TicketType> getTicketType(@PathVariable int typeId) {
         return new ResponseEntity<>(ticketService.getType(typeId), HttpStatus.OK);
     }
 
-    @GetMapping("/offerings/visible")
+    @GetMapping("/tickets/offerings/visible")
     public ResponseEntity<List<TicketOffering>> getVisibleOfferings() {
         return new ResponseEntity<>(ticketService.getVisibleOfferings(), HttpStatus.OK);
     }
 
-    @GetMapping("/offerings/{id}")
+    @GetMapping("/tickets/offerings/{id}")
     public ResponseEntity<TicketOffering> getOffering(@PathVariable int id) {
         //TODO: Admins should see all offerings, not only those which are visible
         return new ResponseEntity<>(ticketService.getVisibleOffering(id), HttpStatus.OK);
     }
 
-    @GetMapping("")
+    @GetMapping("/tickets")
     public ResponseEntity<List<Ticket>> getAllTickets(User user) {
         if (user == null) {
             throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
@@ -61,7 +60,19 @@ public class TicketController {
         return new ResponseEntity<>(ticketService.getAllTickets(), HttpStatus.OK);
     }
 
-    @PostMapping("")
+    @GetMapping("/users/{userId}/tickets")
+    public ResponseEntity<List<Ticket>> getUserTickets(@PathVariable int userId, User user) {
+        if (user == null) {
+            throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
+        }
+        if (userId != user.getId() && !user.getRole().isAtleast(UserRole.ADMIN)) {
+            throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
+        }
+        return new ResponseEntity<>(ticketService.getUserTickets(userId), HttpStatus.OK);
+    }
+
+
+    @PostMapping("/tickets")
     public ResponseEntity<Ticket> buyTicket(@RequestBody TicketCreation ticketRequest, User user) {
         if (user == null) {
             throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
@@ -73,7 +84,7 @@ public class TicketController {
         return new ResponseEntity<>(boughtTicket, HttpStatus.OK);
     }
 
-    @PostMapping("/{ticketId}/cancel")
+    @PostMapping("/tickets/{ticketId}/cancel")
     public ResponseEntity<Void> cancelTicket(@PathVariable int ticketId, User user) {
         if (user == null) {
             throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
@@ -87,7 +98,7 @@ public class TicketController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/{ticketId}/sendEmail")
+    @PostMapping("/tickets/{ticketId}/sendEmail")
     public ResponseEntity<Void> sendUnsentEmail(@PathVariable int ticketId, User user) {
         if (user == null) {
             throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
@@ -99,7 +110,7 @@ public class TicketController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/{ticketId}/confirm")
+    @PostMapping("/tickets/{ticketId}/confirm")
     public ResponseEntity<Void> confirmTicket(@PathVariable int ticketId, User user,
                                               @WebClientUrl String webClientUrl) {
         if (user == null) {
@@ -113,7 +124,7 @@ public class TicketController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/{ticketId}/members")
+    @PostMapping("/tickets/{ticketId}/members")
     public ResponseEntity<Ticket.Member> addMember(@PathVariable int ticketId, User user) {
         if (user == null) {
             throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
@@ -125,7 +136,7 @@ public class TicketController {
         throw new NotImplementedException("Adding member to ticket not yet implemented");
     }
 
-    @DeleteMapping("/{ticketId}/members/{memberId}")
+    @DeleteMapping("/tickets/{ticketId}/members/{memberId}")
     public ResponseEntity<Void> deleteMember(@PathVariable int ticketId, @PathVariable int memberId, User user) {
         if (user == null) {
             throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);

@@ -67,6 +67,8 @@ function TicketService (Vue) {
 
   svc.getMyTickets = () => Vue.http.get('api/tickets/mine').then(res => res.body);
 
+  svc.getUserTickets = userId => Vue.http.get(`api/users/${userId}/tickets`).then(res => res.body);
+
   svc.getAllTickets = () => Vue.http.get('api/tickets').then(res => res.body);
 
   svc.storeMember = (ticket, member) => Vue.http.post('api/tickets/' + ticket.id + '/member', member).then(res => {
