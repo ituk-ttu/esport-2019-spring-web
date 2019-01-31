@@ -393,7 +393,7 @@
                                         <h2>$ticket.name</h2>
                                     <p>Arve number / Invoice number: <span class="text-colored">$invoiceNumber</span>
                                         <br>Kuupäev / Date: <span
-                                            class="text-colored">$ticket.dateCreated.format($datePattern)</span>
+                                            class="text-colored">$date.format($datePattern)</span>
                                         <br>Pilet / Ticket: <span class="text-colored">$ticketOffering.name</span>
                                         #if($ticketType.teamSize > 1)
                                             <br>Ühe mängija hind / Price per player: <span

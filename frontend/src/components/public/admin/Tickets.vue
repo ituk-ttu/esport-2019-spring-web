@@ -23,12 +23,18 @@
       table-column(show="name" label="Name")
         template(slot-scope="row")
           strong {{ row.name }}
-      table-column(show="type.name" label="Type")
-      table-column(show="ownerEmail" label="Owner Email")
-      table-column(show="type.cost" label="Cost" data-type="numeric")
+      table-column( label="Type")
+        template(slot-scope="row")
+          | {{ getOffering(row).name }}
+      table-column( label="Owner Email")
+        template(slot-scope="row")
+          strong {{ getOwnerEmail(row) }}
+      table-column(label="Cost" data-type="numeric")
+        template(slot-scope="row")
+          | {{ getOffering(row).cost }} €
       table-column(label="Members entered" data-type="numeric")
         template(slot-scope="row")
-          | {{ row.members.length }}/{{ row.type.teamSize }}
+          | {{ row.members.length }}/{{ getType(getOffering(row).typeId).teamSize }}
       table-column(show="status" label="Status")
         template(slot-scope="row")
           ticket-status(:status="row.status")
@@ -42,6 +48,9 @@
         template(slot-scope="row")
           span(v-if="canCancelTicket(row)")
             button.btn.btn-danger.btn-xs(v-on:click="cancelTicket(row)"): small {{ $t('tickets.cancel') }}
+      <!--table-column(label="", :sortable="false", :filterable="false")-->
+        <!--template(slot-scope="row")-->
+          <!--button.btn.btn-danger.btn-xs(v-on:click="sendEmail(row)"): small Send email-->
 </template>
 
 <script>
@@ -53,7 +62,10 @@
     data () {
       return {
         statsExpanded: false,
+        ownerEmails: {},
         tickets: [],
+        ticketTypes: [],
+        offerings: [],
         columns: [
           {
             title: 'id'
@@ -74,8 +86,33 @@
       confirmTicket: function (ticket) {
         this.$ticket.confirm(ticket).then(res => { ticket.status = 'PAID'; });
       },
+      sendEmail: function (ticket) {
+        this.$ticket.sendEmail(ticket).then(res => { });
+      },
       cancelTicket: function (ticket) {
         this.$ticket.cancel(ticket).then(res => { ticket.status = 'CANCELED'; });
+      },
+      getOffering: function (ticket) {
+        let currentOffering = 'Unknown';
+        this.offerings.forEach(offering => {
+          if (offering.id === ticket.offeringId) {
+            currentOffering = offering;
+          }
+        });
+        return currentOffering;
+      },
+      getType: function(typeId) {
+        let currentTicketType = 'Unknown';
+        this.ticketTypes.forEach(ticketType => {
+          if (ticketType.id === typeId) {
+            currentTicketType = ticketType;
+          }
+        });
+        return currentTicketType;
+      },
+      getOwnerEmail: function (ticket) {
+        const self = this;
+        return self.ownerEmails[ticket.id];
       }
     },
     created: function () {
@@ -86,6 +123,9 @@
     mounted: function () {
       const self = this;
       self.$ticket.getAllTickets().then(tickets => { self.tickets = tickets; });
+      self.$ticket.getAllOfferings().then(offerings => { self.offerings = offerings; });
+      self.$ticket.getAllTicketTypes().then(ticketTypes => { self.ticketTypes = ticketTypes; });
+      self.$ticket.getAllOwnerEmails().then(ownerEmails => { self.ownerEmails = ownerEmails; });
     },
     computed: {
       // a computed getter

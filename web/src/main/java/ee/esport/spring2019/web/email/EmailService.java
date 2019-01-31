@@ -48,6 +48,7 @@ public class EmailService {
                 "2019-359027-" + "000".substring(Integer.toString(ticket.getId()).length()) + ticket.getId());
         context.put("payByDate",
                 OffsetDateTime.ofInstant(ticket.getDateCreated().plusDays(3).toInstant(), ZoneId.systemDefault()));
+        context.put("date", OffsetDateTime.now());
         String to = getOwnerId(ticket.getOwnerId());
         switch (type) {
             case "ticketReserved":

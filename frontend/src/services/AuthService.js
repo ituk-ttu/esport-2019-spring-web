@@ -28,7 +28,7 @@ function AuthService (Vue) {
 
   svc.logIn = (user, token) => {
     localStorage.setItem(USER_KEY, JSON.stringify({user, token}));
-    eventBus.$emit('authChange')
+    eventBus.$emit('authChange');
   };
 
   svc.logOut = () => {
@@ -54,11 +54,10 @@ function AuthService (Vue) {
     params['receivingUrl'] = returnUrl;
     return Vue.http.get('api/steam/verify', { params: params })
                           .then(res => res.body);
-
   };
 
   svc.register = (registrationToken, userDetails) => {
-    return Vue.http.post('api/steam/register', { registrationToken, userDetails})
+    return Vue.http.post('api/steam/register', { registrationToken, userDetails })
               .then(res => res.body);
   };
 
@@ -66,7 +65,7 @@ function AuthService (Vue) {
                                       isPassed((getClaims(token).exp + getClaims(token).iat) / 2);
 
   let isTokenExpired = token => isPassed(getClaims(token).exp - 5); // 5 seconds buffer
-  
+
   const isPassed = unixSeconds => unixSeconds - Date.now() / 1000 < 0;
 
   const getToken = () => {

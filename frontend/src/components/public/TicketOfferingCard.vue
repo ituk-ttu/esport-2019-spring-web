@@ -20,18 +20,19 @@
           small(v-if="isTeamType")  {{ $t('tickets.perPerson') }}
           | :
         .content.md-content.small-margin-bottom.is-size-7(v-html="included")
-        p.has-text-burgundy(v-if="isActive && !isSoldOut")
+        p.has-text-burgundy(v-if="isActive && !isSoldOut && offering.amountRemaining != null && offering.amountRemaining < 5")
           span.has-text-weight-bold {{ offering.amountRemaining }}
           span(v-if="type.teamSize > 1")  {{ $t('tickets.teams') }}
           span(v-else)  {{ $t('tickets.pieces') }}
           |  {{ $t('tickets.remaining') }}
-        p.ticket-out(v-if="isActive && isSoldOut")
+        p.ticket-out(v-if="isActive && isSoldOut && offering.amountRemaining != null")
           small {{ $t('tickets.outOfTickets') }}
-      footer.card-footer
-        router-link.has-text-weight-bold.card-footer-item(:to="{name: 'Buy', params: {offeringId: offering.id}}"
-                                                          v-if="isActive")
-          span(v-if="!offering.availableOnline") {{ $t('tickets.notAvailableOnline') }}
-          span(v-else-if="isSoldOut") {{ $t('tickets.buyWaitingList') }}
+      footer.card-footer(v-if="isActive")
+        span.has-text-weight-bold.has-text-light.has-text-centered.card-footer-item(v-if="!offering.availableOnline")
+          | {{ $t('tickets.notAvailableOnline') }}
+        router-link.has-text-weight-bold.has-text-centered.card-footer-item(
+            :to="{name: 'Buy', params: {offeringId: offering.id}}" v-else)
+          span(v-if="isSoldOut") {{ $t('tickets.buyWaitingList') }}
           span(v-else) {{ $t('tickets.buy') }}
 
 </template>

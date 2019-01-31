@@ -4,6 +4,7 @@ import ee.esport.spring2019.web.auth.user.User;
 import ee.esport.spring2019.web.auth.user.UserRole;
 import ee.esport.spring2019.web.auth.user.UserService;
 import ee.esport.spring2019.web.core.WebClientUrl;
+import ee.esport.spring2019.web.email.EmailService;
 import ee.esport.spring2019.web.ticket.domain.Ticket;
 import ee.esport.spring2019.web.ticket.domain.TicketCreation;
 import ee.esport.spring2019.web.ticket.domain.TicketOffering;
@@ -18,6 +19,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import javax.annotation.Resource;
 import javax.jws.soap.SOAPBinding;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/api/tickets")
@@ -28,6 +30,9 @@ public class TicketController {
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private EmailService emailService;
 
     @GetMapping("/types")
     public ResponseEntity<List<TicketType>> getAllTicketTypes() {
@@ -44,33 +49,46 @@ public class TicketController {
         return new ResponseEntity<>(ticketService.getVisibleOfferings(), HttpStatus.OK);
     }
 
-    @GetMapping("/offerings/{id}")
-    public ResponseEntity<TicketOffering> getOffering(@PathVariable int id) {
-        //TODO: Admins should see all offerings, not only those which are visible
-        return new ResponseEntity<>(ticketService.getVisibleOffering(id), HttpStatus.OK);
+    @GetMapping("/offerings")
+    public ResponseEntity<List<TicketOffering>> getAllOfferings(User user) {
+        isAdmin(user);
+        return new ResponseEntity<>(ticketService.getAllOfferings(), HttpStatus.OK);
     }
 
-    @GetMapping("")
-    public ResponseEntity<List<Ticket>> getAllTickets(User user) {
+    private void isAdmin(User user) {
         if (user == null) {
             throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
         }
         if (!user.getRole().isAtleast(UserRole.ADMIN)) {
             throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
         }
+    }
+
+    @GetMapping("/offerings/{id}")
+    public ResponseEntity<TicketOffering> getOffering(@PathVariable int id, User user) {
+        if (user != null && user.getRole().isAtleast(UserRole.ADMIN)) {
+            return new ResponseEntity<>(ticketService.getfromAllOfferings(id), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(ticketService.getVisibleOffering(id), HttpStatus.OK);
+    }
+
+    @GetMapping("")
+    public ResponseEntity<List<Ticket>> getAllTickets(User user) {
+        isAdmin(user);
         return new ResponseEntity<>(ticketService.getAllTickets(), HttpStatus.OK);
     }
 
     @PostMapping("")
     public ResponseEntity<Ticket> buyTicket(@RequestBody TicketCreation ticketRequest, User user) {
-        if (user == null) {
-            throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
-        }
-        if (!user.getRole().isAtleast(UserRole.ADMIN) && !ticketRequest.getOwnerId().equals(user.getId())) {
-            throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
-        }
+        isAdmin(user);
         Ticket boughtTicket = ticketService.createTicket(ticketRequest);
         return new ResponseEntity<>(boughtTicket, HttpStatus.OK);
+    }
+
+    @GetMapping("/ownerEmails")
+    public ResponseEntity<Map<Integer, String>> getOwnerEmails(User user) {
+        isAdmin(user);
+        return new ResponseEntity<>(ticketService.getOwnerEmails(), HttpStatus.OK);
     }
 
     @PostMapping("/{ticketId}/cancel")
@@ -87,15 +105,18 @@ public class TicketController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PostMapping("/{ticketId}/sendEmail/{type}")
+    public ResponseEntity<Void> sendUnsentEmail(@PathVariable int ticketId, @PathVariable String type, User user) {
+        isAdmin(user);
+        Ticket ticket = ticketService.getTicket(ticketId);
+        emailService.sendEmail(type, ticket, ticketService.getType(ticket.getTypeId()), ticketService.getVisibleOffering(ticket.getOfferingId()));
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @PostMapping("/{ticketId}/confirm")
     public ResponseEntity<Void> confirmTicket(@PathVariable int ticketId, User user,
                                               @WebClientUrl String webClientUrl) {
-        if (user == null) {
-            throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
-        }
-        if(!user.getRole().isAtleast(UserRole.ADMIN)) {
-            throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
-        }
+        isAdmin(user);
         Ticket ticket = ticketService.getTicket(ticketId);
         ticketService.confirmTicketPaid(ticket, webClientUrl);
         return new ResponseEntity<>(HttpStatus.OK);
