@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -167,7 +169,7 @@ public class TicketRepository {
     }
 
     private Timestamp getCurrentTimestamp() {
-        return new Timestamp(Instant.now().getEpochSecond());
+        return Timestamp.valueOf(LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC));
     }
 
 }
