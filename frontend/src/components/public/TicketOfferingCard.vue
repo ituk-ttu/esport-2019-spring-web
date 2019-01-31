@@ -25,7 +25,7 @@
           span(v-if="type.teamSize > 1")  {{ $t('tickets.teams') }}
           span(v-else)  {{ $t('tickets.pieces') }}
           |  {{ $t('tickets.remaining') }}
-        p.ticket-out(v-if="isActive && isSoldOut")
+        p.ticket-out(v-if="isActive && isSoldOut && offering.amountRemaining != null")
           small {{ $t('tickets.outOfTickets') }}
       footer.card-footer(v-if="isActive")
         span.has-text-weight-bold.has-text-light.has-text-centered.card-footer-item(v-if="!offering.availableOnline")
