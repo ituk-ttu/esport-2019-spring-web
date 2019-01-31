@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
 import javax.annotation.Resource;
-import javax.jws.soap.SOAPBinding;
 import java.util.List;
 import java.util.Map;
 
@@ -64,7 +63,7 @@ public class TicketController {
         }
     }
 
-    @GetMapping("/offerings/{id}")
+    @GetMapping("/tickets/offerings/{id}")
     public ResponseEntity<TicketOffering> getOffering(@PathVariable int id, User user) {
         if (user != null && user.getRole().isAtleast(UserRole.ADMIN)) {
             return new ResponseEntity<>(ticketService.getfromAllOfferings(id), HttpStatus.OK);
