@@ -59,7 +59,7 @@ function TicketService (Vue) {
 
   svc.ownerCanCancel = ticket => ['IN_WAITING_LIST', 'AWAITING_PAYMENT'].includes(ticket.status);
 
-  svc.confirm = ticket => Vue.http.post('api/ticket/s' + ticket.id + '/confirm').then(res => res.body);
+  svc.confirm = ticket => Vue.http.post('api/tickets/' + ticket.id + '/confirm').then(res => res.body);
 
   svc.cancel = ticket => Vue.http.post('api/tickets/' + ticket.id + '/cancel').then(res => res.body);
 
@@ -70,6 +70,12 @@ function TicketService (Vue) {
   svc.getUserTickets = userId => Vue.http.get(`api/users/${userId}/tickets`).then(res => res.body);
 
   svc.getAllTickets = () => Vue.http.get('api/tickets').then(res => res.body);
+
+  svc.getAllOfferings = () => Vue.http.get('api/tickets/offerings').then(res => res.body);
+
+  svc.getAllTicketTypes = () => Vue.http.get('api/tickets/types').then(res => res.body);
+
+  svc.getAllOwnerEmails = () => Vue.http.get('api/tickets/ownerEmails').then(res => res.body);
 
   svc.storeMember = (ticket, member) => Vue.http.post('api/tickets/' + ticket.id + '/member', member).then(res => {
     const newMember = res.body;
