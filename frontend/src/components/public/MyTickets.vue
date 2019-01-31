@@ -2,10 +2,12 @@
   .container
     section.section
       h1.title.is-center(v-t="'tickets.tickets'")
-      .has-text-centered(v-if="tickets == null || offerings == null || types == null"): i.fa.fa-2x.fa-cog.fa-spin
-      div(v-else)
-        ticket-card(v-for="ticket in tickets" :key="ticket.id"
-                    :ticket="ticket" :type="getType(ticket.typeId)" :offering="getOffering(ticket.offeringId)")
+      .container
+        .has-text-centered(v-if="tickets == null || offerings == null || types == null"): i.fa.fa-2x.fa-cog.fa-spin
+        .columns.is-multiline.is-centered(v-else)
+          .column.is-one-quarter-fullhd.is-one-third-desktop.is-half-tablet.is-full-mobile(v-for="ticket in tickets"
+                                                                                           :key="ticket.id")
+            ticket-card(:ticket="ticket" :type="getType(ticket.typeId)" :offering="getOffering(ticket.offeringId)")
 </template>
 
 <script>

@@ -1,5 +1,4 @@
 <template lang="pug">
-  .column.is-one-quarter-fullhd.is-one-third-desktop.is-half-tablet.is-full-mobile
     .card.full-height-card
       .card-header
         .card-header-title
