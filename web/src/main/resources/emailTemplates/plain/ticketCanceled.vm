@@ -2,7 +2,7 @@ Pilet tühistatud / Ticket discarded
 
 ---
 
-$ticket.name
+$ticketOffering.name
 Sinu pilet on tühistatud. Kui Sa siiski soovid osaleda, broneeri uus pilet.
 Your ticket has been discarded. If You still wnat to attend, reserve a new ticket.
 Minu piletid / My tickets: $loginLink

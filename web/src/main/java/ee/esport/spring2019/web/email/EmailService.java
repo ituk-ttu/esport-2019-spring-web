@@ -1,6 +1,10 @@
 package ee.esport.spring2019.web.email;
 
+import ee.esport.spring2019.web.auth.user.UserService;
+import ee.esport.spring2019.web.ticket.TicketService;
 import ee.esport.spring2019.web.ticket.domain.Ticket;
+import ee.esport.spring2019.web.ticket.domain.TicketOffering;
+import ee.esport.spring2019.web.ticket.domain.TicketType;
 import lombok.RequiredArgsConstructor;
 import net.sargue.mailgun.Mail;
 import net.sargue.mailgun.MailRequestCallback;
@@ -12,6 +16,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.StringWriter;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -28,41 +34,37 @@ public class EmailService {
     @Resource
     private final VelocityEngine velocityEngine;
 
-    public CompletableFuture<Response> sendTicketReservation(Ticket ticket) {
+    @Resource
+    private final UserService userService;
+
+    public CompletableFuture<Response> sendEmail(String type, Ticket ticket, TicketType ticketType, TicketOffering ticketOffering) {
         VelocityContext context = createContext();
+        BigDecimal personCost = ticketOffering.getCost().divide(BigDecimal.valueOf(ticketType.getTeamSize()));
         context.put("ticket", ticket);
+        context.put("ticketType", ticketType);
+        context.put("ticketOffering", ticketOffering);
+        context.put("perPerson", personCost.toString());
         context.put("invoiceNumber",
-                    "2019-359027-" + "000".substring(Integer.toString(ticket.getId()).length()) + ticket.getId());
+                "2019-359027-" + "000".substring(Integer.toString(ticket.getId()).length()) + ticket.getId());
         context.put("payByDate",
-                    OffsetDateTime.ofInstant(ticket.getDateCreated().plusDays(3).toInstant(), ZoneId.systemDefault()));
-        String to = getOwnerId();
-        return sendAsync(to, "ticketReserved", context, "Pilet reserveeritud / Ticket Reserved");
+                OffsetDateTime.ofInstant(ticket.getDateCreated().plusDays(3).toInstant(), ZoneId.systemDefault()));
+        context.put("date", OffsetDateTime.now());
+        String to = getOwnerId(ticket.getOwnerId());
+        switch (type) {
+            case "ticketReserved":
+                return sendAsync(to, "ticketReserved", context, "Pilet reserveeritud / Ticket Reserved");
+            case "ticketWaiting":
+                return sendAsync(getOwnerId(ticket.getOwnerId()), "ticketWaiting", context, "Pilet ootel / Ticket In Waiting List ");
+            case "ticketCanceled":
+                return sendAsync(getOwnerId(ticket.getOwnerId()), "ticketCanceled", context, "Pilet tühistatud / Ticket Canceled");
+            case "ticketConfirmed":
+                return sendAsync(getOwnerId(ticket.getOwnerId()), "ticketConfirmed", context, "Pilet kinnitatud / Ticket Confirmed");
+        }
+        throw new RuntimeException();
     }
 
-    private String getOwnerId() {
-        throw new NotImplementedException("Getting owner email nott ye implemented");
-    }
-
-    public CompletableFuture<Response> sendTicketWaiting(Ticket ticket) {
-        VelocityContext context = createContext();
-        context.put("ticket", ticket);
-        context.put("invoiceNumber",
-                    "2019-359027-" + "000".substring(Integer.toString(ticket.getId()).length()) + ticket.getId());
-        context.put("payByDate",
-                    OffsetDateTime.ofInstant(ticket.getDateCreated().plusDays(3).toInstant(), ZoneId.systemDefault()));
-        return sendAsync(getOwnerId(), "ticketWaiting", context, "Pilet ootel / Ticket In Waiting List ");
-    }
-
-    public CompletableFuture<Response> sendTicketCanceled(Ticket ticket) {
-        VelocityContext context = createContext();
-        context.put("ticket", ticket);
-        return sendAsync(getOwnerId(), "ticketCanceled", context, "Pilet tühistatud / Ticket Canceled");
-    }
-
-    public CompletableFuture<Response> sendTicketConfirmed(Ticket ticket) {
-        VelocityContext context = createContext();
-        context.put("ticket", ticket);
-        return sendAsync(getOwnerId(), "ticketConfirmed", context, "Pilet kinnitatud / Ticket Confirmed");
+    private String getOwnerId(Integer ownerId) {
+        return userService.getUserEmail(ownerId);
     }
 
     private CompletableFuture<Response> sendAsync(String to, String templateName, VelocityContext context,

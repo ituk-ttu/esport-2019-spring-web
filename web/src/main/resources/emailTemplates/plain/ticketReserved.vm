@@ -4,16 +4,16 @@ Arve / Invoice
 
 $ticket.name
 Arve number / Invoice number: $invoiceNumber
-Kuupäev / Date: $ticket.dateCreated.format($datePattern)
-Pilet / Ticket: $ticket.type.name
-#if($ticket.type.teamSize > 1)
-Ühe mängija hind / Price per player: ${ticket.type.perPersonCost}€
-Mängijaid meeskonnas / Players in team: $ticket.type.teamSize
+Kuupäev / Date: $date.format($datePattern)
+Pilet / Ticket: $ticketOffering.name
+#if($ticketType.teamSize > 1)
+Ühe mängija hind / Price per player: ${perPerson}€
+Mängijaid meeskonnas / Players in team: $ticketType.teamSize
 #end
-Kokku / Total: ${ticket.type.cost}€
+Kokku / Total: ${ticketOffering.cost}€
 
 Maksmine / Payment
-Pank / Bank: LHV
+Pank / Bank: SEB
 Saaja / Receiver: Rasmus Rüngenen
 IBAN: EE701010011758709221
 SWIFT / BIC: EEUHEE2X

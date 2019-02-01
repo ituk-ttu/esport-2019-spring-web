@@ -8,7 +8,7 @@ public interface BaseMapper {
 
     default OffsetDateTime toOffsetDateTime(Timestamp timestamp) {
         return timestamp != null ?
-               OffsetDateTime.ofInstant(timestamp.toInstant(), ZoneOffset.UTC) :
+               OffsetDateTime.of(timestamp.toLocalDateTime(), ZoneOffset.UTC) :
                null;
     }
 

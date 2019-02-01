@@ -17,10 +17,9 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -57,6 +56,10 @@ public class TicketRepository {
                                             .orElseThrow(() -> new NoSuchElementException("Ticket not found"));
     }
 
+    public List<Ticket> getUserTickets(int userId) {
+        return getTickets(TICKETS.OWNER_ID.eq(userId)).collect(Collectors.toList());
+    }
+
     public List<Ticket> getAllTickets() {
         return getTickets(DSL.trueCondition()).collect(Collectors.toList());
     }
@@ -67,10 +70,11 @@ public class TicketRepository {
                                                      .from(TICKETS.leftJoin(TICKET_OFFERINGS).onKey())
                                                      .where(condition)
                                                      .stream();
+        System.out.println(ticketAndOfferingRecords.toString());
         Map<Integer, List<TicketMembersRecord>> memberRecordsByTicketId =
                 dsl.select(TICKET_MEMBERS.fields())
                    .select(TICKETS.ID)
-                   .from(TICKET_MEMBERS.leftJoin(TICKET_OFFERINGS).onKey())
+                   .from(TICKET_MEMBERS.leftJoin(TICKETS).onKey())
                    .where(condition)
                    .fetchGroups(TICKETS.ID, it -> it.into(TICKET_MEMBERS));
         return ticketAndOfferingRecords.map(it -> {
@@ -128,11 +132,17 @@ public class TicketRepository {
                                    .stream();
         return records.map(record -> {
             TicketOfferingsRecord offeringsRecord = record.into(TICKET_OFFERINGS);
-            int offeringAmountRemaining = offeringsRecord.getAmountAvailable() != null ?
-                                          offeringsRecord.getAmountAvailable() :
-                                          Integer.MAX_VALUE;
+            Integer offeringAmountAvailable = offeringsRecord.getAmountAvailable();
+            Integer amountActive = record.get(ACTIVE_TICKETS_COUNT, Integer.class);
+            Integer offeringAmountRemaining = offeringAmountAvailable != null ?
+                                              Math.max(offeringAmountAvailable - amountActive, 0) :
+                                              null;
             Integer typeAmountRemaining = getType(offeringsRecord.getTicketTypeId()).getAmountRemaining();
-            return mapper.toTicketOffering(offeringsRecord, Math.min(offeringAmountRemaining, typeAmountRemaining));
+            Integer amountRemaining = Stream.of(offeringAmountRemaining, typeAmountRemaining)
+                                            .filter(Objects::nonNull)
+                                            .reduce(Integer::min)
+                                            .orElse(null);
+            return mapper.toTicketOffering(offeringsRecord, amountRemaining);
         });
     }
 
@@ -149,14 +159,30 @@ public class TicketRepository {
                                         .stream();
         return records.map(record -> {
             TicketTypesRecord typesRecord = record.into(TICKET_TYPES);
-            Integer amountRemaining = typesRecord.getAmountAvailable() -
-                                      record.get(ACTIVE_TICKETS_COUNT, Integer.class);
+            Integer amountActive = record.get(ACTIVE_TICKETS_COUNT, Integer.class);
+            Integer amountAvailable = typesRecord.getAmountAvailable();
+            Integer amountRemaining = amountAvailable != null ?
+                                      Math.max(amountAvailable - amountActive, 0) :
+                                      null;
             return mapper.toTicketType(typesRecord, amountRemaining);
         });
     }
 
     private Timestamp getCurrentTimestamp() {
-        return new Timestamp(Instant.now().getEpochSecond());
+        return Timestamp.valueOf(LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC));
     }
 
+    public void confirmTicketPaid(Ticket ticket) {
+        dsl.update(TICKETS)
+                .set(TICKETS.STATUS, Ticket.Status.PAID.toString())
+                .where(TICKETS.ID.eq(ticket.getId()))
+                .execute();
+    }
+
+    public void cancelTicket(Ticket ticket) {
+        dsl.update(TICKETS)
+                .set(TICKETS.STATUS, Ticket.Status.CANCELED.toString())
+                .where(TICKETS.ID.eq(ticket.getId()))
+                .execute();
+    }
 }
