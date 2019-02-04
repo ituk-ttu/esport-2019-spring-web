@@ -30,5 +30,5 @@ You can get a regular gamer ticket. It only prevents you from participating in t
 
 ### Can underaged people attend??
 
-Yes, but everyone younger than 16 have to fill the [parental permit](https://esport.ituk.ee/parental_permit.pdf).
+Yes, but everyone younger than 16 have to fill the parental permit.
 
