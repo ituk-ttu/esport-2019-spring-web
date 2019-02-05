@@ -91,7 +91,12 @@ public class TicketController {
 
     @PostMapping("/tickets")
     public ResponseEntity<Ticket> buyTicket(@RequestBody TicketCreation ticketRequest, User user) {
-        isAdmin(user);
+        if (user == null) {
+            throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
+        }
+        if (!user.getRole().isAtleast(UserRole.ADMIN) && !ticketRequest.getOwnerId().equals(user.getId())) {
+            throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
+        }
         Ticket boughtTicket = ticketService.createTicket(ticketRequest);
         return new ResponseEntity<>(boughtTicket, HttpStatus.OK);
     }
