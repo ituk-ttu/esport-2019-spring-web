@@ -1,5 +1,5 @@
 <template lang="pug">
-  span.label.status-label(:class="getStatusClass(status)") {{ $t('tickets.statuses["' + status + '"]') }}
+  span.tag(:class="getStatusClass(status)") {{ $t('tickets.statuses["' + status + '"]') }}
 </template>
 
 <script>
@@ -10,15 +10,15 @@
       getStatusClass: function (status) {
         switch (status) {
           case 'IN_WAITING_LIST':
-            return 'label-warning';
+            return 'is-warning';
           case 'AWAITING_PAYMENT':
-            return 'label-info';
+            return 'is-info';
           case 'PAID':
-            return 'label-success';
+            return 'is-success';
           case 'CANCELED':
-            return 'label-danger';
+            return 'is-danger';
           default:
-            return 'label-primary';
+            return 'is-primary';
         }
       }
     }

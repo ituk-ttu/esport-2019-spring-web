@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -52,6 +54,10 @@ public class TicketRepository {
     public Ticket getTicket(int id) {
         return getTickets(TICKETS.ID.eq(id)).findAny()
                                             .orElseThrow(() -> new NoSuchElementException("Ticket not found"));
+    }
+
+    public List<Ticket> getUserTickets(int userId) {
+        return getTickets(TICKETS.OWNER_ID.eq(userId)).collect(Collectors.toList());
     }
 
     public List<Ticket> getAllTickets() {
@@ -163,7 +169,20 @@ public class TicketRepository {
     }
 
     private Timestamp getCurrentTimestamp() {
-        return new Timestamp(Instant.now().getEpochSecond());
+        return Timestamp.valueOf(LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC));
     }
 
+    public void confirmTicketPaid(Ticket ticket) {
+        dsl.update(TICKETS)
+                .set(TICKETS.STATUS, Ticket.Status.PAID.toString())
+                .where(TICKETS.ID.eq(ticket.getId()))
+                .execute();
+    }
+
+    public void cancelTicket(Ticket ticket) {
+        dsl.update(TICKETS)
+                .set(TICKETS.STATUS, Ticket.Status.CANCELED.toString())
+                .where(TICKETS.ID.eq(ticket.getId()))
+                .execute();
+    }
 }

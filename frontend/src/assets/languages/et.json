@@ -121,7 +121,7 @@
     "description": "Selgitus",
     "paymentDue": "Makse tähtaeg",
     "paymentInfo": "Pileti kinnitamiseks peab olema raha kantud saaja kontole hiljemalt maksetähtaja kuupäeva lõpuks. Maksmata jätmisel pilet tühistatakse.",
-    "checkMail": "Arve saadetakse Sinu e-posti aaderssile paari päeva jooksul!"
+    "checkMail": "Arve saadeti Sinu e-maili aaderssile!"
   },
   "register": {
     "title": "Registreeru",

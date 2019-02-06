@@ -17,7 +17,7 @@
             p
               i.fa.fa-phone.fa-fw
               | &nbsp;
-              a(href="tel:+37253485349") 5348 5349
+              a(href="tel:+37259061664") 5906 1664
       .column.is-one-third-desktop.is-half-tablet.is-full-mobile
         .card.full-height-card
           .card-image

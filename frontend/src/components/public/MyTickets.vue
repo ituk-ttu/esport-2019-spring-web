@@ -2,18 +2,24 @@
   .container
     section.section
       h1.title.is-center(v-t="'tickets.tickets'")
-      h2.subtitle(v-t="'page.wip'")
-      my-ticket(v-for="ticket in tickets", :key="ticket.id", :ticket="ticket")
+      .container
+        .has-text-centered(v-if="tickets == null || offerings == null || types == null"): i.fa.fa-2x.fa-cog.fa-spin
+        .columns.is-multiline.is-centered(v-else)
+          .column.is-one-quarter-fullhd.is-one-third-desktop.is-half-tablet.is-full-mobile(v-for="ticket in tickets"
+                                                                                           :key="ticket.id")
+            ticket-card(:ticket="ticket" :type="getType(ticket.typeId)" :offering="getOffering(ticket.offeringId)")
 </template>
 
 <script>
-  import MyTicket from './MyTicket';
+  import TicketCard from "./TicketCard";
   export default {
-    components: {MyTicket},
+    components: { TicketCard },
     name: 'MyTickets',
     data () {
       return {
-        tickets: []
+        tickets: null,
+        offerings: null,
+        types: null
       };
     },
     created: function () {
@@ -21,9 +27,25 @@
         this.$router.push({ name: 'Login' });
       }
     },
+    methods: {
+      getType: function (id) {
+        return this.types.find(type => type.id === id);
+      },
+      getOffering: function (id) {
+        return this.offerings.find(offering => offering.id === id);
+      }
+    },
     mounted: function () {
       const self = this;
-      self.$ticket.getMyTickets().then(tickets => { self.tickets = tickets; });
+      self.$ticket.getUserTickets(self.$auth.getUser().id).then(tickets => {
+        self.tickets = tickets;
+      });
+      self.$ticket.getVisibleOfferings().then(offerings => {
+        self.offerings = offerings; // TODO: Loading, error
+      });
+      self.$ticket.getTypes().then(types => {
+        self.types = types; // TODO: Loading, error
+      });
     }
   };
 </script>
