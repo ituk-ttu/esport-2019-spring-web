@@ -20,6 +20,8 @@
           sponsor(url="https://ituk.ee" image="ituk.svg" big)
           sponsor(url="https://ttu.ee/itt" image="itt.png" big)
           sponsor(url="https://ttu.ee/ye" image="ye.jpg" big)
+          sponsor(url="https://arvutitark.ee/" image="arvutitark_logo.png" big)
+          sponsor(url="https://www.lg.com/ee" image="LG.png" big)
         .columns.is-multiline.is-centered.is-vcentered.is-flex
           sponsor(url="https://filmiklubi.ee" image="filmiklubi-03.svg")
           sponsor(url="https://thorgate.eu" image="thorgate.png")
