@@ -13,7 +13,7 @@
             p
               i.fa.fa-envelope.fa-fw
               | &nbsp;
-              a(href="mailto:esport@ituk.ee") esport@ituk.ee
+              a(href="mailto:r.ryngenen@gmail.com") r.ryngenen@gmail.com
             p
               i.fa.fa-phone.fa-fw
               | &nbsp;
