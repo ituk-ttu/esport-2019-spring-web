@@ -21,7 +21,7 @@
           .modal-card-foot
             .field
               .control
-                 button.button.is-link(type="submit" v-t="'register.register'")
+                button.button.is-link(type="submit" v-t="'register.register'")
         button.modal-close.is-large(v-on:click="cancelRegistration")
 </template>
 
@@ -38,24 +38,24 @@
             return;
           }
           self.$auth.verifySteamLogin(event.data.url).then(result => {
-            if(result.type === 'LOGIN') {
+            if (result.type === 'LOGIN') {
               self.$auth.logIn(result.user, result.token);
               self.onSuccess();
               return;
             }
-            if(result.type === 'NEW_USER') {
-              let { registrationToken, userDetails } = result;
+            if (result.type === 'NEW_USER') {
+              let {registrationToken, userDetails} = result;
               this.userDetails = userDetails;
               this.registrationToken = registrationToken;
               this.isRegistering = true;
               return;
             }
-            throw new Error("Failed to log in");
+            throw new Error('Failed to log in');
           }).catch(e => {
             self.$notify({
-                           title: self.$t('login.failure.title'),
-                           text: self.$t('login.failure.text')
-                         });
+              title: self.$t('login.failure.title'),
+              text: self.$t('login.failure.text')
+            });
           });
         });
       },
@@ -66,9 +66,9 @@
           self.onSuccess();
         }).catch(e => {
           self.$notify({
-                         title: self.$t('login.failure.title'),
-                         text: self.$t('login.failure.text')
-                       });
+            title: self.$t('login.failure.title'),
+            text: self.$t('login.failure.text')
+          });
         }).finally(() => {
           self.isRegistering = false;
         });
