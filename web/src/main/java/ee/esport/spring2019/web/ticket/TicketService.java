@@ -5,7 +5,6 @@ import ee.esport.spring2019.web.email.EmailService;
 import ee.esport.spring2019.web.ticket.domain.*;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -113,9 +112,13 @@ public class TicketService {
     @SneakyThrows //FIXME: remove
     public void sendTicketCreationEmail(Ticket ticket) {
         if(ticket.getStatus() == Ticket.Status.AWAITING_PAYMENT) {
-            emailService.sendEmail("ticketReserved", ticket, getType(ticket.getTypeId()), getVisibleOffering(ticket.getOfferingId())).get();
+            emailService.sendEmail("ticketReserved", ticket, getType(ticket.getTypeId()),
+                                   ticketRepository.getOffering(ticket.getOfferingId()))
+                        .get();
         } else {
-            emailService.sendEmail("ticketWaiting", ticket, getType(ticket.getTypeId()), getVisibleOffering(ticket.getOfferingId())).get();
+            emailService.sendEmail("ticketWaiting", ticket, getType(ticket.getTypeId()),
+                                   ticketRepository.getOffering(ticket.getOfferingId()))
+                        .get();
         }
     }
 
@@ -133,19 +136,21 @@ public class TicketService {
 
     public void cancelTicket(Ticket ticket) {
         ticketRepository.cancelTicket(ticket);
-        emailService.sendEmail("ticketCanceled", ticket, getType(ticket.getTypeId()), getVisibleOffering(ticket.getOfferingId()));
+        emailService.sendEmail("ticketCanceled", ticket, getType(ticket.getTypeId()),
+                               ticketRepository.getOffering(ticket.getOfferingId()));
     }
 
-    public void confirmTicketPaid(Ticket ticket, String referer) {
+    public void confirmTicketPaid(Ticket ticket) {
         ticketRepository.confirmTicketPaid(ticket);
-        emailService.sendEmail("ticketConfirmed", ticket, getType(ticket.getTypeId()), getVisibleOffering(ticket.getOfferingId()));
+        emailService.sendEmail("ticketConfirmed", ticket, getType(ticket.getTypeId()),
+                               ticketRepository.getOffering(ticket.getOfferingId()));
     }
 
     public void deleteMember(int ticketId, int memberId) {
         ticketRepository.deleteMember(ticketId, memberId);
     }
 
-    public TicketOffering getfromAllOfferings(int id) {
+    public TicketOffering getFromAllOfferings(int id) {
         return getAllOfferings().stream()
                 .filter(it -> it.getId() == id)
                 .findAny()
