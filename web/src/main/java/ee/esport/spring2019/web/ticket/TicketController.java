@@ -3,7 +3,6 @@ package ee.esport.spring2019.web.ticket;
 import ee.esport.spring2019.web.auth.user.User;
 import ee.esport.spring2019.web.auth.user.UserRole;
 import ee.esport.spring2019.web.auth.user.UserService;
-import ee.esport.spring2019.web.core.WebClientUrl;
 import ee.esport.spring2019.web.email.EmailService;
 import ee.esport.spring2019.web.ticket.domain.Ticket;
 import ee.esport.spring2019.web.ticket.domain.TicketCreation;
@@ -66,7 +65,7 @@ public class TicketController {
     @GetMapping("/tickets/offerings/{id}")
     public ResponseEntity<TicketOffering> getOffering(@PathVariable int id, User user) {
         if (user != null && user.getRole().isAtleast(UserRole.ADMIN)) {
-            return new ResponseEntity<>(ticketService.getfromAllOfferings(id), HttpStatus.OK);
+            return new ResponseEntity<>(ticketService.getFromAllOfferings(id), HttpStatus.OK);
         }
         return new ResponseEntity<>(ticketService.getVisibleOffering(id), HttpStatus.OK);
     }
@@ -130,11 +129,10 @@ public class TicketController {
     }
 
     @PostMapping("/tickets/{ticketId}/confirm")
-    public ResponseEntity<Void> confirmTicket(@PathVariable int ticketId, User user,
-                                              @WebClientUrl String webClientUrl) {
+    public ResponseEntity<Void> confirmTicket(@PathVariable int ticketId, User user) {
         isAdmin(user);
         Ticket ticket = ticketService.getTicket(ticketId);
-        ticketService.confirmTicketPaid(ticket, webClientUrl);
+        ticketService.confirmTicketPaid(ticket);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
