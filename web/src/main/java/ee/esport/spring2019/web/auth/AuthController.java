@@ -9,7 +9,6 @@ import ee.esport.spring2019.web.auth.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
@@ -24,11 +23,6 @@ public class AuthController {
     private final JwtService jwtService;
     private final SteamService steamService;
     private final UserService userService;
-
-    @GetMapping("/steam/loginLink")
-    public ResponseEntity<String> getSteamLoginLink(@RequestParam String returnTo) {
-        return new ResponseEntity<>(steamService.getLoginUrl(returnTo), HttpStatus.OK);
-    }
 
     @GetMapping("/steam/verify")
     public AuthResponse verifySteamLogin(HttpServletRequest request) {
