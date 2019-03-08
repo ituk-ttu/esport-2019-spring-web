@@ -25,7 +25,9 @@ public class EmailConfig {
     public MailgunConfiguration getMailgunConfig() {
         return (MailgunConfiguration) new MailgunConfiguration().domain(domain)
                                                                 .apiKey(apiKey)
-                                                                .from(fromName, fromEmail);
+                                                                .from(fromName, fromEmail)
+                                                                .apiUrl("https://api.eu.mailgun.net/v3");
+        // TODO: should probably read the apiUrl from some config file
     }
 
     @Bean

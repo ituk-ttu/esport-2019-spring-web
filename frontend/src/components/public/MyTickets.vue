@@ -3,15 +3,18 @@
     section.section
       h1.title.is-center(v-t="'tickets.tickets'")
       .container
-        .has-text-centered(v-if="tickets == null || offerings == null || types == null"): i.fa.fa-2x.fa-cog.fa-spin
+        .has-text-centered(v-if="isLoading"): i.fa.fa-2x.fa-cog.fa-spin
         .columns.is-multiline.is-centered(v-else)
           .column.is-one-quarter-fullhd.is-one-third-desktop.is-half-tablet.is-full-mobile(v-for="ticket in tickets"
-                                                                                           :key="ticket.id")
+                                                                                           :key="ticket.id"
+                                                                                           v-if="!isEmpty")
             ticket-card(:ticket="ticket" :type="getType(ticket.typeId)" :offering="getOffering(ticket.offeringId)")
+          .column.is-full(v-else)
+            p.has-text-dark.is-size-3 Piletid puuduvad.
 </template>
 
 <script>
-  import TicketCard from "./TicketCard";
+  import TicketCard from './TicketCard';
   export default {
     components: { TicketCard },
     name: 'MyTickets',
@@ -25,6 +28,14 @@
     created: function () {
       if (!this.$auth.isLoggedIn()) {
         this.$router.push({ name: 'Login' });
+      }
+    },
+    computed: {
+      isLoading: function () {
+        return this.tickets === null || this.offerings === null || this.types === null;
+      },
+      isEmpty: function () {
+        return !this.isLoading() && this.tickets.length === 0;
       }
     },
     methods: {
