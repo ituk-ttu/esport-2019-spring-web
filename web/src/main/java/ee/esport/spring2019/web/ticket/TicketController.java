@@ -3,7 +3,6 @@ package ee.esport.spring2019.web.ticket;
 import ee.esport.spring2019.web.auth.user.User;
 import ee.esport.spring2019.web.auth.user.UserRole;
 import ee.esport.spring2019.web.auth.user.UserService;
-import ee.esport.spring2019.web.core.WebClientUrl;
 import ee.esport.spring2019.web.email.EmailService;
 import ee.esport.spring2019.web.ticket.domain.Ticket;
 import ee.esport.spring2019.web.ticket.domain.TicketCreation;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
 import javax.annotation.Resource;
-import javax.jws.soap.SOAPBinding;
 import java.util.List;
 import java.util.Map;
 
@@ -64,10 +62,10 @@ public class TicketController {
         }
     }
 
-    @GetMapping("/offerings/{id}")
+    @GetMapping("/tickets/offerings/{id}")
     public ResponseEntity<TicketOffering> getOffering(@PathVariable int id, User user) {
         if (user != null && user.getRole().isAtleast(UserRole.ADMIN)) {
-            return new ResponseEntity<>(ticketService.getfromAllOfferings(id), HttpStatus.OK);
+            return new ResponseEntity<>(ticketService.getFromAllOfferings(id), HttpStatus.OK);
         }
         return new ResponseEntity<>(ticketService.getVisibleOffering(id), HttpStatus.OK);
     }
@@ -92,7 +90,12 @@ public class TicketController {
 
     @PostMapping("/tickets")
     public ResponseEntity<Ticket> buyTicket(@RequestBody TicketCreation ticketRequest, User user) {
-        isAdmin(user);
+        if (user == null) {
+            throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
+        }
+        if (!user.getRole().isAtleast(UserRole.ADMIN) && !ticketRequest.getOwnerId().equals(user.getId())) {
+            throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
+        }
         Ticket boughtTicket = ticketService.createTicket(ticketRequest);
         return new ResponseEntity<>(boughtTicket, HttpStatus.OK);
     }
@@ -126,11 +129,10 @@ public class TicketController {
     }
 
     @PostMapping("/tickets/{ticketId}/confirm")
-    public ResponseEntity<Void> confirmTicket(@PathVariable int ticketId, User user,
-                                              @WebClientUrl String webClientUrl) {
+    public ResponseEntity<Void> confirmTicket(@PathVariable int ticketId, User user) {
         isAdmin(user);
         Ticket ticket = ticketService.getTicket(ticketId);
-        ticketService.confirmTicketPaid(ticket, webClientUrl);
+        ticketService.confirmTicketPaid(ticket);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
