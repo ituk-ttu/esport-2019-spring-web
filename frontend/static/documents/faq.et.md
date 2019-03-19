@@ -30,4 +30,4 @@ Jah, üritusel on võimalik tasuta ööbida TalTech ruumides, selleks võta kaas
 
 ### Kas alaealised saavad ka üritusel osaleda?
 
-Jah, kuid alla 16 aasta vanustel tuleb lasta täita lapsevanema luba.
+Jah, kuid alla 16 aasta vanustel tuleb lasta täita lapsevanema luba. Soovitatav vanus on 16+. Lapsevanema luba on vajalik, sest põhiturniiril mängu sisu on agresiivne. Lapsevanema loa blanketti leiate meie kodulehelt.
