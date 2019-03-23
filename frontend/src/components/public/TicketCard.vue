@@ -16,7 +16,6 @@
 </template>
 
 <script>
-  // import ConfirmDialog from './ConfirmDialog';
   import TicketStatus from './TicketStatus';
 
   export default {
