@@ -22,7 +22,7 @@ function AuthService (Vue) {
     if (!shouldRefreshToken()) {
       return;
     }
-    svc.logOut() //TODO refresh token instead
+    svc.logOut(); // TODO refresh token instead
   };
 
   let eventBus = new Vue();
