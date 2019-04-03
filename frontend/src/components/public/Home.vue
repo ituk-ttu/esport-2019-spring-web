@@ -42,7 +42,8 @@
         ],
         smallSponsors: [
           'filmiklubi',
-          'thorgate'
+          'thorgate',
+          'gamdias'
         ]
       };
     },

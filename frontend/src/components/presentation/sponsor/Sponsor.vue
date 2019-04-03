@@ -53,8 +53,13 @@
           },
           networkTomorrow: {
             url: 'http://www.tomorrow.ee',
-            image: 'nt.png    ',
+            image: 'nt.png',
             scale: 1.05
+          },
+          gamdias: {
+            url: 'http://www.gamdias.com/',
+            image: 'gamdias.png',
+            scale: 1.00
           }
         }
       };
