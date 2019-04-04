@@ -39,7 +39,7 @@
     mounted: function () {
       const self = this;
       const ticketId = parseInt(self.ticketId);
-      Promise.all([this.$ticket.getAllTickets(),
+      Promise.all([this.$ticket.getUserTickets(self.$auth.getUser().id),
                    this.$ticket.getTypes(),
                    this.$ticket.getAvailableSeats(ticketId)])
              .then(([tickets, types, seats]) => {
