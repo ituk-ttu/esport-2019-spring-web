@@ -143,7 +143,7 @@ public class TicketController {
             throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
         }
         Ticket ticket = ticketService.getTicket(ticketId);
-        if (!user.getRole().isAtleast(UserRole.ADMIN) && ticket.getOwnerId().equals(user.getId())) {
+        if (!user.getRole().isAtleast(UserRole.ADMIN) && !ticket.getOwnerId().equals(user.getId())) {
             throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
         }
         throw new NotImplementedException("Adding member to ticket not yet implemented");
@@ -155,7 +155,7 @@ public class TicketController {
             throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
         }
         Ticket ticket = ticketService.getTicket(ticketId);
-        if (!user.getRole().isAtleast(UserRole.ADMIN) && ticket.getOwnerId().equals(user.getId())) {
+        if (!user.getRole().isAtleast(UserRole.ADMIN) && !ticket.getOwnerId().equals(user.getId())) {
             throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
         }
         if (ticket.getMembers().stream().noneMatch(member -> member.getId() == memberId)) {
@@ -171,7 +171,7 @@ public class TicketController {
             throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
         }
         Ticket ticket = ticketService.getTicket(ticketId);
-        if (!user.getRole().isAtleast(UserRole.ADMIN) && ticket.getOwnerId().equals(user.getId())) {
+        if (!user.getRole().isAtleast(UserRole.ADMIN) && !ticket.getOwnerId().equals(user.getId())) {
             throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
         }
         TicketType type = ticketService.getType(ticket.getTypeId());
@@ -186,7 +186,7 @@ public class TicketController {
             throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
         }
         Ticket ticket = ticketService.getTicket(ticketId);
-        if (!user.getRole().isAtleast(UserRole.ADMIN) && ticket.getOwnerId().equals(user.getId())) {
+        if (!user.getRole().isAtleast(UserRole.ADMIN) && !ticket.getOwnerId().equals(user.getId())) {
             throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
         }
         ticketService.setSeat(ticket, request.getSeat());
