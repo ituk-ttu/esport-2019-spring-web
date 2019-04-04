@@ -191,7 +191,7 @@ public class TicketService {
     }
 
     public void setSeat(Ticket ticket, int seat) {
-        if (seat == ticket.getSeat()) {
+        if (Integer.valueOf(seat).equals(ticket.getSeat())) {
             return;
         }
         TicketType type = getType(ticket.getTypeId());
