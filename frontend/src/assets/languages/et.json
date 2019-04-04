@@ -75,7 +75,11 @@
       "CANCELED": "Tühistatud"
     },
     "confirm": "Kinnita pilet maksud",
-    "cancel": "Tühista pilet"
+    "cancel": "Tühista pilet",
+    "manage": "Halda",
+    "seatSelect": "Kohavalik",
+    "noAssignedSeating": "Sellel piletil kohavalikut ei toimu",
+    "notPaidSeating": "Kohavalikut saab teha vaid piletitel, mille eest on makstud"
   },
   "home": {
     "sponsors": "Sponsorid"

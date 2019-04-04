@@ -75,7 +75,11 @@
       "CANCELED": "Canceled"
     },
     "confirm": "Confirm ticket paid",
-    "cancel": "Cancel ticket"
+    "cancel": "Cancel ticket",
+    "manage": "Manage",
+    "seatSelect": "Select seat",
+    "noAssignedSeating": "This ticket does not have assigned seating",
+    "notPaidSeating": "Seat can only be selected once the ticket has been paid for"
   },
   "home": {
     "sponsors": "Sponsors"

@@ -12,6 +12,10 @@
         p
           span.has-text-burgundy.has-text-weight-bold {{ $t('tickets.boughtOnDate') }}: &nbsp;
           span {{ticket.dateCreated | moment("Do MMMM HH:mm") }}
+      footer.card-footer
+        router-link.has-text-weight-bold.has-text-centered.card-footer-item(
+                   :to="{name: 'MyTicket', params: {ticketId: ticket.id}}")
+          | {{ $t('tickets.manage') }}
 
 </template>
 
