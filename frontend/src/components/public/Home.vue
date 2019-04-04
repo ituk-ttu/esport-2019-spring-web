@@ -38,7 +38,8 @@
           'arvutitark',
           'lg',
           'belief',
-          'networkTomorrow'
+          'networkTomorrow',
+          'msi'
         ],
         smallSponsors: [
           'filmiklubi',
