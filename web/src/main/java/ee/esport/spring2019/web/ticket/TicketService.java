@@ -12,6 +12,7 @@ import javax.annotation.Resource;
 import java.time.OffsetDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor
@@ -158,6 +159,46 @@ public class TicketService {
     }
 
     public Map<Integer, String> getOwnerEmails() {
-        return getAllTickets().stream().collect(Collectors.toMap(Ticket::getId, ticket -> userService.getUserEmail(ticket.getOwnerId()), (a, b) -> b));
+        return getAllTickets().stream()
+                              .collect(Collectors.toMap(Ticket::getId,
+                                                        ticket -> userService.getUserEmail(ticket.getOwnerId()),
+                                                        (a, b) -> b)); // TODO: Remove merge function?
+    }
+
+    public List<Ticket> getTicketsOfType(int typeId) {
+        return ticketRepository.getAllTickets()
+                               .stream()
+                               .filter(it -> it.getTypeId() == typeId)
+                               .collect(Collectors.toList());
+    }
+
+    public List<Integer> getAvailableSeats(Ticket ticket, TicketType type) {
+        if (!type.getAssignedSeating()) {
+            return Collections.emptyList(); // hack
+            //throw new IllegalArgumentException("Ticket type doesn't have assigned seating");
+        }
+        List<Integer> takenSeats = getTicketsOfType(type.getId())
+                                                .stream()
+                                                .filter(it -> it.getStatus() == Ticket.Status.PAID)
+                                                .filter(it -> !it.getId().equals(ticket.getId()))
+                                                .map(Ticket::getSeat)
+                                                .filter(Objects::nonNull)
+                                                .collect(Collectors.toList());
+        return IntStream.range(0, type.getAmountAvailable())
+                        .filter(it -> !takenSeats.contains(it))
+                        .boxed()
+                        .collect(Collectors.toList());
+    }
+
+    public void setSeat(Ticket ticket, int seat) {
+        if (seat == ticket.getSeat()) {
+            return;
+        }
+        TicketType type = getType(ticket.getTypeId());
+        List<Integer> availableSeats = getAvailableSeats(ticket, type);
+        if (!availableSeats.contains(seat)) {
+            throw new IllegalArgumentException("Selected seat is not available");
+        }
+        ticketRepository.setSeat(ticket.getId(), seat);
     }
 }

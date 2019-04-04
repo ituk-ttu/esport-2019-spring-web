@@ -70,7 +70,6 @@ public class TicketRepository {
                                                      .from(TICKETS.leftJoin(TICKET_OFFERINGS).onKey())
                                                      .where(condition)
                                                      .stream();
-        System.out.println(ticketAndOfferingRecords.toString());
         Map<Integer, List<TicketMembersRecord>> memberRecordsByTicketId =
                 dsl.select(TICKET_MEMBERS.fields())
                    .select(TICKETS.ID)
@@ -184,5 +183,12 @@ public class TicketRepository {
                 .set(TICKETS.STATUS, Ticket.Status.CANCELED.toString())
                 .where(TICKETS.ID.eq(ticket.getId()))
                 .execute();
+    }
+
+    public void setSeat(int ticketId, Integer seat) {
+        dsl.update(TICKETS)
+           .set(TICKETS.SEAT, seat)
+           .where(TICKETS.ID.eq(ticketId))
+           .execute();
     }
 }

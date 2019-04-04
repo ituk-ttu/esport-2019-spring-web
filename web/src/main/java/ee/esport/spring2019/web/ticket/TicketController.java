@@ -8,6 +8,7 @@ import ee.esport.spring2019.web.ticket.domain.Ticket;
 import ee.esport.spring2019.web.ticket.domain.TicketCreation;
 import ee.esport.spring2019.web.ticket.domain.TicketOffering;
 import ee.esport.spring2019.web.ticket.domain.TicketType;
+import lombok.Value;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -162,6 +163,41 @@ public class TicketController {
         }
         ticketService.deleteMember(ticketId, memberId);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/tickets/{ticketId}/availableSeats")
+    public ResponseEntity<List<Integer>> getAvailableSeats(@PathVariable int ticketId, User user) {
+        if (user == null) {
+            throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
+        }
+        Ticket ticket = ticketService.getTicket(ticketId);
+        if (!user.getRole().isAtleast(UserRole.ADMIN) && ticket.getOwnerId().equals(user.getId())) {
+            throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
+        }
+        TicketType type = ticketService.getType(ticket.getTypeId());
+        return new ResponseEntity<>(ticketService.getAvailableSeats(ticket, type), HttpStatus.OK);
+    }
+
+
+    @PostMapping("/tickets/{ticketId}/seat")
+    public ResponseEntity<Void> selectSeat(@PathVariable int ticketId, User user,
+                                           @RequestBody SelectSeatRequest request) {
+        if (user == null) {
+            throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
+        }
+        Ticket ticket = ticketService.getTicket(ticketId);
+        if (!user.getRole().isAtleast(UserRole.ADMIN) && ticket.getOwnerId().equals(user.getId())) {
+            throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
+        }
+        ticketService.setSeat(ticket, request.getSeat());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Value
+    private static class SelectSeatRequest {
+
+        private final Integer seat;
+
     }
 
 }

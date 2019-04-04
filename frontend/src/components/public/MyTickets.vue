@@ -35,7 +35,7 @@
         return this.tickets === null || this.offerings === null || this.types === null;
       },
       isEmpty: function () {
-        return !this.isLoading() && this.tickets.length === 0;
+        return !this.isLoading && this.tickets.length === 0;
       }
     },
     methods: {
