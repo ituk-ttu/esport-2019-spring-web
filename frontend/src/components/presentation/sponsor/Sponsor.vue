@@ -60,6 +60,11 @@
             url: 'http://www.gamdias.com/',
             image: 'gamdias.png',
             scale: 1.00
+          },
+          msi: {
+            url: 'https://www.msi.com',
+            image: 'msi.png',
+            scale: 0.85
           }
         }
       };
