@@ -86,6 +86,15 @@
         pos(15, 9),
         pos(15, 10),
         pos(15, 11),
+      ]
+    },
+    {
+      game: 'REGULAR_MSI',
+      title: 'M',
+      height: 1,
+      width: 1,
+      rotation: 270,
+      seats: [
         pos(16, 2),
         pos(16, 3),
         pos(16, 4),
