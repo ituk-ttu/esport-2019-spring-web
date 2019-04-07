@@ -1,2 +1,2 @@
 + Access to the area
-+ Participation in the CS:GO tournament
++ Participation in the FIFA 19 tournament
