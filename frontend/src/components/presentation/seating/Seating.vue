@@ -1,5 +1,5 @@
 <template lang="pug">
-    svg(viewBox="0 0 680 480")
+    svg(viewBox="0 0 680 560")
       template(v-for="seat in seats")
         rect(:x="seat.x" :y="seat.y" :height="seat.height" :width="seat.width"
              :class="getClass(seat) + ' seat-container'" @click="select(seat)")
@@ -66,26 +66,18 @@
       width: 1,
       rotation: 270,
       seats: [
-        pos(13, 2),
-        pos(13, 3),
         pos(13, 4),
         pos(13, 5),
         pos(13, 6),
-        pos(13, 7),
-        pos(13, 8),
         pos(13, 9),
         pos(13, 10),
         pos(13, 11),
-        pos(15, 2),
-        pos(15, 3),
         pos(15, 4),
         pos(15, 5),
         pos(15, 6),
-        pos(15, 7),
-        pos(15, 8),
         pos(15, 9),
         pos(15, 10),
-        pos(15, 11),
+        pos(15, 11)
       ]
     },
     {
@@ -102,9 +94,30 @@
         pos(16, 6),
         pos(16, 7),
         pos(16, 8),
-        //pos(16, 9),
-        //pos(16, 10),
-        //pos(16, 11),
+        pos(16, 9),
+        pos(16, 10),
+        pos(16, 11)
+      ]
+    },
+    {
+      game: 'PUBG',
+      title: 'p',
+      height: 2,
+      width: 1,
+      rotation: 270,
+      seats: [
+        pos(6, 12),
+        pos(7, 12),
+        pos(9, 12),
+        pos(10, 12),
+        pos(12, 12),
+        pos(13, 2),
+        pos(13, 7),
+        pos(13, 12),
+        pos(15, 2),
+        pos(15, 7),
+        pos(15, 12),
+        pos(16, 12)
       ]
     }
   ];
@@ -124,7 +137,7 @@
   };
 
   export default {
-    name: "Seating",
+    name: 'Seating',
     props: ['ticket', 'ticketType', 'availableSeats'],
     data: function() {
       return {
@@ -137,9 +150,9 @@
           gameTitle: gameSeating.title,
           height: gameSeating.height * cellSize,
           width: gameSeating.width * cellSize,
-          index,
+          index
         })))
-      }
+      };
     },
     methods: {
       getStatus: function (seat) {
