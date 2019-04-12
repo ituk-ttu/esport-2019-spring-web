@@ -65,6 +65,26 @@
             url: 'https://www.msi.com',
             image: 'msi.png',
             scale: 0.85
+          },
+          photopoint: {
+            url: 'https://www.photopoint.ee/',
+            image: 'photopoint.svg',
+            scale: 1
+          },
+          nissan: {
+            url: 'https://www.nissan.ee/',
+            image: 'NISSAN.png',
+            scale: 0.75
+          },
+          roccat: {
+            url: 'https://roccat.org',
+            image: 'roccat.svg',
+            scale: 1
+          },
+          speedlink: {
+            url: 'https://www.speedlink.com/',
+            image: 'speedlink.png',
+            scale: 0.8
           }
         }
       };
