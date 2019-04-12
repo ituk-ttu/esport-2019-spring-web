@@ -39,16 +39,16 @@
           'lg',
           'belief',
           'networkTomorrow',
-          'msi',
-          'photopoint',
-          'nissan',
-          'roccat',
-          'speedlink'
+          'msi'
         ],
         smallSponsors: [
           'filmiklubi',
           'thorgate',
-          'gamdias'
+          'gamdias',
+          'photopoint',
+          'nissan',
+          'roccat',
+          'speedlink'
         ]
       };
     },
