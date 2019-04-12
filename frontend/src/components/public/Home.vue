@@ -39,7 +39,11 @@
           'lg',
           'belief',
           'networkTomorrow',
-          'msi'
+          'msi',
+          'photopoint',
+          'nissan',
+          'roccat',
+          'speedlink'
         ],
         smallSponsors: [
           'filmiklubi',
