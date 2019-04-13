@@ -28,7 +28,6 @@ Yes, you can sleep in designated TalTech rooms. Bring a matt and a sleeping bag.
 
 You can get a regular gamer ticket. It only prevents you from participating in the CS:GO tournament.
 
-### Can underaged people attend??
+### Can underaged people attend?
 
-Yes, but everyone younger than 16 have to fill the parental permit.
-
+Yes, but everyone younger than 16 have to fill the [parental permit](https://e-sport.ee/static/parental_permit.pdf)
