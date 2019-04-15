@@ -51,7 +51,7 @@
       self.$ticket.getUserTickets(self.$auth.getUser().id).then(tickets => {
         self.tickets = tickets;
       });
-      self.$ticket.getVisibleOfferings().then(offerings => {
+      self.$ticket.getAllOfferings().then(offerings => {
         self.offerings = offerings; // TODO: Loading, error
       });
       self.$ticket.getTypes().then(types => {

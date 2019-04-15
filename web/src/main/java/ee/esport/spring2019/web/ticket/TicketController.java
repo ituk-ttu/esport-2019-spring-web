@@ -49,7 +49,7 @@ public class TicketController {
     }
 
     @GetMapping("/tickets/offerings")
-    public ResponseEntity<List<TicketOffering>> getAllOfferings(User user) {
+    public ResponseEntity<List<TicketOffering>> getAllOfferings() {
         return new ResponseEntity<>(ticketService.getAllOfferings(), HttpStatus.OK);
     }
 
