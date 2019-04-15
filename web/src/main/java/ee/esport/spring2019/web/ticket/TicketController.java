@@ -50,7 +50,6 @@ public class TicketController {
 
     @GetMapping("/tickets/offerings")
     public ResponseEntity<List<TicketOffering>> getAllOfferings(User user) {
-        isAdmin(user);
         return new ResponseEntity<>(ticketService.getAllOfferings(), HttpStatus.OK);
     }
 
