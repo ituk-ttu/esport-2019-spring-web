@@ -7,7 +7,6 @@ import Faq from '@/components/public/Faq';
 import Buy from '@/components/public/Buy';
 import TicketLogin from '@/components/TicketLogin';
 import MyTickets from '@/components/public/MyTickets';
-import MyTicket from '@/components/public/MyTicket';
 import Schedule from '@/components/public/Schedule';
 import HouseRules from '@/components/public/HouseRules';
 import CsgoRules from '@/components/public/CsgoRules';
@@ -63,12 +62,6 @@ export default new Router({
           path: 'myTickets',
           name: 'MyTickets',
           component: MyTickets,
-        },
-        {
-          path: 'myTickets/:ticketId',
-          name: 'MyTicket',
-          component: MyTicket,
-          props: true
         },
         {
           path: 'login',

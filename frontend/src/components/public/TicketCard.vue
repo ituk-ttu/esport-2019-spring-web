@@ -1,4 +1,5 @@
 <template lang="pug">
+  div
     .card.full-height-card
       .card-header
         .card-header-title
@@ -13,22 +14,24 @@
           span.has-text-burgundy.has-text-weight-bold {{ $t('tickets.boughtOnDate') }}: &nbsp;
           span {{ticket.dateCreated | moment("Do MMMM HH:mm") }}
       footer.card-footer
-        router-link.has-text-weight-bold.has-text-centered.card-footer-item(
-                   :to="{name: 'MyTicket', params: {ticketId: ticket.id}}")
-          | {{ $t('tickets.manage') }}
-
+        a.has-text-weight-bold.card-footer-item(v-if="seatingSelectionAvailable" href="#" @click="showSeatingDialog")
+          | {{ $t('tickets.seatSelect') }}
+    seating-modal(v-if="shouldShowSeatingDialog"
+                  :ticket="ticket" :offering="offering" :type="type" @close="hideSeatingDialog")
 </template>
 
 <script>
   import TicketStatus from './TicketStatus';
+  import SeatingModal from './SeatingModal';
 
   export default {
-    components: { TicketStatus },
+    components: { TicketStatus, SeatingModal },
     name: 'TicketCard',
-    props: ['ticket', 'offering', 'type '],
+    props: ['ticket', 'offering', 'type'],
     data () {
       return {
         shouldShowCancelDialog: false,
+        shouldShowSeatingDialog: false,
         addMemberOpen: false,
         addMemberPolling: false,
         existingMemberOpen: null,
@@ -38,6 +41,11 @@
         }
       };
     },
+    computed: {
+      seatingSelectionAvailable: function() {
+        return this.type.assignedSeating;
+      }
+    },
     methods: {
       getInvoiceNumber: function () {
         let ticketId = this.ticket.id.toString();
@@ -45,6 +53,12 @@
       },
       canCancelTicket: function () {
         return this.$ticket.ownerCanCancel(this.ticket);
+      },
+      showSeatingDialog: function () {
+        this.shouldShowSeatingDialog = true;
+      },
+      hideSeatingDialog: function () {
+        this.shouldShowSeatingDialog = false;
       },
       showCancelDialog: function () {
         this.shouldShowCancelDialog = true;
