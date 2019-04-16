@@ -147,6 +147,14 @@ public class TicketService {
                                ticketRepository.getOffering(ticket.getOfferingId()));
     }
 
+    public Ticket.Member updateMember(int ticketId, int memberId, TicketMemberCandidate member) {
+        return ticketRepository.updateMember(ticketId, memberId, member);
+    }
+
+    public Ticket.Member addMember(int ticketId, TicketMemberCandidate member) {
+        return ticketRepository.addMember(ticketId, member);
+    }
+
     public void deleteMember(int ticketId, int memberId) {
         ticketRepository.deleteMember(ticketId, memberId);
     }

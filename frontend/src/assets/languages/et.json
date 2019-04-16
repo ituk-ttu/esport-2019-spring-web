@@ -50,7 +50,9 @@
       "title": "Liikmed",
       "add": "Lisa liige",
       "idCode": "Isikukood",
-      "igName": "In-game nimi"
+      "igName": "In-game nimi",
+      "email": "E-post",
+      "owner": "Omanik"
     },
     "names": {
       "CS:GO Team": "CS:GO meeskond",

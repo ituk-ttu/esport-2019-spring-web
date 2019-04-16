@@ -1,8 +1,6 @@
 package ee.esport.spring2019.web.ticket.domain;
 
-import lombok.Builder;
-import lombok.NonNull;
-import lombok.Value;
+import lombok.*;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -23,10 +21,10 @@ public class Ticket {
 
     @Value
     @Builder
+    @RequiredArgsConstructor
     public static class Member {
 
-        @NonNull private final Integer id;
-        @NonNull private final String igName;
+        private final Integer id;
         @NonNull private final String email;
 
     }
