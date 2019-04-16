@@ -14,24 +14,32 @@
           span.has-text-burgundy.has-text-weight-bold {{ $t('tickets.boughtOnDate') }}: &nbsp;
           span {{ticket.dateCreated | moment("Do MMMM HH:mm") }}
       footer.card-footer
-        a.has-text-weight-bold.card-footer-item(v-if="seatingSelectionAvailable" href="#" @click="showSeatingDialog")
+        a.has-text-weight-bold.card-footer-item(v-if="memberManagementAvailable"
+                                                @click="showMemberManagementDialog")
+          | {{ $t('tickets.members.title') }}
+        a.has-text-weight-bold.card-footer-item(v-if="seatingSelectionAvailable" @click="showSeatingDialog")
           | {{ $t('tickets.seatSelect') }}
+    member-management-modal(v-if="shouldShowMemberManagementDialog"
+                            :ticket="ticket" :offering="offering" :type="type" @close="hideMemberManagementDialog")
     seating-modal(v-if="shouldShowSeatingDialog"
                   :ticket="ticket" :offering="offering" :type="type" @close="hideSeatingDialog")
+
 </template>
 
 <script>
   import TicketStatus from './TicketStatus';
   import SeatingModal from './SeatingModal';
+  import MemberManagementModal from './MemberManagementModal';
 
   export default {
-    components: { TicketStatus, SeatingModal },
+    components: { TicketStatus, SeatingModal, MemberManagementModal },
     name: 'TicketCard',
     props: ['ticket', 'offering', 'type'],
     data () {
       return {
         shouldShowCancelDialog: false,
         shouldShowSeatingDialog: false,
+        shouldShowMemberManagementDialog: false,
         addMemberOpen: false,
         addMemberPolling: false,
         existingMemberOpen: null,
@@ -44,6 +52,9 @@
     computed: {
       seatingSelectionAvailable: function() {
         return this.type.assignedSeating;
+      },
+      memberManagementAvailable: function () {
+        return this.type.teamSize > 1;
       }
     },
     methods: {
@@ -59,6 +70,12 @@
       },
       hideSeatingDialog: function () {
         this.shouldShowSeatingDialog = false;
+      },
+      showMemberManagementDialog: function () {
+        this.shouldShowMemberManagementDialog = true;
+      },
+      hideMemberManagementDialog: function () {
+        this.shouldShowMemberManagementDialog = false;
       },
       showCancelDialog: function () {
         this.shouldShowCancelDialog = true;

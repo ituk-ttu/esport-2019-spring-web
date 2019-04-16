@@ -83,17 +83,20 @@ function TicketService (Vue) {
   svc.selectSeat = (ticketId, seatIndex) => Vue.http.post('api/tickets/' + ticketId + '/seat', { seat: seatIndex })
                                            .then(res => res.body);
 
-  svc.storeMember = (ticket, member) => Vue.http.post('api/tickets/' + ticket.id + '/member', member).then(res => {
-    const newMember = res.body;
-    if (member.id == null) {
-      ticket.members.push(newMember);
-    } else {
-      let memberIndex = ticket.members.findIndex(curMember => curMember.id === member.id);
-      ticket.members[memberIndex] = newMember;
-    }
+  svc.addMember = (ticket, member) => Vue.http.post('api/tickets/' + ticket.id + '/members', member).then(res => {
+    ticket.members.push(res.body);
   });
 
-  svc.removeMember = (ticket, member) => Vue.http.delete('api/tickets/' + ticket.id + '/member/' + member.id).then(res => {
+  svc.updateMember = (ticket, member) => {
+    return Vue.http.put(
+      'api/tickets/' + ticket.id + '/members/' + member.id, { ...member, id: undefined }
+    ).then(res => {
+      let memberIndex = ticket.members.findIndex(curMember => curMember.id === member.id);
+      ticket.members[memberIndex] = res.body;
+    });
+  };
+
+  svc.removeMember = (ticket, member) => Vue.http.delete('api/tickets/' + ticket.id + '/members/' + member.id).then(res => {
     let memberIndex = ticket.members.findIndex(curMember => curMember.id === member.id);
     ticket.members.splice(memberIndex, 1);
   });

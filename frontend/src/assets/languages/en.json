@@ -50,7 +50,9 @@
       "title": "Members",
       "add": "Add member",
       "idCode": "ID code",
-      "igName": "In-game name"
+      "igName": "In-game name",
+      "email": "E-mail",
+      "owner": "Owner"
     },
     "names": {
       "CS:GO Team": "CS:GO Team",
