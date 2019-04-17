@@ -105,7 +105,10 @@ public class TicketService {
                                                    .status(status)
                                                    .name(creation.getName())
                                                    .build();
-        Ticket ticket = ticketRepository.createTicket(candidate);
+        Ticket tempTicket = ticketRepository.createTicket(candidate);
+        String ownerEmail = userService.getUserEmail(tempTicket.getOwnerId());
+        ticketRepository.addMember(tempTicket.getId(), new TicketMemberCandidate(ownerEmail));
+        Ticket ticket = ticketRepository.getTicket(tempTicket.getId());
         sendTicketCreationEmail(ticket);
         return ticket;
     }
@@ -152,6 +155,11 @@ public class TicketService {
     }
 
     public Ticket.Member addMember(int ticketId, TicketMemberCandidate member) {
+        Ticket ticket = ticketRepository.getTicket(ticketId);
+        TicketType type = ticketRepository.getType(ticket.getTypeId());
+        if (type.getTeamSize() <= ticket.getMembers().size()) {
+            throw new IllegalStateException("Ticket already has maximum amount of members");
+        }
         return ticketRepository.addMember(ticketId, member);
     }
 

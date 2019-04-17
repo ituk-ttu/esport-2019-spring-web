@@ -24,7 +24,7 @@ public class Ticket {
     @RequiredArgsConstructor
     public static class Member {
 
-        private final Integer id;
+        @NonNull private final Integer id;
         @NonNull private final String email;
 
     }
