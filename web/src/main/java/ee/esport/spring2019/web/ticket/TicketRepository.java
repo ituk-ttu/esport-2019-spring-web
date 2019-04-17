@@ -78,14 +78,11 @@ public class TicketRepository {
                    .fetchMap(TICKETS.ID, it -> it.into(USERS));
         return ticketAndOfferingRecords.map(it -> {
             TicketsRecord ticketsRecord = it.into(TICKETS);
-            UsersRecord ownerRecord = ticketOwners.get(ticketsRecord.getId());
-            Ticket.Member ownerMember = new Ticket.Member(null, ownerRecord.getEmail());
-            List<Ticket.Member> members = Stream.concat(Stream.of(ownerMember),
-                                                        memberRecordsByTicketId.getOrDefault(ticketsRecord.getId(),
-                                                                                             Collections.emptyList())
-                                                                               .stream()
-                                                                               .map(mapper::toMember))
-                                                .collect(Collectors.toList());
+            List<Ticket.Member> members = memberRecordsByTicketId.getOrDefault(ticketsRecord.getId(),
+                                                                               Collections.emptyList())
+                                                                 .stream()
+                                                                 .map(mapper::toMember)
+                                                                 .collect(Collectors.toList());
             return mapper.toTicket(ticketsRecord, it.get(TICKET_OFFERINGS.TICKETTYPE_ID), members);
         });
     }

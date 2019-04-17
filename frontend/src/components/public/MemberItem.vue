@@ -4,15 +4,13 @@
     template
       td {{ member.email }}
       td
-        .buttons.is-right(v-if="isEditable")
+        .buttons.is-right
           button.button.is-success(@click="startEdit")
             span.icon
               i.fa.fa-edit
           button.button.is-danger(@click="onDelete")
             span.icon
               i.fa.fa-times
-        div.has-text-right.has-text-grey(v-else v-t="'tickets.members.owner'")
-
 
 </template>
 
@@ -27,11 +25,6 @@
       return {
         isEditing: false
       };
-    },
-    computed: {
-      isEditable: function() {
-        return this.member.id != null;
-      }
     },
     methods: {
       onDelete: function() {
