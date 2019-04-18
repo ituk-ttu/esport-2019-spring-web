@@ -16,7 +16,6 @@
           navbar-link(:title="$t('navbar.houseRules')" target-page="HouseRules")
           navbar-link(:title="$t('navbar.csgoRules')" target-page="CsgoRules")
         navbar-link(:title="$t('navbar.contact')" target-page="Contact")
-        navbar-link(:title="$t('navbar.volunteer')" target-url="https://volunteer.e-sport.ee" new-window)
 
         navbar-dropdown(v-if="isLoggedIn()" :title="username()")
           navbar-link(:title="$t('navbar.myTickets')" target-page="MyTickets")

@@ -28,9 +28,8 @@ public interface TicketRecordsMapper extends BaseMapper {
     @Mapping(target = "members", source = "members")
     Ticket toTicket(TicketsRecord ticketsRecord, Integer typeId, List<Ticket.Member> members);
 
-    @Mapping(target = "id", source = "id")
-    @Mapping(target = "igName", source = "igName")
-    @Mapping(target = "email", source = "email")
+    @Mapping(target = "id", source = "record.id")
+    @Mapping(target = "email", source = "record.email")
     Ticket.Member toMember(TicketMembersRecord record);
 
     @Mapping(target = "id", source = "typesRecord.id")

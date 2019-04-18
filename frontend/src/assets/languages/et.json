@@ -50,15 +50,19 @@
       "title": "Liikmed",
       "add": "Lisa liige",
       "idCode": "Isikukood",
-      "igName": "In-game nimi"
+      "igName": "In-game nimi",
+      "email": "E-post",
+      "owner": "Omanik"
     },
     "names": {
       "CS:GO Team": "CS:GO meeskond",
       "CS:GO Team Early Bird": "CS:GO meeskond",
       "CS:GO VIP Team": "CS:GO VIP meeskond",
       "Regular Gamer": "Tavamängija",
-      "Regular Gamer Early Bird": "Tavamängija ",
-      "Spectator": "Pealtvaataja"
+      "Regular Gamer Early Bird": "Tavamängija",
+      "Regular Gamer MSI": "Tavamängija (MSI arvutiga)",
+      "Spectator": "Pealtvaataja",
+      "FIFA 19": "FIFA 19 mängija"
     },
     "id": "ID",
     "name": "Nimi",
@@ -74,7 +78,11 @@
       "CANCELED": "Tühistatud"
     },
     "confirm": "Kinnita pilet maksud",
-    "cancel": "Tühista pilet"
+    "cancel": "Tühista pilet",
+    "manage": "Halda",
+    "seatSelect": "Kohavalik",
+    "noAssignedSeating": "Sellel piletil kohavalikut ei toimu",
+    "notPaidSeating": "Kohavalikut saab teha vaid piletitel, mille eest on makstud"
   },
   "home": {
     "sponsors": "Sponsorid"
@@ -120,7 +128,7 @@
     "receiver": "Saaja",
     "description": "Selgitus",
     "paymentDue": "Makse tähtaeg",
-    "paymentInfo": "Pileti kinnitamiseks peab olema raha kantud saaja kontole hiljemalt maksetähtaja kuupäeva lõpuks. Maksmata jätmisel pilet tühistatakse.",
+    "paymentInfo": "Pileti kinnitamiseks peab olema raha kantud saaja kontole hiljemalt maksetähtaja kuupäeva lõpuks. Maksmata jätmisel pilet tühistatakse. Kiri võib sattuda spämm kausta",
     "checkMail": "Arve saadeti Sinu e-maili aaderssile!"
   },
   "register": {
