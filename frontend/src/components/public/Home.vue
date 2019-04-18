@@ -49,7 +49,8 @@
           'nissan',
           'roccat',
           'speedlink',
-          'xgr'
+          'xgr',
+          'telia'
         ]
       };
     },
