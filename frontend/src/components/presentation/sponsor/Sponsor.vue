@@ -69,7 +69,7 @@
           photopoint: {
             url: 'https://www.photopoint.ee/',
             image: 'photopoint.svg',
-            scale: 1
+            scale: 1.0
           },
           nissan: {
             url: 'https://www.nissan.ee/',
@@ -79,12 +79,17 @@
           roccat: {
             url: 'https://roccat.org',
             image: 'roccat.svg',
-            scale: 1
+            scale: 1.0
           },
           speedlink: {
             url: 'https://www.speedlink.com/',
             image: 'speedlink.png',
             scale: 0.8
+          },
+          xgr: {
+            url: 'http://www.xgameroom.ee/',
+            image: 'xgr.png',
+            scale: 0.9
           }
         }
       };
