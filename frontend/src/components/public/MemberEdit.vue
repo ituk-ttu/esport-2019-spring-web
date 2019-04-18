@@ -6,10 +6,10 @@
           input.input(v-model="value.email")
     td
       .buttons.is-right
-        button.button.is-success(@click="onSave")
+        button.button.is-success(@click="onSave" disabled)
           span.icon
             i.fa.fa-check
-        button.button.is-danger(@click="onCancel")
+        button.button.is-danger(@click="onCancel" disabled)
           span.icon
             i.fa.fa-times
 

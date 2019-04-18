@@ -12,6 +12,8 @@ import CsgoRules from '@/components/public/CsgoRules';
 import Login from '@/components/public/Login';
 import Admin from '@/components/public/Admin';
 import Tickets from '@/components/public/admin/Tickets';
+import TicketCertificateHome from '../components/ticket-cert/TicketCertificateHome';
+import TicketCertificateView from '../components/ticket-cert/TicketCertificateView';
 
 Vue.use(Router);
 
@@ -60,7 +62,7 @@ export default new Router({
         {
           path: 'myTickets',
           name: 'MyTickets',
-          component: MyTickets,
+          component: MyTickets
         },
         {
           path: 'login',
@@ -78,6 +80,19 @@ export default new Router({
               component: Tickets
             }
           ]
+        }
+      ]
+    },
+    {
+      path: '/ticket-certificates',
+      name: 'TicketCertificateHome',
+      component: TicketCertificateHome,
+      children: [
+        {
+          path: ':ticketCertCode',
+          name: 'TicketCertView',
+          component: TicketCertificateView,
+          props: true
         }
       ]
     }

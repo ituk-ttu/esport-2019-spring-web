@@ -130,6 +130,7 @@ public class TicketController {
     @PostMapping("/tickets/{ticketId}/members")
     public ResponseEntity<Ticket.Member> addMember(@PathVariable int ticketId, User user,
                                                    @RequestBody TicketMemberCandidate member) {
+        membersDisabled();
         requireLoggedIn(user);
         Ticket ticket = ticketService.getTicket(ticketId);
         requireTicketAccess(user, ticket);
@@ -151,6 +152,7 @@ public class TicketController {
     @PutMapping("/tickets/{ticketId}/members/{memberId}")
     public ResponseEntity<Ticket.Member> updateMember(@PathVariable int ticketId, @PathVariable int memberId, User user,
                                              @RequestBody TicketMemberCandidate member) {
+        membersDisabled();
         requireLoggedIn(user);
         Ticket ticket = ticketService.getTicket(ticketId);
         requireTicketAccess(user, ticket);
@@ -162,6 +164,7 @@ public class TicketController {
 
     @DeleteMapping("/tickets/{ticketId}/members/{memberId}")
     public ResponseEntity<Void> deleteMember(@PathVariable int ticketId, @PathVariable int memberId, User user) {
+        membersDisabled();
         requireLoggedIn(user);
         Ticket ticket = ticketService.getTicket(ticketId);
         requireTicketAccess(user, ticket);
@@ -170,6 +173,10 @@ public class TicketController {
         }
         ticketService.deleteMember(ticketId, memberId);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    private void membersDisabled() {
+        throw new IllegalStateException("Modifying members disabled");
     }
 
     @GetMapping("/tickets/{ticketId}/availableSeats")

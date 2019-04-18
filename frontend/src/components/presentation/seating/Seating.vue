@@ -16,7 +16,6 @@
 </template>
 
 <script>
-
   const pos = (x, y) => ({x, y});
 
   const cellSize = 40;
@@ -46,7 +45,7 @@
         pos(10, 2),
         pos(10, 7),
         pos(12, 2),
-        pos(12, 7),
+        pos(12, 7)
       ]
     },
     {
@@ -139,7 +138,7 @@
   export default {
     name: 'Seating',
     props: ['ticket', 'ticketType', 'availableSeats'],
-    data: function() {
+    data: function () {
       return {
         strokeWidth: 3,
         seats: seatings.flatMap(gameSeating => gameSeating.seats.map((seat, index) => ({
@@ -167,7 +166,7 @@
         }
         return statuses.TAKEN;
       },
-      getClass: function(seat) {
+      getClass: function (seat) {
         return classes[this.getStatus(seat)];
       },
       select: function (seat) {
@@ -179,7 +178,7 @@
         });
       }
     }
-  }
+  };
 </script>
 
 <style scoped>

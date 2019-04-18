@@ -52,7 +52,14 @@
       "idCode": "ID code",
       "igName": "In-game name",
       "email": "E-mail",
-      "owner": "Owner"
+      "owner": "Owner",
+      "disabled": "Modifying team members has been disabled!"
+    },
+    "certs": {
+      "redeem": {
+        "title": "Redeem your ticket",
+        "guide": "To redeem your ticket show the QR code or the code below that to the cashier."
+      }
     },
     "names": {
       "CS:GO Team": "CS:GO Team",
