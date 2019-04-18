@@ -48,7 +48,8 @@
           'photopoint',
           'nissan',
           'roccat',
-          'speedlink'
+          'speedlink',
+          'xgr'
         ]
       };
     },
