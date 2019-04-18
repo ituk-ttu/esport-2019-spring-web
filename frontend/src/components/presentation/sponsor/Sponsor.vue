@@ -90,6 +90,11 @@
             url: 'http://www.xgameroom.ee/',
             image: 'xgr.png',
             scale: 0.9
+          },
+          telia: {
+            url: 'https://telia.ee',
+            image: 'logo-telia.svg',
+            scale: 0.85
           }
         }
       };
