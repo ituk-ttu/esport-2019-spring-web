@@ -52,7 +52,14 @@
       "idCode": "Isikukood",
       "igName": "In-game nimi",
       "email": "E-post",
-      "owner": "Omanik"
+      "owner": "Omanik",
+      "disabled": "Tiimiliikmete muutmine on lõppenud!"
+    },
+    "certs": {
+      "redeem": {
+        "title": "Pileti lunastamine",
+        "guide": "Pileti lunastamiseks näita kassas all olevat QR koodi või selle all olevat koodi."
+      }
     },
     "names": {
       "CS:GO Team": "CS:GO meeskond",

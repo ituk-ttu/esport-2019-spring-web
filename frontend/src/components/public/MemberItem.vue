@@ -5,10 +5,10 @@
       td {{ member.email }}
       td
         .buttons.is-right
-          button.button.is-success(@click="startEdit")
+          button.button.is-success(@click="startEdit" disabled)
             span.icon
               i.fa.fa-edit
-          button.button.is-danger(@click="onDelete")
+          button.button.is-danger(@click="onDelete" disabled)
             span.icon
               i.fa.fa-times
 

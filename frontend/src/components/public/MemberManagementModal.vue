@@ -8,6 +8,7 @@
           h3.subtitle {{ ticket.name }} ({{ offering.name }})
         button.delete(@click="onClose")
       .modal-card-body
+        .notification.is-warning(v-t="'tickets.members.disabled'")
         table.table.is-fullwidth
           thead
             tr
@@ -22,7 +23,7 @@
               td
               td
                 .buttons.is-right
-                  button.button.is-success(@click="showAdd")
+                  button.button.is-success(@click="showAdd" disabled)
                     span.icon
                       i.fa.fa-plus
                     span(v-t="'tickets.members.add'")
@@ -55,6 +56,7 @@
         this.isAdding = true;
       },
       hideAdd: function() {
+        this.isAdding = false;
       },
       onAdd: function(member) {
         const self = this;
