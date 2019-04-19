@@ -1,11 +1,9 @@
 package ee.esport.spring2019.web.ticket;
 
-import ee.esport.spring2019.jooq.tables.records.TicketMembersRecord;
-import ee.esport.spring2019.jooq.tables.records.TicketTypesRecord;
-import ee.esport.spring2019.jooq.tables.records.TicketsRecord;
-import ee.esport.spring2019.jooq.tables.records.TicketOfferingsRecord;
+import ee.esport.spring2019.jooq.tables.records.*;
 import ee.esport.spring2019.web.core.BaseMapper;
 import ee.esport.spring2019.web.ticket.domain.Ticket;
+import ee.esport.spring2019.web.ticket.domain.TicketCert;
 import ee.esport.spring2019.web.ticket.domain.TicketOffering;
 import ee.esport.spring2019.web.ticket.domain.TicketType;
 import org.mapstruct.InjectionStrategy;
@@ -51,5 +49,11 @@ public interface TicketRecordsMapper extends BaseMapper {
     @Mapping(target = "promotional", source = "offeringsRecord.promotional")
     @Mapping(target = "cost", source = "offeringsRecord.cost")
     TicketOffering toTicketOffering(TicketOfferingsRecord offeringsRecord, Integer amountRemaining);
+
+    @Mapping(target = "id", source="id")
+    @Mapping(target = "code", source="code")
+    @Mapping(target = "memberId", source="memberId")
+    @Mapping(target = "timesUsed", source="timesUsed")
+    TicketCert toCert(TicketCertsRecord record);
 
 }
