@@ -3,9 +3,19 @@
     .notification.is-error(v-if="error != null") {{ error }}
     template(v-if="status === 'SCAN'")
       qrcode-stream(@decode="onDecode" @onInit="onInit")
+      .field
+        label.label Sisesta kood manuaalselt
+        .control
+          input.input(v-model="manualCode")
+      .modal-card-foot
+        .field
+          .control
+            button.button.is-link(type="submit" @click="onDecode(manualCode)") | Saada
     template(v-else-if="status === 'LOADING'")
       .has-text-centered(): i.fa.fa-2x.fa-cog.fa-spin
     template(v-else-if="status === 'PRE_ASK_ACCEPTANCE'")
+      .notification.is-warning(v-if="cert.timesUsed >= getMaxUseCount(cert)")
+        | Seda koodi on juba kasutatud {{ cert.timesUsed }}/{{ getMaxUseCount(cert) }} korda
       .notification.is-info
         .content
           h3.subtitle Selle pileti koode on kasutatud alljärgnev arv kordi
@@ -52,7 +62,8 @@
         ticket: null,
         certCode: null,
         certs: null,
-        evtSrc: null
+        evtSrc: null,
+        manualCode: ''
       };
     },
     methods: {
@@ -128,6 +139,7 @@
         if (this.evtSrc != null) {
           this.evtSrc.close();
         }
+        this.manualCode = '';
         this.evtSrc = null;
         this.error = error;
       },
