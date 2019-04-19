@@ -16,7 +16,7 @@
     template(v-else-if="status === 'PRE_ASK_ACCEPTANCE'")
       h1.title Tiim: {{ ticket.name }}
       h2.sub-title Mäng: {{ offering.name }}
-      .notification.is-warning(v-if="cert.timesUsed >= getMaxUseCount(cert)")
+      .notification(v-if="cert.timesUsed >= getMaxUseCount(cert)" :class="cert.memberId != null ? 'is-warning' : 'is-error'")
         | Seda koodi on juba kasutatud {{ cert.timesUsed }}/{{ getMaxUseCount(cert) }} korda
       .notification.is-error(v-if="teamTicketsUsed")
         | Selle tiimi piletid on juba otsas!
