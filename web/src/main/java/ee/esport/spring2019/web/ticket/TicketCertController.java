@@ -35,6 +35,13 @@ public class TicketCertController {
                                     HttpStatus.OK);
     }
 
+    @PostMapping("/tickets/all/certs/generate")
+    public ResponseEntity<Void> generateCerts(User user) {
+        requireAdmin(user);
+        certService.genAll();
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     private void requireAdmin(User user) {
         requireLoggedIn(user);
         if (!user.getRole().isAtleast(UserRole.ADMIN)) {

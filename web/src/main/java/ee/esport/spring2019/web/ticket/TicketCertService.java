@@ -5,6 +5,7 @@ import ee.esport.spring2019.web.ticket.domain.*;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +20,7 @@ import java.util.stream.Stream;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class TicketCertService {
 
     private static final String CODE_CHARS = "23456789ABCDEFGHJKLMNPQRSZTUVWXY";
@@ -33,6 +35,22 @@ public class TicketCertService {
 
     @Resource
     private final TicketService ticketService;
+
+    public void genAll() {
+        List<Ticket> tickets = ticketService.getAllTickets()
+                                            .stream()
+                                            .filter(it -> it.getStatus() == Ticket.Status.PAID)
+                                            .collect(Collectors.toList());
+        for (Ticket ticket : tickets) {
+            log.info("Generating certs: " + ticket);
+            try {
+                generateCerts(ticket.getId());
+                log.info("Successfully generated certs");
+            } catch (Exception e) {
+                log.warn("Failed to generate certs", e);
+            }
+        }
+    }
 
     @Transactional
     public List<TicketCert> generateCerts(int ticketId) {
