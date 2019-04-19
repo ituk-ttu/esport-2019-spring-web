@@ -1,4 +1,6 @@
 {
+  "acceptRules": "Nõustun kodukorraga",
+  "acceptRulesScroll": "Keri alla, et kodukorraga nõustuda",
   "moment": "et",
   "navbar": {
     "home": "Avaleht",
@@ -11,6 +13,7 @@
     "login": "Logi sisse",
     "myTickets": "Minu piletid",
     "adminTickets": "Halda pileteid",
+    "adminCerts": "Kassarakendus",
     "removeUser": "Logi välja",
     "discord": "Discord",
     "admin": "Admin",

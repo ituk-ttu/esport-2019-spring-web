@@ -1,19 +1,17 @@
 package ee.esport.spring2019.web.ticket;
 
 import ee.esport.spring2019.jooq.tables.records.TicketCertsRecord;
-import ee.esport.spring2019.web.ticket.domain.Ticket;
 import ee.esport.spring2019.web.ticket.domain.TicketCert;
 import ee.esport.spring2019.web.ticket.domain.TicketCertCandidate;
 import lombok.RequiredArgsConstructor;
-import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import static ee.esport.spring2019.jooq.Tables.TICKET_CERTS;
-import static ee.esport.spring2019.jooq.tables.Tickets.TICKETS;
 
 @Service
 @RequiredArgsConstructor
@@ -41,6 +39,24 @@ public class TicketCertRepository {
                   .map(it -> it.into(TICKET_CERTS))
                   .map(mapper::toCert)
                   .collect(Collectors.toList());
+    }
+
+    public Integer getCertTicketId(String certCode) {
+        return dsl.select(TICKET_CERTS.TICKET_ID)
+                  .from(TICKET_CERTS)
+                  .where(TICKET_CERTS.CODE.eq(certCode))
+                  .fetchOne(TICKET_CERTS.TICKET_ID);
+    }
+
+    public void useCert(String certCode) {
+        int rowsUpdated = dsl.update(TICKET_CERTS)
+                             .set(TICKET_CERTS.TIMES_USED, TICKET_CERTS.TIMES_USED.plus(1))
+                             .where(TICKET_CERTS.CODE.eq(certCode))
+                             .execute();
+
+        if (rowsUpdated == 0) {
+            throw new NoSuchElementException("Ticket cert not found");
+        }
     }
 
 }
