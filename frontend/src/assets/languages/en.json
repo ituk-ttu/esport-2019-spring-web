@@ -1,4 +1,6 @@
 {
+  "acceptRules": "I accept house rules",
+  "acceptRulesScroll": "Scroll down to accept our house rules",
   "moment": "en-gb",
   "navbar": {
     "home": "Home",
