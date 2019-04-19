@@ -1,0 +1,25 @@
+Piletid edastatud / Tickets sent
+
+---
+
+$ticket.name ($ticketOffering.name)
+
+Tiimi liikmetele on piletid välja saadetud.
+Kui teie tiimil jäid liikmed sisestamata või on mõne tiimiliikme pilet kaduma läinud,
+saab ta oma pileti kätte,
+kui järgite juhiseid aadressil https://e-sport.ee/#/ticket-certificates/$code
+või näitate kassas all olevat koodi.
+
+The tickets have been sent to your team members.
+If you did not enter your team members or someone's ticket has gone missing,
+they can redeem their ticket
+once you follow the instructions at https://e-sport.ee/#/ticket-certificates/$code
+or show the code below to the cashier.
+
+$code
+
+---
+
+MTÜ FOR Tsükkel, Akadeemia tee 15a-314, Tallinn, Eesti
+Registrinumber / Registry number: 80391807</span>
+Kontakt / Contact: esport@ituk.ee, +372 5906 1664
