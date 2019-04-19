@@ -14,6 +14,8 @@
     template(v-else-if="status === 'LOADING'")
       .has-text-centered(): i.fa.fa-2x.fa-cog.fa-spin
     template(v-else-if="status === 'PRE_ASK_ACCEPTANCE'")
+      h1.title Tiim: {{ ticket.name }}
+      h2.sub-title Mäng: {{ offering.name }}
       .notification.is-warning(v-if="cert.timesUsed >= getMaxUseCount(cert)")
         | Seda koodi on juba kasutatud {{ cert.timesUsed }}/{{ getMaxUseCount(cert) }} korda
       .notification.is-info
