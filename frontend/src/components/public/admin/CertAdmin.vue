@@ -31,9 +31,13 @@
         | Tegemist on nö. fallback koodiga.
       button.button.is-success(@click="onAskAcceptance") Küsi kodukorra nõusolekut
     template(v-else-if="status === 'WAIT_ACCEPTANCE'")
+      h1.title Tiim: {{ ticket.name }}
+      h2.sub-title Mäng: {{ offering.name }}
       .notification.is-info Ootan, et klient nõustuks kodukorraga
       button.button.is-warning(@click="onAcceptance") Nõustus allkirjaga paberil
     template(v-else-if="status === 'GIVE_TICKET'")
+      h1.title Tiim: {{ ticket.name }}
+      h2.sub-title Mäng: {{ offering.name }}
       .notification.is-info
         | Anna kliendile käepael ning
         strong  veendu
