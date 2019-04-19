@@ -18,6 +18,8 @@
       h2.sub-title Mäng: {{ offering.name }}
       .notification.is-warning(v-if="cert.timesUsed >= getMaxUseCount(cert)")
         | Seda koodi on juba kasutatud {{ cert.timesUsed }}/{{ getMaxUseCount(cert) }} korda
+      .notification.is-error(v-if="teamTicketsUsed")
+        | Selle tiimi piletid on juba otsas!
       .notification.is-info
         .content
           h3.subtitle Selle pileti koode on kasutatud alljärgnev arv kordi
@@ -182,6 +184,9 @@
       },
       offering: function () {
         return this.offerings.find(offering => offering.id === this.ticket.offeringId);
+      },
+      teamTicketsUsed: function() {
+        return this.certs.map(it => it.timesUsed).reduce((a, b) => a + b, 0) >= this.type.teamSize;
       }
     }
   };
