@@ -1,4 +1,6 @@
 {
+  "acceptRules": "I accept house rules",
+  "acceptRulesScroll": "Scroll down to accept our house rules",
   "moment": "en-gb",
   "navbar": {
     "home": "Home",
@@ -51,7 +53,16 @@
       "title": "Members",
       "add": "Add member",
       "idCode": "ID code",
-      "igName": "In-game name"
+      "igName": "In-game name",
+      "email": "E-mail",
+      "owner": "Owner",
+      "disabled": "Modifying team members has been disabled!"
+    },
+    "certs": {
+      "redeem": {
+        "title": "Redeem your ticket",
+        "guide": "To redeem your ticket show the QR code or the code below that to the cashier."
+      }
     },
     "names": {
       "CS:GO Team": "CS:GO Team",
@@ -59,7 +70,9 @@
       "CS:GO VIP Team": "CS:GO VIP Team",
       "Regular Gamer": "Regular Gamer",
       "Regular Gamer Early Bird": "Regular Gamer",
-      "Spectator": "Spectator"
+      "Regular Gamer MSI": "Regular Gamer (w/ MSI computer)",
+      "Spectator": "Spectator",
+      "FIFA 19": "FIFA 19 player"
     },
     "id": "ID",
     "name": "Name",
@@ -75,7 +88,11 @@
       "CANCELED": "Canceled"
     },
     "confirm": "Confirm ticket paid",
-    "cancel": "Cancel ticket"
+    "cancel": "Cancel ticket",
+    "manage": "Manage",
+    "seatSelect": "Select seat",
+    "noAssignedSeating": "This ticket does not have assigned seating",
+    "notPaidSeating": "Seat can only be selected once the ticket has been paid for"
   },
   "home": {
     "sponsors": "Sponsors"
@@ -121,7 +138,7 @@
     "receiver": "Receiver",
     "description": "Description",
     "paymentDue": "Payment due date",
-    "paymentInfo": "To confirm the ticket the payment must be received by the receiver in 3 days after receiving the invoice at the latest. Unpaid tickets will be discarded.",
+    "paymentInfo": "To confirm the ticket the payment must be received by the receiver in 3 days after receiving the invoice at the latest. Unpaid tickets will be discarded. The e-mail might end up in spam folder!",
     "checkMail": "The invoice has been sent to your e-mail."
   },
   "register": {

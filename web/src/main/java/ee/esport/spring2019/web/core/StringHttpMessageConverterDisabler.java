@@ -16,6 +16,7 @@ public class StringHttpMessageConverterDisabler {
     @EventListener
     public void handleContextRefresh(ContextRefreshedEvent event) {
         handlerAdapter.getMessageConverters().removeIf(StringHttpMessageConverter.class::isInstance);
+        handlerAdapter.getMessageConverters().add(new StringHttpMessageConverter());
     }
 
 }

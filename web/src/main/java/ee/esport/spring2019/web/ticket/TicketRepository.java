@@ -1,13 +1,7 @@
 package ee.esport.spring2019.web.ticket;
 
-import ee.esport.spring2019.jooq.tables.records.TicketMembersRecord;
-import ee.esport.spring2019.jooq.tables.records.TicketOfferingsRecord;
-import ee.esport.spring2019.jooq.tables.records.TicketTypesRecord;
-import ee.esport.spring2019.jooq.tables.records.TicketsRecord;
-import ee.esport.spring2019.web.ticket.domain.Ticket;
-import ee.esport.spring2019.web.ticket.domain.TicketCandidate;
-import ee.esport.spring2019.web.ticket.domain.TicketOffering;
-import ee.esport.spring2019.web.ticket.domain.TicketType;
+import ee.esport.spring2019.jooq.tables.records.*;
+import ee.esport.spring2019.web.ticket.domain.*;
 import lombok.RequiredArgsConstructor;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
@@ -70,13 +64,18 @@ public class TicketRepository {
                                                      .from(TICKETS.leftJoin(TICKET_OFFERINGS).onKey())
                                                      .where(condition)
                                                      .stream();
-        System.out.println(ticketAndOfferingRecords.toString());
         Map<Integer, List<TicketMembersRecord>> memberRecordsByTicketId =
                 dsl.select(TICKET_MEMBERS.fields())
                    .select(TICKETS.ID)
                    .from(TICKET_MEMBERS.leftJoin(TICKETS).onKey())
                    .where(condition)
                    .fetchGroups(TICKETS.ID, it -> it.into(TICKET_MEMBERS));
+        Map<Integer, UsersRecord> ticketOwners =
+                dsl.select(USERS.fields())
+                   .select(TICKETS.ID)
+                   .from(TICKETS.leftJoin(USERS).onKey())
+                   .where(condition)
+                   .fetchMap(TICKETS.ID, it -> it.into(USERS));
         return ticketAndOfferingRecords.map(it -> {
             TicketsRecord ticketsRecord = it.into(TICKETS);
             List<Ticket.Member> members = memberRecordsByTicketId.getOrDefault(ticketsRecord.getId(),
@@ -86,6 +85,30 @@ public class TicketRepository {
                                                                  .collect(Collectors.toList());
             return mapper.toTicket(ticketsRecord, it.get(TICKET_OFFERINGS.TICKETTYPE_ID), members);
         });
+    }
+
+    public Ticket.Member updateMember(int ticketId, int memberId, TicketMemberCandidate candidate) {
+        int rowsUpdated = dsl.update(TICKET_MEMBERS)
+                             .set(TICKET_MEMBERS.EMAIL, candidate.getEmail())
+                             .where(TICKET_MEMBERS.TICKET_ID.eq(ticketId))
+                             .and(TICKET_MEMBERS.ID.eq(memberId))
+                             .execute();
+
+        if (rowsUpdated == 0) {
+            throw new NoSuchElementException("Ticket member not found");
+        }
+        return mapper.toMember(dsl.selectFrom(TICKET_MEMBERS)
+                                  .where(TICKET_MEMBERS.TICKET_ID.eq(ticketId))
+                                  .and(TICKET_MEMBERS.ID.eq(memberId))
+                                  .fetchAny());
+    }
+
+    public Ticket.Member addMember(int ticketId, TicketMemberCandidate member) {
+        return mapper.toMember(dsl.insertInto(TICKET_MEMBERS)
+                                  .set(TICKET_MEMBERS.TICKET_ID, ticketId)
+                                  .set(TICKET_MEMBERS.EMAIL, member.getEmail())
+                                  .returning()
+                                  .fetchOne());
     }
 
     public void deleteMember(int ticketId, int memberId) {
@@ -184,5 +207,12 @@ public class TicketRepository {
                 .set(TICKETS.STATUS, Ticket.Status.CANCELED.toString())
                 .where(TICKETS.ID.eq(ticket.getId()))
                 .execute();
+    }
+
+    public void setSeat(int ticketId, Integer seat) {
+        dsl.update(TICKETS)
+           .set(TICKETS.SEAT, seat)
+           .where(TICKETS.ID.eq(ticketId))
+           .execute();
     }
 }

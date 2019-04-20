@@ -1,0 +1,4 @@
+INSERT INTO TICKET_MEMBERS (ticketId, email)
+SELECT T.id, U.email
+FROM TICKETS T
+LEFT JOIN USERS U on T.ownerId = U.id;

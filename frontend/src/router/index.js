@@ -5,7 +5,6 @@ import Home from '@/components/public/Home';
 import Contact from '@/components/public/Contact';
 import Faq from '@/components/public/Faq';
 import Buy from '@/components/public/Buy';
-import TicketLogin from '@/components/TicketLogin';
 import MyTickets from '@/components/public/MyTickets';
 import Schedule from '@/components/public/Schedule';
 import HouseRules from '@/components/public/HouseRules';
@@ -13,6 +12,9 @@ import CsgoRules from '@/components/public/CsgoRules';
 import Login from '@/components/public/Login';
 import Admin from '@/components/public/Admin';
 import Tickets from '@/components/public/admin/Tickets';
+import TicketCertificateHome from '../components/ticket-cert/TicketCertificateHome';
+import TicketCertificateView from '../components/ticket-cert/TicketCertificateView';
+import CertAdmin from "../components/public/admin/CertAdmin";
 
 Vue.use(Router);
 
@@ -77,15 +79,28 @@ export default new Router({
               path: 'tickets',
               name: 'AdminTickets',
               component: Tickets
+            },
+            {
+              path: 'certs',
+              name: 'CertAdmin',
+              component: CertAdmin
             }
           ]
         }
       ]
     },
     {
-      path: '/ticketLogin/:loginKey',
-      name: 'TicketLogin',
-      component: TicketLogin
+      path: '/ticket-certificates',
+      name: 'TicketCertificateHome',
+      component: TicketCertificateHome,
+      children: [
+        {
+          path: ':ticketCertCode',
+          name: 'TicketCertView',
+          component: TicketCertificateView,
+          props: true
+        }
+      ]
     }
   ]
 });

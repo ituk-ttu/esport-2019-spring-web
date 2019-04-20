@@ -7,19 +7,22 @@ Vue.use(VueResource);
 
 const AUTHORIZATION_HEADER = 'Authorization';
 const USER_KEY = 'user';
-const TOKEN_REFRESH_INTERVAL = 6000000; // TODO smaller
+const TOKEN_REFRESH_INTERVAL = 10000;
 
 function AuthService (Vue) {
   const svc = {};
 
   const init = () => {
     Vue.http.interceptors.push(interceptor);
-    setInterval(() => {
-      if (!svc.isLoggedIn() || isTokenExpired() || shouldRefreshToken()) {
-        return;
-      }
-      Vue.http.get('api/refreshToken'); // TODO use response
-    }, TOKEN_REFRESH_INTERVAL);
+    setInterval(preventTokenExpiration, TOKEN_REFRESH_INTERVAL);
+    preventTokenExpiration();
+  };
+
+  const preventTokenExpiration = () => {
+    if (!shouldRefreshToken()) {
+      return;
+    }
+    svc.logOut(); // TODO refresh token instead
   };
 
   let eventBus = new Vue();
@@ -63,8 +66,6 @@ function AuthService (Vue) {
 
   const shouldRefreshToken = token => svc.isLoggedIn() &&
                                       isPassed((getClaims(token).exp + getClaims(token).iat) / 2);
-
-  let isTokenExpired = token => isPassed(getClaims(token).exp - 5); // 5 seconds buffer
 
   const isPassed = unixSeconds => unixSeconds - Date.now() / 1000 < 0;
 

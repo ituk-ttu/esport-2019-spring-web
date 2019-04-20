@@ -16,28 +16,42 @@
     section.section
       .container
         h1.title.has-text-centered.has-text-primary(v-t="'home.sponsors'")
-        .columns.is-multiline.is-centered.is-vcentered
-          sponsor(url="https://ituk.ee" image="ituk.svg" big)
-          sponsor(url="https://ttu.ee/itt" image="itt.png" big)
-          sponsor(url="https://ttu.ee/ye" image="ye.png" big)
-          sponsor(url="https://arvutitark.ee/" image="arvutitark_logo.png" big)
-          sponsor(url="https://www.lg.com/ee" image="LG-new.svg" big)
-        .columns.is-multiline.is-centered.is-vcentered.is-flex
-          sponsor(url="https://filmiklubi.ee" image="filmiklubi-03.svg")
-          sponsor(url="https://thorgate.eu" image="thorgate.png")
+        sponsor-grid(:names="bigSponsors" big)
+        sponsor-grid(:names="smallSponsors")
 </template>
 
 <script>
   import TicketOfferingCard from './TicketOfferingCard';
-  import Sponsor from './Sponsor';
+  import SponsorGrid from '../presentation/sponsor/SponsorGrid';
 
   export default {
-    components: {TicketOfferingCard, Sponsor},
+    components: {TicketOfferingCard, SponsorGrid},
     name: 'Home',
     data: function() {
       return {
         offerings: null,
-        types: null
+        types: null,
+        bigSponsors: [
+          'ituk',
+          'itt',
+          'ye',
+          'arvutitark',
+          'lg',
+          'belief',
+          'networkTomorrow',
+          'msi'
+        ],
+        smallSponsors: [
+          'filmiklubi',
+          'thorgate',
+          'gamdias',
+          'photopoint',
+          'nissan',
+          'roccat',
+          'speedlink',
+          'xgr',
+          'telia'
+        ]
       };
     },
     methods: {
