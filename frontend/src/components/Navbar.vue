@@ -15,6 +15,7 @@
           navbar-link(:title="$t('navbar.timetable')" target-page="Schedule")
           navbar-link(:title="$t('navbar.houseRules')" target-page="HouseRules")
           navbar-link(:title="$t('navbar.csgoRules')" target-page="CsgoRules")
+          navbar-link(:title="$t('navbar.fifa')" target-page="Fifa")
         navbar-link(:title="$t('navbar.contact')" target-page="Contact")
 
         navbar-dropdown(v-if="isLoggedIn()" :title="username()")
@@ -23,6 +24,7 @@
         navbar-link(v-else :title="$t('navbar.login')" target-page="Login")
         navbar-dropdown(v-if="isAdmin()" :title="$t('navbar.admin')")
           navbar-link(:title="$t('navbar.adminTickets')" target-page="AdminTickets")
+          navbar-link(:title="$t('navbar.adminCerts')" target-page="CertAdmin")
 
 
         navbar-link(:title="$t('navbar.discord')" target-url="https://discord.gg/W5Psxu3" new-window

@@ -1,4 +1,6 @@
 {
+  "acceptRules": "Nõustun kodukorraga",
+  "acceptRulesScroll": "Keri alla, et kodukorraga nõustuda",
   "moment": "et",
   "navbar": {
     "home": "Avaleht",
@@ -8,9 +10,11 @@
     "timetable": "Ajakava",
     "houseRules": "Kodukord",
     "csgoRules": "CS:GO reeglid",
+    "fifa": "FIFA ajakava",
     "login": "Logi sisse",
     "myTickets": "Minu piletid",
     "adminTickets": "Halda pileteid",
+    "adminCerts": "Kassarakendus",
     "removeUser": "Logi välja",
     "discord": "Discord",
     "admin": "Admin",

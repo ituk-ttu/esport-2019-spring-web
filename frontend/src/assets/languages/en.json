@@ -1,4 +1,6 @@
 {
+  "acceptRules": "I accept house rules",
+  "acceptRulesScroll": "Scroll down to accept our house rules",
   "moment": "en-gb",
   "navbar": {
     "home": "Home",
@@ -8,6 +10,7 @@
     "timetable": "Schedule",
     "houseRules": "House Rules",
     "csgoRules": "CS:GO Rules",
+    "fifa": "FIFA schedule",
     "login": "Login",
     "myTickets": "My Tickets",
     "adminTickets": "Manage Tickets",

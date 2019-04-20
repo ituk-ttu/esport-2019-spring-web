@@ -78,6 +78,22 @@ public class TicketCertService {
                      .collect(Collectors.toList());
     }
 
+    public Ticket getCertTicket(String certCode) {
+        Integer ticketId = repository.getCertTicketId(certCode);
+        if (ticketId == null) {
+            return null;
+        }
+        return ticketService.getTicket(ticketId);
+    }
+
+    public void useCert(String certCode) {
+        repository.useCert(certCode);
+    }
+
+    public List<TicketCert> getTicketCerts(int ticketId) {
+        return repository.getCerts(ticketId);
+    }
+
     private MemberCertEntry createMemberCert(Ticket ticket, Ticket.Member member) {
         TicketCertCandidate ticketCertCandidate = new TicketCertCandidate(generateCode(), member.getId());
         TicketCert cert = repository.createCert(ticket.getId(), ticketCertCandidate);

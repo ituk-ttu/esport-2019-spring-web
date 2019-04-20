@@ -39,7 +39,8 @@
           'lg',
           'belief',
           'networkTomorrow',
-          'msi'
+          'msi',
+          'obvan'
         ],
         smallSponsors: [
           'filmiklubi',

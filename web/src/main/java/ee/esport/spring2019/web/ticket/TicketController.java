@@ -32,22 +32,22 @@ public class TicketController {
 
     @GetMapping("/tickets/types")
     public ResponseEntity<List<TicketType>> getAllTicketTypes() {
-        return new ResponseEntity<>(ticketService.getAllTypes(), HttpStatus.OK);
+        return new ResponseEntity<>(ticketService.getAllTypes(), null, HttpStatus.OK);
     }
 
     @GetMapping("/tickets/types/{typeId}")
     public ResponseEntity<TicketType> getTicketType(@PathVariable int typeId) {
-        return new ResponseEntity<>(ticketService.getType(typeId), HttpStatus.OK);
+        return new ResponseEntity<>(ticketService.getType(typeId), null, HttpStatus.OK);
     }
 
     @GetMapping("/tickets/offerings/visible")
     public ResponseEntity<List<TicketOffering>> getVisibleOfferings() {
-        return new ResponseEntity<>(ticketService.getVisibleOfferings(), HttpStatus.OK);
+        return new ResponseEntity<>(ticketService.getVisibleOfferings(), null, HttpStatus.OK);
     }
 
     @GetMapping("/tickets/offerings")
     public ResponseEntity<List<TicketOffering>> getAllOfferings() {
-        return new ResponseEntity<>(ticketService.getAllOfferings(), HttpStatus.OK);
+        return new ResponseEntity<>(ticketService.getAllOfferings(), null, HttpStatus.OK);
     }
 
     private void requireAdmin(User user) {
@@ -60,15 +60,15 @@ public class TicketController {
     @GetMapping("/tickets/offerings/{id}")
     public ResponseEntity<TicketOffering> getOffering(@PathVariable int id, User user) {
         if (user != null && user.getRole().isAtleast(UserRole.ADMIN)) {
-            return new ResponseEntity<>(ticketService.getFromAllOfferings(id), HttpStatus.OK);
+            return new ResponseEntity<>(ticketService.getFromAllOfferings(id), null, HttpStatus.OK);
         }
-        return new ResponseEntity<>(ticketService.getVisibleOffering(id), HttpStatus.OK);
+        return new ResponseEntity<>(ticketService.getVisibleOffering(id), null, HttpStatus.OK);
     }
 
     @GetMapping("/tickets")
     public ResponseEntity<List<Ticket>> getAllTickets(User user) {
         requireAdmin(user);
-        return new ResponseEntity<>(ticketService.getAllTickets(), HttpStatus.OK);
+        return new ResponseEntity<>(ticketService.getAllTickets(), null, HttpStatus.OK);
     }
 
     @GetMapping("/users/{userId}/tickets")
@@ -77,7 +77,7 @@ public class TicketController {
         if (userId != user.getId() && !user.getRole().isAtleast(UserRole.ADMIN)) {
             throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
         }
-        return new ResponseEntity<>(ticketService.getUserTickets(userId), HttpStatus.OK);
+        return new ResponseEntity<>(ticketService.getUserTickets(userId), null, HttpStatus.OK);
     }
 
 
@@ -88,13 +88,13 @@ public class TicketController {
             throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
         }
         Ticket boughtTicket = ticketService.createTicket(ticketRequest);
-        return new ResponseEntity<>(boughtTicket, HttpStatus.OK);
+        return new ResponseEntity<>(boughtTicket, null, HttpStatus.OK);
     }
 
     @GetMapping("/tickets/ownerEmails")
     public ResponseEntity<Map<Integer, String>> getOwnerEmails(User user) {
         requireAdmin(user);
-        return new ResponseEntity<>(ticketService.getOwnerEmails(), HttpStatus.OK);
+        return new ResponseEntity<>(ticketService.getOwnerEmails(), null, HttpStatus.OK);
     }
 
     @PostMapping("/tickets/{ticketId}/cancel")
@@ -134,7 +134,7 @@ public class TicketController {
         requireLoggedIn(user);
         Ticket ticket = ticketService.getTicket(ticketId);
         requireTicketAccess(user, ticket);
-        return new ResponseEntity<>(ticketService.addMember(ticketId, member), HttpStatus.OK);
+        return new ResponseEntity<>(ticketService.addMember(ticketId, member), null, HttpStatus.OK);
     }
 
     private void requireTicketAccess(User user, Ticket ticket) {
@@ -159,7 +159,7 @@ public class TicketController {
         if (ticket.getMembers().stream().noneMatch(it -> Objects.equals(it.getId(), memberId))) {
             throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Ticket does not have member with given ID");
         }
-        return new ResponseEntity<>(ticketService.updateMember(ticketId, memberId, member), HttpStatus.OK);
+        return new ResponseEntity<>(ticketService.updateMember(ticketId, memberId, member), null, HttpStatus.OK);
     }
 
     @DeleteMapping("/tickets/{ticketId}/members/{memberId}")
@@ -185,7 +185,7 @@ public class TicketController {
         Ticket ticket = ticketService.getTicket(ticketId);
         requireTicketAccess(user, ticket);
         TicketType type = ticketService.getType(ticket.getTypeId());
-        return new ResponseEntity<>(ticketService.getAvailableSeats(ticket, type), HttpStatus.OK);
+        return new ResponseEntity<>(ticketService.getAvailableSeats(ticket, type), null, HttpStatus.OK);
     }
 
 

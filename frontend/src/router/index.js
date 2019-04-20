@@ -14,6 +14,7 @@ import Admin from '@/components/public/Admin';
 import Tickets from '@/components/public/admin/Tickets';
 import TicketCertificateHome from '../components/ticket-cert/TicketCertificateHome';
 import TicketCertificateView from '../components/ticket-cert/TicketCertificateView';
+import CertAdmin from "../components/public/admin/CertAdmin";
 
 Vue.use(Router);
 
@@ -78,6 +79,11 @@ export default new Router({
               path: 'tickets',
               name: 'AdminTickets',
               component: Tickets
+            },
+            {
+              path: 'certs',
+              name: 'CertAdmin',
+              component: CertAdmin
             }
           ]
         }
