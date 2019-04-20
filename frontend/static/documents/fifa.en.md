@@ -10,15 +10,15 @@
 
 **10:00-14:00:** CS:GO tournament continues
 
-**14:00**FIAF 19 Gathering, drafting groups
+**14:00:** FIFA 19 Gathering, drafting groups
 
-**14:00-61:00:**FIFA 19 groups
+**14:00-16:00:** FIFA 19 groups
 
 **14:00-15:00:** Lunch-break
 
 **15:00-20:00:** CS:GO tournament continues
 
-**16:00-17:30:**Play-offs
+**16:00-17:30:** Play-offs
 
 **20:00-00:00:** CS:GO tournament semi-finals
 
