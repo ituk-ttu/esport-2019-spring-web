@@ -95,6 +95,11 @@
             url: 'https://telia.ee',
             image: 'logo-telia.svg',
             scale: 0.85
+          },
+          obvan: {
+            url: 'https://www.theobvan.com/',
+            image: 'obvan.png',
+            scale: 1.0
           }
         }
       };
