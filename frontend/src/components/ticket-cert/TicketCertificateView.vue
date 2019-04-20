@@ -9,6 +9,7 @@
     template(v-else-if="status === 'ACCEPT'")
       h1.title(v-t="'navbar.houseRules'")
       h2.sub-title(v-t="'acceptRulesScroll'")
+      .card.content.md-content(v-html="rules")
       p(v-t="'tickets.certs.redeem.guide'")
       button.button.is-success(v-t="'acceptRules'" @click="onAccept")
     template(v-else-if="status === 'WAIT'")

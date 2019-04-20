@@ -3,9 +3,23 @@
     .notification.is-error(v-if="error != null") {{ error }}
     template(v-if="status === 'SCAN'")
       qrcode-stream(@decode="onDecode" @onInit="onInit")
+      .field
+        label.label Sisesta kood manuaalselt
+        .control
+          input.input(v-model="manualCode")
+      .modal-card-foot
+        .field
+          .control
+            button.button.is-link(type="submit" @click="onDecode(manualCode)") | Saada
     template(v-else-if="status === 'LOADING'")
       .has-text-centered(): i.fa.fa-2x.fa-cog.fa-spin
     template(v-else-if="status === 'PRE_ASK_ACCEPTANCE'")
+      h1.title Tiim: {{ ticket.name }}
+      h2.sub-title Mäng: {{ offering.name }}
+      .notification(v-if="cert.timesUsed >= getMaxUseCount(cert)" :class="cert.memberId != null ? 'is-warning' : 'is-error'")
+        | Seda koodi on juba kasutatud {{ cert.timesUsed }}/{{ getMaxUseCount(cert) }} korda
+      .notification.is-error(v-if="teamTicketsUsed")
+        | Selle tiimi piletid on juba otsas!
       .notification.is-info
         .content
           h3.subtitle Selle pileti koode on kasutatud alljärgnev arv kordi
@@ -19,9 +33,13 @@
         | Tegemist on nö. fallback koodiga.
       button.button.is-success(@click="onAskAcceptance") Küsi kodukorra nõusolekut
     template(v-else-if="status === 'WAIT_ACCEPTANCE'")
+      h1.title Tiim: {{ ticket.name }}
+      h2.sub-title Mäng: {{ offering.name }}
       .notification.is-info Ootan, et klient nõustuks kodukorraga
       button.button.is-warning(@click="onAcceptance") Nõustus allkirjaga paberil
     template(v-else-if="status === 'GIVE_TICKET'")
+      h1.title Tiim: {{ ticket.name }}
+      h2.sub-title Mäng: {{ offering.name }}
       .notification.is-info
         | Anna kliendile käepael ning
         strong  veendu
@@ -52,7 +70,8 @@
         ticket: null,
         certCode: null,
         certs: null,
-        evtSrc: null
+        evtSrc: null,
+        manualCode: ''
       };
     },
     methods: {
@@ -128,6 +147,7 @@
         if (this.evtSrc != null) {
           this.evtSrc.close();
         }
+        this.manualCode = '';
         this.evtSrc = null;
         this.error = error;
       },
@@ -164,6 +184,9 @@
       },
       offering: function () {
         return this.offerings.find(offering => offering.id === this.ticket.offeringId);
+      },
+      teamTicketsUsed: function() {
+        return this.certs.map(it => it.timesUsed).reduce((a, b) => a + b, 0) >= this.type.teamSize;
       }
     }
   };
