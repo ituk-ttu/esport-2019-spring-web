@@ -9,6 +9,7 @@ import MyTickets from '@/components/public/MyTickets';
 import Schedule from '@/components/public/Schedule';
 import HouseRules from '@/components/public/HouseRules';
 import CsgoRules from '@/components/public/CsgoRules';
+import Fifa from '@/components/public/Fifa'
 import Login from '@/components/public/Login';
 import Admin from '@/components/public/Admin';
 import Tickets from '@/components/public/admin/Tickets';
@@ -53,6 +54,11 @@ export default new Router({
           path: 'csgoRules',
           name: 'CsgoRules',
           component: CsgoRules
+        },
+        {
+          path: 'fifa',
+          name: 'Fifa',
+          component: Fifa
         },
         {
           path: 'buy/:offeringId',
