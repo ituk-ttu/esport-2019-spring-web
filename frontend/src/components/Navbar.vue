@@ -15,6 +15,7 @@
           navbar-link(:title="$t('navbar.timetable')" target-page="Schedule")
           navbar-link(:title="$t('navbar.houseRules')" target-page="HouseRules")
           navbar-link(:title="$t('navbar.csgoRules')" target-page="CsgoRules")
+          navbar-link(:title="$t('navbar.fifa')" target-page="Fifa")
         navbar-link(:title="$t('navbar.contact')" target-page="Contact")
         navbar-link(:title="$t('navbar.volunteer')" target-url="https://volunteer.e-sport.ee" new-window)
 

@@ -27,4 +27,12 @@ public class EsportGenerationStrategy extends DefaultGeneratorStrategy {
     public String getJavaGetterName(Definition definition, Mode mode) {
         return "get" + capitilize(definition.getOutputName());
     }
+
+
+    String value = map.get(11);
+    if(value != null) {
+
+    } else {
+
+    }
 }
